@@ -48,7 +48,7 @@ plt.ylabel('steering value')
 plt.show()
 
 
-# In[32]:
+# In[79]:
 
 # snapping actual values to given labels
 
@@ -57,26 +57,7 @@ def find_nearest(array,value):
     return array[idx]
 
 # TEST
-assert find_nearest(steering_labels, -0.9999) == -1.0   
-assert find_nearest(steering_labels, -0.9999) == -0.89473684 
-assert find_nearest(steering_labels, -0.9999) == -0.78947368 
-assert find_nearest(steering_labels, -0.9999) == -0.68421053 
-assert find_nearest(steering_labels, -0.9999) == -0.57894737 
-assert find_nearest(steering_labels, -0.9999) == -0.47368421
-assert find_nearest(steering_labels, -0.9999) == -0.36842105 
-assert find_nearest(steering_labels, -0.9999) == -0.26315789 
-assert find_nearest(steering_labels, -0.9999) == -0.15789474 
-assert find_nearest(steering_labels, -0.9999) == -0.05263158  
-assert find_nearest(steering_labels, -0.9999) == 0.05263158  
-assert find_nearest(steering_labels, -0.9999) == 0.15789474
-assert find_nearest(steering_labels, -0.9999) == 0.26315789  
-assert find_nearest(steering_labels, -0.9999) == 0.36842105  
-assert find_nearest(steering_labels, -0.9999) == 0.47368421  
-assert find_nearest(steering_labels, -0.9999) == 0.57894737  
-assert find_nearest(steering_labels, -0.9999) == 0.68421053  
-assert find_nearest(steering_labels, -0.9999) == 0.78947368
-assert find_nearest(steering_labels, -0.9999) == 0.89473684  
-assert find_nearest(steering_labels, -0.9999) == 1
+assert (find_nearest(steering_labels, -0.951) == -1.00),"method find_nearest() has problem"
 
 
 # In[ ]:

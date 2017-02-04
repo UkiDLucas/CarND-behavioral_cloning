@@ -12023,7 +12023,7 @@ uXHxEEcAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># snapping actual values to given labels</span>
@@ -12033,43 +12033,10 @@ uXHxEEcAAAAASUVORK5CYII=
     <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
 <span class="c1"># TEST</span>
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">1.0</span>   
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.89473684</span> 
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.78947368</span> 
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.68421053</span> 
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.57894737</span> 
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.47368421</span>
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.36842105</span> 
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.26315789</span> 
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.15789474</span> 
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">0.05263158</span>  
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.05263158</span>  
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.15789474</span>
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.26315789</span>  
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.36842105</span>  
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.47368421</span>  
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.57894737</span>  
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.68421053</span>  
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.78947368</span>
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.89473684</span>  
-<span class="k">assert</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.951</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">1.00</span><span class="p">),</span><span class="s2">&quot;method find_nearest() has problem&quot;</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>nearest label -0.894736842105
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
