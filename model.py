@@ -10,7 +10,7 @@
 data_dir = "../../../DATA/behavioral_cloning_data/"
 
 
-# In[12]:
+# In[2]:
 
 import CSV_helper
 print(CSV_helper.__doc__)
@@ -29,7 +29,7 @@ headers, data = read_csv(data_dir + "driving_log.csv")
 # - I will start training with 21 equally spread classes, if needed I will increase to 41.
 # - I want to make sure that my classes include **0.0 (zero)** as it is most common value.
 
-# In[73]:
+# In[3]:
 
 import numpy as np
 from numpy import ndarray
@@ -48,7 +48,7 @@ plt.ylabel('steering value')
 plt.show()
 
 
-# In[79]:
+# In[4]:
 
 # snapping actual values to given labels
 
@@ -58,6 +58,12 @@ def find_nearest(array,value):
 
 # TEST
 assert (find_nearest(steering_labels, -0.951) == -1.00),"method find_nearest() has problem"
+
+
+# In[6]:
+
+from CSV_helper import get_image_center_values
+image_center_values = get_image_center_values(data)
 
 
 # In[ ]:
@@ -70,7 +76,7 @@ y_train = data['labels']
 
 # # Keras (with TensorFlow)
 
-# In[13]:
+# In[ ]:
 
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout
@@ -79,7 +85,7 @@ from keras.optimizers import SGD
 import cv2, numpy as np
 
 
-# In[14]:
+# In[ ]:
 
 def UkiNet(weights_path=None):
     model = Sequential()

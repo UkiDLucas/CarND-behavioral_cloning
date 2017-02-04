@@ -22,38 +22,18 @@
 
 # # Read CSV spreadsheet
 
-# In[1]:
+# In[28]:
 
 data_dir = "../../../DATA/behavioral_cloning_data/"
 import csv
 
-# TODO implement batch_from, batch_to - I did not need it for 8037 rows
-# TODO implement has_header_row
-def read_csv(file_path):
-    # Opening spreadsheet to read in TEXT mode: 'rt'
-    with open(file_path, 'rt') as csvfile:
-        # Most common format of CSV, TODO improve
-        spamreader = csv.reader(csvfile, delimiter=',', quotechar='"') 
-        row_counter = 0
-        headers = []
-        data = []
-        for row in spamreader:
-            row_counter = row_counter + 1
-            
-            if row_counter == 1:
-                headers = row
-                # print (type(row))
-                # print ( row)
-                # print ('\t '.join(row))
-            elif 1 < row_counter < 3:
-                # print (type(row))
-                # print ( row)
-                # print ('\t '.join(row))
-                data.append(row)
-            else:
-                data.append(row)
-        print("row_counter", row_counter)
-        return headers, data
+import CSV_helper
+print(CSV_helper.__doc__)
+from CSV_helper import test_read_csv, read_csv
+print(read_csv.__doc__)
+#test_read_csv()
+# fetch actual log of driving data
+headers, data = read_csv(data_dir + "driving_log.csv")
     
 # TEST:    
 headers, data = read_csv(file_path = data_dir + 'driving_log.csv')
@@ -61,37 +41,9 @@ print("headers \n",headers)
 print("3rd row of data \n",data[2:3])
 
 
-# # Define some DATA helper methods
+# # Test DATA helper methods
 
-# In[2]:
-
-def get_image_center_values(matrix):
-    column_image_center = 0
-    return [row[column_image_center] for row in matrix]
-
-def get_image_left_values(matrix):
-    column_image_left = 1
-    return [row[column_image_left] for row in matrix]
-
-def get_image_right_values(matrix):
-    column_image_right = 2
-    return [row[column_image_right] for row in matrix]
-
-def get_steering_values(matrix):
-    column_steering = 3
-    return [float(row[column_steering]) for row in matrix]
-
-def get_throttle_values(matrix):
-    column_throttle = 4
-    return [float(row[column_throttle]) for row in matrix]
-
-def get_brake_values(matrix):
-    column_brake = 5
-    return [float(row[column_brake]) for row in matrix]
-
-def get_speed_values(matrix):
-    column_speed = 6
-    return [float(row[column_speed]) for row in matrix]
+# In[30]:
 
 #TEST:
 speed_values = get_speed_values(data)

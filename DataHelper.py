@@ -61,35 +61,70 @@ def test_read_csv():
 #test_read_csv()
 
 
-# In[20]:
+# In[57]:
 
-def split_random(matrix, percentage_train=70, percent_test=15):
+import numpy as np
+    
+def split_random(matrix, percent_train=70, percent_test=15):
     """
-    Splits matrix data into random sets.
+    Splits matrix data into randomly ordered sets 
+    grouped by provided percentages.
+    
+    Usage:
+    rows = 100
+    columns = 2
+    matrix = np.random.rand(rows, columns)
+    training, testing, validation = \
+    split_random(matrix, percent_train=80, percent_test=10)
+    
+    percent_validation 10
+    training (80, 2)
+    testing (10, 2)
+    validation (10, 2)
+    
     Returns:
     - training_data: percentage_train e.g. 70%
     - testing_data: percent_test e.g. 15%
     - validation_data: reminder from 100% e.g. 15%
+    Created by Uki D. Lucas on Feb. 4, 2017
     """
-    percent_validation = 100 - percentage_train - percent_test
+
+    percent_validation = 100 - percent_train - percent_test
    
     if percent_validation < 0:
-        print("Make sure that the provided sum of " +         "training and testing percentages is equal, " +         "or less than 100%.")
+        print("Make sure that the provided sum of " + \
+        "training and testing percentages is equal, " + \
+        "or less than 100%.")
+        percent_validation = 0
     else:
-        print("percent_validation",percent_validation)
-        
-    matrix = np.random.RandomState(43) # seed 43
-    print(matrix.shape)
-    indices = np.arange(n_samples)
-    rng.shuffle(indices)
-    training_data = x[indices]
-    testing_data = y[indices]
-    validation_data = z[indices]
+        print("percent_validation", percent_validation)
+    
+    #print(matrix)  
+    rows = matrix.shape[0]
+    np.random.shuffle(matrix)
+    
+    end_training = int(rows*percent_train/100)    
+    end_testing = end_training + int((rows * percent_test/100))
+    
+    training = matrix[:end_training]
+    testing = matrix[end_training:end_testing]
+    validation = matrix[end_testing:]
+    return training, testing, validation
 
-training_data, testing_data, validation_data = split_random([], percentage_train=70, percent_test=15) 
+# TEST:
+rows = 100
+columns = 2
+matrix = np.random.rand(rows, columns)
+training, testing, validation = split_random(matrix, percent_train=80, percent_test=20) 
+
+print("training",training.shape)
+print("testing",testing.shape)
+print("validation",validation.shape)
+
+print(split_random.__doc__)
 
 
-# In[2]:
+# In[55]:
 
 def get_image_center_values(matrix):
     column_image_center = 0
@@ -118,4 +153,9 @@ def get_brake_values(matrix):
 def get_speed_values(matrix):
     column_speed = 6
     return [float(row[column_speed]) for row in matrix]
+
+
+# In[ ]:
+
+
 

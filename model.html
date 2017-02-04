@@ -11771,7 +11771,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">CSV_helper</span>
@@ -11794,17 +11794,18 @@ div#notebook {
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-Uki D. Lucas
-Methods to make CSV processing easier.
+Wrapper methods around &#34;import csv&#34; that
+are very specific to p3.
+Created by Uki D. Lucas on Feb. 4, 2017
 
 
     Usage:
     headers, data = read_csv(file_path)
     Parameter: 
-    - file_path can be relative path &#34;../../../DATA/stuff.csv&#34;
+    - file_path: can be relative path &#34;../../../DATA/stuff.csv&#34;
     Returns:
-    - headers array of strings e.g. [&#39;steering&#39;, &#39;throttle&#39;, &#39;brake&#39;, &#39;speed&#39;]
-    - data array of strings, you have to convert values to int, float yourself
+    - headers: array of strings e.g. [&#39;steering&#39;, &#39;throttle&#39;, &#39;brake&#39;, &#39;speed&#39;]
+    - data: array of strings, you have to convert values to int, float yourself
    test_read_csv()
     
 row_counter 8037
@@ -11834,7 +11835,7 @@ row_counter 8037
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -12023,7 +12024,7 @@ uXHxEEcAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># snapping actual values to given labels</span>
@@ -12034,6 +12035,20 @@ uXHxEEcAAAAASUVORK5CYII=
 
 <span class="c1"># TEST</span>
 <span class="k">assert</span> <span class="p">(</span><span class="n">find_nearest</span><span class="p">(</span><span class="n">steering_labels</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.951</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mf">1.00</span><span class="p">),</span><span class="s2">&quot;method find_nearest() has problem&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">CSV_helper</span> <span class="k">import</span> <span class="n">get_image_center_values</span>
+<span class="n">image_center_values</span> <span class="o">=</span> <span class="n">get_image_center_values</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12068,7 +12083,7 @@ uXHxEEcAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
@@ -12082,24 +12097,10 @@ uXHxEEcAAAAASUVORK5CYII=
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>Using TensorFlow backend.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">UkiNet</span><span class="p">(</span><span class="n">weights_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

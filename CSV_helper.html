@@ -11752,7 +11752,8 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Wrapper methods around &quot;import csv&quot;.</span>
+<span class="sd">Wrapper methods around &quot;import csv&quot; that</span>
+<span class="sd">are very specific to p3.</span>
 <span class="sd">Created by Uki D. Lucas on Feb. 4, 2017</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -11794,19 +11795,10 @@ div#notebook {
                 <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;row_counter&quot;</span><span class="p">,</span> <span class="n">row_counter</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">headers</span><span class="p">,</span> <span class="n">data</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">test_read_csv</span><span class="p">():</span>
+    
+    
+    
+<span class="k">def</span> <span class="nf">test_read_csv</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This test is specific to Uki&#39;s enviroment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -11824,10 +11816,110 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">split_random</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">percentage_train</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">percent_test</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Splits matrix data into random sets.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - training_data: percentage_train e.g. 70%</span>
+<span class="sd">    - testing_data: percent_test e.g. 15%</span>
+<span class="sd">    - validation_data: reminder from 100% e.g. 15%</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">percent_validation</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">percentage_train</span> <span class="o">-</span> <span class="n">percent_test</span>
+   
+    <span class="k">if</span> <span class="n">percent_validation</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Make sure that the provided sum of &quot;</span> <span class="o">+</span> \
+        <span class="s2">&quot;training and testing percentages is equal, &quot;</span> <span class="o">+</span> \
+        <span class="s2">&quot;or less than 100%.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;percent_validation&quot;</span><span class="p">,</span><span class="n">percent_validation</span><span class="p">)</span>
+        
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span> <span class="c1"># seed 43</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+    <span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="n">training_data</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+    <span class="n">testing_data</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+    <span class="n">validation_data</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+<span class="n">training_data</span><span class="p">,</span> <span class="n">testing_data</span><span class="p">,</span> <span class="n">validation_data</span> <span class="o">=</span> \
+<span class="n">split_random</span><span class="p">([],</span> <span class="n">percentage_train</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">percent_test</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>percent_validation 15
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-20-5adb84405b1c&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     22</span>     validation_data <span class="ansi-blue-fg">=</span> z<span class="ansi-blue-fg">[</span>indices<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     23</span> 
+<span class="ansi-green-fg">---&gt; 24</span><span class="ansi-red-fg"> </span>training_data<span class="ansi-blue-fg">,</span> testing_data<span class="ansi-blue-fg">,</span> validation_data <span class="ansi-blue-fg">=</span> split_random<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> percentage_train<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">70</span><span class="ansi-blue-fg">,</span> percent_test<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">15</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-20-5adb84405b1c&gt;</span> in <span class="ansi-cyan-fg">split_random</span><span class="ansi-blue-fg">(matrix, percentage_train, percent_test)</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>         print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;percent_validation&#34;</span><span class="ansi-blue-fg">,</span>percent_validation<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     15</span> 
+<span class="ansi-green-fg">---&gt; 16</span><span class="ansi-red-fg">     </span>matrix <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>random<span class="ansi-blue-fg">.</span>RandomState<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">43</span><span class="ansi-blue-fg">)</span> <span class="ansi-red-fg"># seed 43</span>
+<span class="ansi-green-intense-fg ansi-bold">     17</span>     print<span class="ansi-blue-fg">(</span>matrix<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     18</span>     indices <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>arange<span class="ansi-blue-fg">(</span>n_samples<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;np&#39; is not defined</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_image_center_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="n">column_image_center</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">column_image_center</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">get_image_left_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="n">column_image_left</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">column_image_left</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">get_image_right_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="n">column_image_right</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">column_image_right</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">get_steering_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="n">column_steering</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">column_steering</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">get_throttle_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="n">column_throttle</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">column_throttle</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">get_brake_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="n">column_brake</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">column_brake</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">get_speed_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="n">column_speed</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">column_speed</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
 </pre></div>
 
 </div>
