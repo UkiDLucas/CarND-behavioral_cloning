@@ -17,11 +17,11 @@
 
 # ### Features
 # 
-# - If you imagine a spreadsheet, the row is a single data sample.
-# - Each data sample (row) has features that describe it.
-# - In machine learning it is common to use data set with hundreds, or thousands features.
-# - You can think about samples as e.g. personnal data,
-# - the features would be weight, height, age, smoking or not.
+# - If you imagine a spreadsheet, the **row is a single data sample**.
+# - Each **data sample (row) has features that describe it**.
+# - You can think about samples as e.g. **personnal data**,
+# - the **features would be weight, height, age, smoking** or not.
+# - In machine learning it is common to use data set with hundreds, or thousands features, much more than a human brain can comprehend.
 
 # In[1]:
 
