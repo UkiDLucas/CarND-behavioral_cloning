@@ -3,19 +3,22 @@
 
 # # Simplest Keras (TensorFlow) model
 # 
-# To get comfortable with Keras (using TensorFlow), I had to create the simples model possible.
-# In this experiment I simply predict if the number is SMALL (from 0 to 0.5) or BIG (from 0.5 to 1).
-# Since there can be an **infinite number of real values between 0 to 1, it is actually a GOOD CHALLENGE for the machine learning WITHOUT telling computer the rules I have used to classify my numbers**.
+# To get comfortable with Keras (using TensorFlow), I have created the simples model possible.
 # 
-# - I auto-generate a lot of random numbers between 0 and 1.
-# - I label them SMALL or BIG (not telling computer how or why).
+# In this experiment the computer will predict if the number is SMALL (from 0 to 0.5) or BIG (from 0.5 to 1).
+# Since there can be an **infinite number of real values between 0 to 1, it is actually a GOOD CHALLENGE for the machine learning.  I am NOT telling computer the prediction rules**.
+# 
+# - I auto-generate a spreadsheet with random numbers between 0 and 1.
+# - I label each row to be SMALL or BIG based on the values in the **first column only**.
+# - I am not telling the computer how or why.
+# - Using only first column and ignoring additional data makes is much harder for the computer
 # - I let computer look at my numbers and their classification,
 # - then, I create new numbers that computer did not see before
 # - The computer tries to make a prediction.
 # 
 # ### ***The ability to make predicion based on data without knowing underlaying rules is the real power on machine learning***
 
-# ### Features
+# ### Samples and their Features
 # 
 # - If you imagine a spreadsheet, the **row is a single data sample**.
 # - Each **data sample (row) has features that describe it**.
@@ -145,7 +148,7 @@ print("Achieved test accuracy (%s): %.1f%%" % (model.metrics_names[1], achieved_
 #cvscores.append(scores[1] * 100)
 
 
-# ### Summary: I was able to achieve up to **98% accuracy** which is very good for such as simple model.
+# ### Summary: In different runs, I was able to achieve up to **98% accuracy** which is very good a model with a single fully connected layer. Some common models have dozens of layers.
 
 # If you enjoyed this example please share @UkiDLucas so I know I should write more.
 # https://twitter.com/ukidlucas
