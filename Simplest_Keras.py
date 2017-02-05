@@ -102,6 +102,10 @@ model.compile(optimizer='rmsprop',
 
 
 # ## Training the model agaist the generated data
+# 
+# Here I do only about 5 learning iterations (epochs), each taking about a second. 
+# 
+# In complex problems training can take a week of constant computer work, bilions of math operations each second.
 
 # In[7]:
 
