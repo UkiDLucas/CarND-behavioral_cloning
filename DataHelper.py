@@ -185,9 +185,10 @@ def get_speed_values(matrix):
     return np.array(data)
 
 
-# In[6]:
+# In[7]:
 
 def read_image(image_path):
+    import cv2
     # cv2.IMREAD_COLOR 
     # cv2.COLOR_BGR2GRAY 
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)

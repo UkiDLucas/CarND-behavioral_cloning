@@ -12101,7 +12101,7 @@ validation (1204, 7)
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(5626,)
-IMG/center_2016_12_01_13_37_23_978.jpg
+IMG/center_2016_12_01_13_37_09_600.jpg
 </pre>
 </div>
 </div>
@@ -12140,7 +12140,7 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>../../../DATA/behavioral_cloning_data/processed_images_64/IMG/center_2016_12_01_13_37_23_978.jpg
+<pre>../../../DATA/behavioral_cloning_data/processed_images_64/IMG/center_2016_12_01_13_37_09_600.jpg
 </pre>
 </div>
 </div>
@@ -12171,33 +12171,93 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-8-0dbe6f464325&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">from</span> DataHelper <span class="ansi-green-fg">import</span> read_image
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>training_features <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span> read_image<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> path <span class="ansi-green-fg">in</span> image_paths<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> 
-<span class="ansi-green-intense-fg ansi-bold">      4</span> print <span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;matrix shape&#34;</span><span class="ansi-blue-fg">,</span> training_features<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> plt<span class="ansi-blue-fg">.</span>imshow<span class="ansi-blue-fg">(</span>training_features<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> cmap<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;gray&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">&lt;ipython-input-8-0dbe6f464325&gt;</span> in <span class="ansi-cyan-fg">&lt;listcomp&gt;</span><span class="ansi-blue-fg">(.0)</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">from</span> DataHelper <span class="ansi-green-fg">import</span> read_image
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>training_features <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span> read_image<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> path <span class="ansi-green-fg">in</span> image_paths<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> 
-<span class="ansi-green-intense-fg ansi-bold">      4</span> print <span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;matrix shape&#34;</span><span class="ansi-blue-fg">,</span> training_features<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> plt<span class="ansi-blue-fg">.</span>imshow<span class="ansi-blue-fg">(</span>training_features<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> cmap<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;gray&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">/Users/ukilucas/dev/carnd/p3_behavioral_cloning/behavioral_cloning_UkiDLucas/DataHelper.py</span> in <span class="ansi-cyan-fg">read_image</span><span class="ansi-blue-fg">(image_path)</span>
-<span class="ansi-green-intense-fg ansi-bold">    191</span>     <span class="ansi-red-fg"># cv2.IMREAD_COLOR</span>
-<span class="ansi-green-intense-fg ansi-bold">    192</span>     <span class="ansi-red-fg"># cv2.COLOR_BGR2GRAY</span>
-<span class="ansi-green-fg">--&gt; 193</span><span class="ansi-red-fg">     </span>image <span class="ansi-blue-fg">=</span> cv2<span class="ansi-blue-fg">.</span>imread<span class="ansi-blue-fg">(</span>image_path<span class="ansi-blue-fg">,</span> cv2<span class="ansi-blue-fg">.</span>IMREAD_COLOR<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    194</span>     <span class="ansi-red-fg">#print(&#34;image shape&#34;, image.shape)</span>
-<span class="ansi-green-intense-fg ansi-bold">    195</span>     <span class="ansi-red-fg">#plt.imshow(image, cmap=&#39;gray&#39;)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;cv2&#39; is not defined</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>matrix shape (5626, 14, 64, 3)
+</pre>
 </div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+SUVORK5CYII=
+"
+>
+</div>
+
 </div>
 
 </div>
@@ -12209,23 +12269,7 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">blank_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">14</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randrange</span><span class="p">,</span> <span class="n">uniform</span>
-<span class="n">random_index</span> <span class="o">=</span> <span class="mi">1</span><span class="c1"># randrange(0, 5626) </span>
- 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;training_features shape&quot;</span><span class="p">,</span> <span class="n">training_features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">training_features</span><span class="p">[</span><span class="n">random_index</span><span class="p">]</span>
-<span class="c1">#print(image[0,0,:])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;training_feature shape&quot;</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;training_feature </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
-
-<span class="n">modifield</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">blank_image</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;modifield&quot;</span><span class="p">,</span> <span class="n">modifield</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">modifieldv</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
@@ -12235,7 +12279,7 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">normalize_grayscale</span><span class="p">(</span><span class="n">image_data</span><span class="p">):</span>
@@ -12277,7 +12321,7 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">DataHelper</span> <span class="k">import</span> <span class="n">get_steering_values</span><span class="p">,</span> <span class="n">find_nearest</span>
@@ -12302,6 +12346,22 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(5626,)
+[-0.1262177  0.         0.3775214  0.         0.       ]
+[&#39;-0.1&#39; &#39;0.0&#39; &#39;0.4&#39; ..., &#39;0.1&#39; &#39;0.0&#39; &#39;0.2&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -12314,7 +12374,7 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn</span>
@@ -12325,6 +12385,26 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[1 0 0 ..., 0 0 0]
+ [0 0 0 ..., 0 0 0]
+ [0 0 0 ..., 0 0 0]
+ ..., 
+ [0 0 0 ..., 0 0 0]
+ [0 0 0 ..., 0 0 0]
+ [0 0 0 ..., 0 0 0]]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -12349,12 +12429,12 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.layers.core</span> <span class="k">import</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Activation</span>
-<span class="kn">from</span> <span class="nn">keras.layers.convolutional</span> <span class="k">import</span> <span class="n">Convolution2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">ZeroPadding2D</span>
+
 <span class="kn">from</span> <span class="nn">keras.activations</span> <span class="k">import</span> <span class="n">relu</span><span class="p">,</span> <span class="n">softmax</span>
 <span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="k">import</span> <span class="n">SGD</span>
 <span class="kn">import</span> <span class="nn">cv2</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -12364,67 +12444,63 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Using TensorFlow backend.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#model.add(Convolution2D(64, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(64, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(MaxPooling2D((2,2), strides=(2,2)))</span>
-
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(128, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(128, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(MaxPooling2D((2,2), strides=(2,2)))</span>
-
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(256, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(256, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(256, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(MaxPooling2D((2,2), strides=(2,2)))</span>
-
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(512, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(512, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(512, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(MaxPooling2D((2,2), strides=(2,2)))</span>
-
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(512, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(512, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-<span class="c1">#model.add(Convolution2D(512, 3, 3, activation=&#39;relu&#39;))</span>
-<span class="c1">#model.add(MaxPooling2D((2,2), strides=(2,2)))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.layers.convolutional</span> <span class="k">import</span> <span class="n">Convolution2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">ZeroPadding2D</span><span class="p">,</span> <span class="n">Convolution1D</span>
     
 <span class="k">def</span> <span class="nf">UkiNet</span><span class="p">(</span><span class="n">weights_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The cropped camera images are expected to be (3, 14, 64), not square</span>
+<span class="sd">    e.g.: </span>
+<span class="sd">    - training_features_normalized (5626, 14, 64, 3)</span>
+<span class="sd">    - y_one_hot (5626, 18)</span>
+<span class="sd">    </span>
+<span class="sd">    https://keras.io/layers/convolutional/</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
-    
-    <span class="c1"># original images are (3, 14, 64) need to square them</span>
-    <span class="c1"># Exception: Error when checking model input: </span>
-            <span class="c1"># expected zeropadding2d_input_1 to have 4 dimensions, </span>
-            <span class="c1"># but got array with shape (5626, 14, 64)</span>
-            <span class="c1"># model.add(ZeroPadding2D((1,1),input_shape=(3,64,64))</span>
- 
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ZeroPadding2D</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">)))</span>
-    <span class="c1"># Might be redundant, but assure the size 64x64</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
-    
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span> <span class="c1"># Fully connected </span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span> <span class="c1"># ReLU activation</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">43</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
-    
 
+    <span class="c1"># IN: (samples, rows, cols, channels)&#39;tf&#39;</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Convolution2D</span><span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">dim_ordering</span><span class="o">=</span><span class="s1">&#39;tf&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;01_Conv2D&quot;</span><span class="p">))</span>
+    <span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
+    <span class="c1">#model.add(Convolution2D(96, 14, 64, dim_ordering=&#39;tf&#39;, input_shape=(14, 64, 3), activation=&#39;relu&#39;, name=&quot;02_Conv2D&quot;))</span>
+    
+    <span class="c1">#ValueError: Negative dimension size caused by subtracting 14 from 1 for &#39;Conv2D_7&#39; (op: &#39;Conv2D&#39;) </span>
+    <span class="c1">#    with input shapes: [?,1,1,96], [14,64,96,96].</span>
 
+    
+    
+    
+    <span class="c1">#model.add(ZeroPadding2D((1,1),input_shape=(1,64,64)))</span>
+    <span class="c1">#model.add(Convolution2D(64, 3, 3, activation=&#39;relu&#39;, input_shape=(3,14,64),name=&quot;02_Conv_ReLU_&quot;)) #</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;01_flatten_14x64x3&quot;</span><span class="p">))</span> 
+    
+    <span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
+    <span class="c1">#model.add(Convolution2D(64, 3, 3, activation=&#39;relu&#39;))</span>
+    <span class="c1">#model.add(MaxPooling2D((2,2), strides=(2,2)))</span>
+    
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;02_Dense_128&quot;</span><span class="p">))</span> <span class="c1"># Fully connected </span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;03_ReLU&quot;</span><span class="p">))</span> <span class="c1"># ReLU activation</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">43</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;04_Dense_43&quot;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;softmax&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;05_Activation_Softmax&quot;</span><span class="p">))</span>
+    
     <span class="c1">#Input 0 is incompatible with layer flatten_7: expected ndim &gt;= 3, found ndim=2</span>
     <span class="c1">#model.add(Flatten())</span>
     <span class="c1">#model.add(Dense(4096, activation=&#39;relu&#39;))</span>
@@ -12433,12 +12509,15 @@ IMG/center_2016_12_01_13_37_23_978.jpg
     <span class="c1">#model.add(Dropout(0.5))</span>
     
     <span class="c1"># I want to end up with 21 classes</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;06_Dense_18&quot;</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">weights_path</span><span class="p">:</span>
         <span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">weights_path</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span>
 
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;training_features_normalized&quot;</span><span class="p">,</span> <span class="n">training_features_normalized</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y_one_hot&quot;</span><span class="p">,</span> <span class="n">y_one_hot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">UkiNet</span><span class="p">()</span>
 <span class="c1"># Configures the learning process and metrics</span>
 <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;sgd&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_squared_error&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
@@ -12446,6 +12525,42 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>training_features_normalized (5626, 14, 64, 3)
+y_one_hot (5626, 18)
+Train on 4500 samples, validate on 1126 samples
+Epoch 1/10
+4500/4500 [==============================] - 0s - loss: 0.0526 - acc: 4.4444e-04 - val_loss: 0.0526 - val_acc: 8.8810e-04
+Epoch 2/10
+4500/4500 [==============================] - 0s - loss: 0.0526 - acc: 4.4444e-04 - val_loss: 0.0526 - val_acc: 8.8810e-04
+Epoch 3/10
+4500/4500 [==============================] - 0s - loss: 0.0526 - acc: 4.4444e-04 - val_loss: 0.0526 - val_acc: 8.8810e-04 - ETA: 0s - loss: 0.0526 - acc: 0.0031    
+Epoch 4/10
+4500/4500 [==============================] - 0s - loss: 0.0525 - acc: 4.4444e-04 - val_loss: 0.0525 - val_acc: 8.8810e-04
+Epoch 5/10
+4500/4500 [==============================] - 0s - loss: 0.0525 - acc: 4.4444e-04 - val_loss: 0.0525 - val_acc: 8.8810e-04
+Epoch 6/10
+4500/4500 [==============================] - 0s - loss: 0.0525 - acc: 4.4444e-04 - val_loss: 0.0525 - val_acc: 8.8810e-04 - ETA: 0s - loss: 0.0525 - acc: 4.9213e-04
+Epoch 7/10
+4500/4500 [==============================] - 0s - loss: 0.0525 - acc: 4.4444e-04 - val_loss: 0.0525 - val_acc: 8.8810e-04
+Epoch 8/10
+4500/4500 [==============================] - 0s - loss: 0.0525 - acc: 4.4444e-04 - val_loss: 0.0525 - val_acc: 8.8810e-04
+Epoch 9/10
+4500/4500 [==============================] - 0s - loss: 0.0524 - acc: 4.4444e-04 - val_loss: 0.0524 - val_acc: 8.8810e-04
+Epoch 10/10
+4500/4500 [==============================] - 0s - loss: 0.0524 - acc: 4.4444e-04 - val_loss: 0.0524 - val_acc: 8.8810e-04
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -12468,40 +12583,13 @@ IMG/center_2016_12_01_13_37_23_978.jpg
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">check_layers</span><span class="p">(</span><span class="n">layers</span><span class="p">,</span> <span class="n">true_layers</span><span class="p">):</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">true_layers</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;No layers found&#39;</span>
-    <span class="k">for</span> <span class="n">layer_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">layers</span><span class="p">)):</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">true_layers</span><span class="p">[</span><span class="n">layer_i</span><span class="p">],</span> <span class="n">layers</span><span class="p">[</span><span class="n">layer_i</span><span class="p">]),</span> \
-        <span class="s1">&#39;Layer </span><span class="si">{}</span><span class="s1"> is not a </span><span class="si">{}</span><span class="s1"> layer&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">layer_i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">layers</span><span class="p">[</span><span class="n">layer_i</span><span class="p">]</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
-        
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">true_layers</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">layers</span><span class="p">),</span> \
-    <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> layers found, should be </span><span class="si">{}</span><span class="s1"> layers&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">true_layers</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">layers</span><span class="p">))</span>
-
-<span class="n">check_layers</span><span class="p">([</span><span class="n">Flatten</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Activation</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Activation</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-
-</div>
-</div>
 </div>
     </div>
   </div>

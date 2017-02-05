@@ -103,26 +103,10 @@ plt.show()
 
 # In[ ]:
 
-blank_image = np.zeros((14, 64, 2), dtype=np.float64)
-
-from random import randrange, uniform
-random_index = 1# randrange(0, 5626) 
- 
-print("training_features shape", training_features.shape)
-image = training_features[random_index]
-#print(image[0,0,:])
-print("training_feature shape", image.shape)
-plt.imshow(image)
-plt.show()
-print("training_feature \n", image)
-
-modifield = np.append(image, blank_image)
-print("modifield", modifield.shape)
-plt.imshow(modifieldv)
-plt.show()
 
 
-# In[ ]:
+
+# In[9]:
 
 def normalize_grayscale(image_data):
     a = -0.5
@@ -141,7 +125,7 @@ training_features_normalized = normalize_grayscale(training_features)
 
 # # Extract training labels (steering value classes) 
 
-# In[ ]:
+# In[10]:
 
 from DataHelper import get_steering_values, find_nearest
 raw_labels = get_steering_values(training)
@@ -163,7 +147,7 @@ print(training_labels)
 
 # ## One hot
 
-# In[ ]:
+# In[11]:
 
 import sklearn
 from sklearn.preprocessing import LabelBinarizer
@@ -176,73 +160,55 @@ print(y_one_hot)
 
 # # Keras (with TensorFlow)
 
-# In[ ]:
+# In[12]:
 
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Activation
-from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
+
 from keras.activations import relu, softmax
 from keras.optimizers import SGD
 import cv2, numpy as np
 
 
-# In[ ]:
+# In[57]:
 
-#model.add(Convolution2D(64, 3, 3, activation='relu'))
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(64, 3, 3, activation='relu'))
-#model.add(MaxPooling2D((2,2), strides=(2,2)))
-
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(128, 3, 3, activation='relu'))
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(128, 3, 3, activation='relu'))
-#model.add(MaxPooling2D((2,2), strides=(2,2)))
-
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(256, 3, 3, activation='relu'))
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(256, 3, 3, activation='relu'))
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(256, 3, 3, activation='relu'))
-#model.add(MaxPooling2D((2,2), strides=(2,2)))
-
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(512, 3, 3, activation='relu'))
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(512, 3, 3, activation='relu'))
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(512, 3, 3, activation='relu'))
-#model.add(MaxPooling2D((2,2), strides=(2,2)))
-
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(512, 3, 3, activation='relu'))
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(512, 3, 3, activation='relu'))
-#model.add(ZeroPadding2D((1,1)))
-#model.add(Convolution2D(512, 3, 3, activation='relu'))
-#model.add(MaxPooling2D((2,2), strides=(2,2)))
+from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, Convolution1D
     
 def UkiNet(weights_path=None):
+    """
+    The cropped camera images are expected to be (3, 14, 64), not square
+    e.g.: 
+    - training_features_normalized (5626, 14, 64, 3)
+    - y_one_hot (5626, 18)
+    
+    https://keras.io/layers/convolutional/
+    """
     model = Sequential()
-    
-    # original images are (3, 14, 64) need to square them
-    # Exception: Error when checking model input: 
-            # expected zeropadding2d_input_1 to have 4 dimensions, 
-            # but got array with shape (5626, 14, 64)
-            # model.add(ZeroPadding2D((1,1),input_shape=(3,64,64))
- 
-    model.add(ZeroPadding2D((1,1),input_shape=(1,64,64)))
-    # Might be redundant, but assure the size 64x64
-    model.add(Flatten(input_shape=(64, 64, 3)))
-    
-    model.add(Dense(128)) # Fully connected 
-    model.add(Activation('relu')) # ReLU activation
-    model.add(Dense(43))
-    model.add(Activation('softmax'))
-    
 
+    # IN: (samples, rows, cols, channels)'tf'
+    model.add(Convolution2D(96, 14, 64, dim_ordering='tf', input_shape=(14, 64, 3), activation='relu', name="01_Conv2D"))
+    #model.add(ZeroPadding2D((1,1)))
+    #model.add(Convolution2D(96, 14, 64, dim_ordering='tf', input_shape=(14, 64, 3), activation='relu', name="02_Conv2D"))
+    
+    #ValueError: Negative dimension size caused by subtracting 14 from 1 for 'Conv2D_7' (op: 'Conv2D') 
+    #    with input shapes: [?,1,1,96], [14,64,96,96].
 
+    
+    
+    
+    #model.add(ZeroPadding2D((1,1),input_shape=(1,64,64)))
+    #model.add(Convolution2D(64, 3, 3, activation='relu', input_shape=(3,14,64),name="02_Conv_ReLU_")) #
+    model.add(Flatten(input_shape=(14, 64, 3), name="01_flatten_14x64x3")) 
+    
+    #model.add(ZeroPadding2D((1,1)))
+    #model.add(Convolution2D(64, 3, 3, activation='relu'))
+    #model.add(MaxPooling2D((2,2), strides=(2,2)))
+    
+    model.add(Dense(128, name="02_Dense_128")) # Fully connected 
+    model.add(Activation('relu', name="03_ReLU")) # ReLU activation
+    model.add(Dense(43, name="04_Dense_43"))
+    model.add(Activation('softmax', name="05_Activation_Softmax"))
+    
     #Input 0 is incompatible with layer flatten_7: expected ndim >= 3, found ndim=2
     #model.add(Flatten())
     #model.add(Dense(4096, activation='relu'))
@@ -251,12 +217,15 @@ def UkiNet(weights_path=None):
     #model.add(Dropout(0.5))
     
     # I want to end up with 21 classes
-    model.add(Dense(21, activation='softmax'))
+    model.add(Dense(18, activation='softmax', name="06_Dense_18"))
 
     if weights_path:
         model.load_weights(weights_path)
     return model
 
+
+print("training_features_normalized", training_features_normalized.shape)
+print("y_one_hot", y_one_hot.shape)
 model = UkiNet()
 # Configures the learning process and metrics
 model.compile('sgd', 'mean_squared_error', ['accuracy'])
@@ -270,16 +239,5 @@ history = model.fit(training_features_normalized, y_one_hot, nb_epoch=10, valida
 
 # In[ ]:
 
-def check_layers(layers, true_layers):
-    assert len(true_layers) != 0, 'No layers found'
-    for layer_i in range(len(layers)):
-        assert isinstance(true_layers[layer_i], layers[layer_i]),         'Layer {} is not a {} layer'.format(layer_i+1, layers[layer_i].__name__)
-        
-    assert len(true_layers) == len(layers),     '{} layers found, should be {} layers'.format(len(true_layers), len(layers))
-
-check_layers([Flatten, Dense, Activation, Dense, Activation], model.layers)
 
 
-# 
-
-# 
