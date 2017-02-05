@@ -147,6 +147,9 @@ print("Achieved test accuracy (%s): %.1f%%" % (model.metrics_names[1], achieved_
 
 # ### Summary: I was able to achieve up to **98% accuracy** which is very good for such as simple model.
 
+# If you enjoyed this example please share @UkiDLucas so I know I should write more.
+# https://twitter.com/ukidlucas
+
 # In[ ]:
 
 
