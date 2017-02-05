@@ -3,15 +3,15 @@
 
 # # Simplest Keras (TensorFlow) model
 # 
-# To get comfortable with Keras (with TensorFlow), I had to create the simples model possible.
-# In this experiment I simply predict is the number is SMALL (from 0 to 0.5) or BIG (from 0.5 to 1).
-# Since there can be an **infinite number of real values between 0 to 1, it is actually GOOD CHALLENGE for the machine learning WITHOUT telling computer the rules I used to classify my numbers** (rules being: smaller or bigger than half).
+# To get comfortable with Keras (using TensorFlow), I had to create the simples model possible.
+# In this experiment I simply predict if the number is SMALL (from 0 to 0.5) or BIG (from 0.5 to 1).
+# Since there can be an **infinite number of real values between 0 to 1, it is actually a GOOD CHALLENGE for the machine learning WITHOUT telling computer the rules I have used to classify my numbers**.
 # 
 # - I auto-generate a lot of random numbers between 0 and 1.
 # - I label them SMALL or BIG (not telling computer how or why).
-# - I let computer to look at my numbers and their classification,
+# - I let computer look at my numbers and their classification,
 # - then, I create new numbers that computer did not see before
-# - The computer tries to make prediction
+# - The computer tries to make a prediction.
 # 
 # ### ***The ability to make predicion based on data without knowing underlaying rules is the real power on machine learning***
 
