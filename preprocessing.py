@@ -290,7 +290,7 @@ def resize_image_to_square(numpy_array_image, new_size):
     return array(image)
 
 
-# In[18]:
+# In[33]:
 
 def preprocessing_pipline(image_index, final_size=224, should_plot=False):
     """
@@ -345,7 +345,7 @@ def preprocessing_pipline(image_index, final_size=224, should_plot=False):
 from numpy import array
 import random
 image_index = random.randrange( len(speed_values))
-image = preprocessing_pipline(image_index, final_size=224, should_plot=True)
+image = preprocessing_pipline(image_index, final_size=64, should_plot=True)
 print(image.shape)
 
 

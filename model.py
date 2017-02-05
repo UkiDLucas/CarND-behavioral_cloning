@@ -162,6 +162,7 @@ print(y_one_hot)
 
 # In[12]:
 
+import keras.backend as K
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Activation
 
@@ -170,7 +171,25 @@ from keras.optimizers import SGD
 import cv2, numpy as np
 
 
-# In[57]:
+# In[13]:
+
+
+
+# for custom metrics
+
+def mean_pred(y_true, y_pred):
+    return K.mean(y_pred)
+
+def false_rates(y_true, y_pred):
+    false_neg = ...
+    false_pos = ...
+    return {
+        'false_neg': false_neg,
+        'false_pos': false_pos,
+    }
+
+
+# In[14]:
 
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, Convolution1D
     
@@ -186,12 +205,8 @@ def UkiNet(weights_path=None):
     model = Sequential()
 
     # IN: (samples, rows, cols, channels)'tf'
-    model.add(Convolution2D(96, 14, 64, dim_ordering='tf', input_shape=(14, 64, 3), activation='relu', name="01_Conv2D"))
-    #model.add(ZeroPadding2D((1,1)))
-    #model.add(Convolution2D(96, 14, 64, dim_ordering='tf', input_shape=(14, 64, 3), activation='relu', name="02_Conv2D"))
-    
-    #ValueError: Negative dimension size caused by subtracting 14 from 1 for 'Conv2D_7' (op: 'Conv2D') 
-    #    with input shapes: [?,1,1,96], [14,64,96,96].
+    # model.add(Convolution2D(96, 14, 64, dim_ordering='tf', input_shape=(14, 64, 3), activation='relu', name="01_Conv2D"))
+ 
 
     
     
@@ -227,9 +242,16 @@ def UkiNet(weights_path=None):
 print("training_features_normalized", training_features_normalized.shape)
 print("y_one_hot", y_one_hot.shape)
 model = UkiNet()
-# Configures the learning process and metrics
-model.compile('sgd', 'mean_squared_error', ['accuracy'])
-history = model.fit(training_features_normalized, y_one_hot, nb_epoch=10, validation_split=0.2)
+
+# Before training a model, you need to configure the learning process, which is done via the compile method.
+optimizer='sgd' # | 'rmsprop'
+loss_function='mean_squared_error' # | 'binary_crossentropy' | 'mse'
+metrics_array=['accuracy', mean_pred, false_rates]
+model.compile(optimizer, loss_function, metrics_array)
+
+history = model.fit(training_features_normalized, y_one_hot, nb_epoch=3, validation_split=0.2)
+
+#Epoch 20/20 loss: 0.0518 - acc: 0.60 - val_loss: 0.05 - val_acc: 0.59
 
 
 # In[ ]:
