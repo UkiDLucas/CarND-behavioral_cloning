@@ -9,6 +9,24 @@ are very specific to p3.
 Created by Uki D. Lucas on Feb. 4, 2017
 """
 
+
+# In[2]:
+
+# snapping actual values to given labels
+
+def find_nearest(array,value):
+    idx = (np.abs(array-value)).argmin()
+    return array[idx]
+
+# TEST
+#assert (find_nearest(steering_labels, -0.951) == -1.00),"method find_nearest() has problem"
+
+
+# In[3]:
+
+
+import numpy as np
+
 # TODO implement batch_from, batch_to - I did not need it for 8037 rows
 # TODO implement has_header_row
 def read_csv(file_path):
@@ -45,8 +63,10 @@ def read_csv(file_path):
                 data.append(row)
             else:
                 data.append(row)
-        print("row_counter", row_counter)
-        return headers, data
+        print("imported rows", row_counter)
+        # I am returning data as numpy array instead of list
+        # because it is handier to use it.
+        return headers, np.array(data)
     
     
     
@@ -58,12 +78,13 @@ def test_read_csv():
     headers, data = read_csv(file_path = data_dir + 'driving_log.csv')
     print("headers \n",headers)
     print("3rd row of data \n",data[2:3])
-#test_read_csv()
+# test_read_csv()
 
 
-# In[57]:
+# In[4]:
 
 import numpy as np
+import math
     
 def split_random(matrix, percent_train=70, percent_test=15):
     """
@@ -88,71 +109,92 @@ def split_random(matrix, percent_train=70, percent_test=15):
     - validation_data: reminder from 100% e.g. 15%
     Created by Uki D. Lucas on Feb. 4, 2017
     """
-
+    #print(matrix)  
+    row_count = matrix.shape[0]
+    np.random.shuffle(matrix)
+    
+    end_training = int(math.ceil(row_count*percent_train/100))    
+    end_testing = end_training + int(math.ceil((row_count * percent_test/100)))
+    
     percent_validation = 100 - percent_train - percent_test
-   
+    
+    training = matrix[:end_training]
+    testing = []
+    validation = []
+    
     if percent_validation < 0:
         print("Make sure that the provided sum of " + \
         "training and testing percentages is equal, " + \
         "or less than 100%.")
-        percent_validation = 0
+        
+        testing = matrix[end_training:]
     else:
         print("percent_validation", percent_validation)
+        
+        testing = matrix[end_training:end_testing]
+        validation = matrix[end_testing:]
     
-    #print(matrix)  
-    rows = matrix.shape[0]
-    np.random.shuffle(matrix)
-    
-    end_training = int(rows*percent_train/100)    
-    end_testing = end_training + int((rows * percent_test/100))
-    
-    training = matrix[:end_training]
-    testing = matrix[end_training:end_testing]
-    validation = matrix[end_testing:]
     return training, testing, validation
 
 # TEST:
-rows = 100
-columns = 2
-matrix = np.random.rand(rows, columns)
-training, testing, validation = split_random(matrix, percent_train=80, percent_test=20) 
 
-print("training",training.shape)
-print("testing",testing.shape)
-print("validation",validation.shape)
+def test_split_random():
+    rows = 8037
+    columns = 2
+    matrix = np.random.rand(rows, columns)
+    training, testing, validation = split_random(matrix, percent_train=80, percent_test=20) 
 
-print(split_random.__doc__)
+    print("training",training.shape)
+    print("testing",testing.shape)
+    print("validation",validation.shape)
+    
+    print("sum",training.shape[0] + testing.shape[0])
+    
+    #print(split_random.__doc__)
+# test_split_random()
 
 
-# In[55]:
+# In[5]:
 
 def get_image_center_values(matrix):
-    column_image_center = 0
-    return [row[column_image_center] for row in matrix]
+    data = [row[0] for row in matrix]
+    return np.array(data)
 
 def get_image_left_values(matrix):
-    column_image_left = 1
-    return [row[column_image_left] for row in matrix]
+    data = [row[1] for row in matrix]
+    return np.array(data)
 
 def get_image_right_values(matrix):
-    column_image_right = 2
-    return [row[column_image_right] for row in matrix]
+    data = [row[2] for row in matrix]
+    return np.array(data)
 
 def get_steering_values(matrix):
-    column_steering = 3
-    return [float(row[column_steering]) for row in matrix]
+    data = [float(row[3]) for row in matrix]
+    return np.array(data)
 
 def get_throttle_values(matrix):
-    column_throttle = 4
-    return [float(row[column_throttle]) for row in matrix]
+    data = [float(row[4]) for row in matrix]
+    return np.array(data)
 
 def get_brake_values(matrix):
-    column_brake = 5
-    return [float(row[column_brake]) for row in matrix]
+    data = [float(row[5]) for row in matrix]
+    return np.array(data)
 
 def get_speed_values(matrix):
-    column_speed = 6
-    return [float(row[column_speed]) for row in matrix]
+    data = [float(row[6]) for row in matrix]
+    return np.array(data)
+
+
+# In[6]:
+
+def read_image(image_path):
+    # cv2.IMREAD_COLOR 
+    # cv2.COLOR_BGR2GRAY 
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    #print("image shape", image.shape)
+    #plt.imshow(image, cmap='gray')
+    #plt.show()
+    return np.array(image)
 
 
 # In[ ]:

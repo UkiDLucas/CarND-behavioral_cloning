@@ -14953,7 +14953,7 @@ hB9qAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">image_center_values</span> <span class="o">=</span> <span class="n">get_image_center_values</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -14969,8 +14969,8 @@ hB9qAAAAAElFTkSuQmCC
     <span class="n">image_index</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">item_name</span> <span class="ow">in</span> <span class="n">image_list</span><span class="p">:</span>
         <span class="c1">#print(&quot;#&quot;, image_index, &quot; name: &quot;, item_name)</span>
-        <span class="n">image_array</span> <span class="o">=</span> <span class="n">preprocessing_pipline</span><span class="p">(</span><span class="n">image_index</span><span class="p">,</span> <span class="n">final_size</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span> <span class="n">should_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">scipy</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s2">&quot;processed_images_224/&quot;</span> <span class="o">+</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">image_array</span><span class="p">)</span>
+        <span class="n">image_array</span> <span class="o">=</span> <span class="n">preprocessing_pipline</span><span class="p">(</span><span class="n">image_index</span><span class="p">,</span> <span class="n">final_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">should_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">scipy</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s2">&quot;processed_images_64/&quot;</span> <span class="o">+</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">image_array</span><span class="p">)</span>
         <span class="n">image_index</span> <span class="o">=</span> <span class="n">image_index</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="c1">#if image_index &gt; 5:</span>
         <span class="c1">#    return</span>

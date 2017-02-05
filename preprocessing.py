@@ -356,7 +356,7 @@ print(image.shape)
 
 # # Convert ALL of the images and save them
 
-# In[19]:
+# In[32]:
 
 image_center_values = get_image_center_values(data)
 #image_left_values = get_image_left_values(matrix) 
@@ -371,8 +371,8 @@ def process_all(image_list):
     image_index = 0
     for item_name in image_list:
         #print("#", image_index, " name: ", item_name)
-        image_array = preprocessing_pipline(image_index, final_size=224, should_plot=False)
-        scipy.misc.imsave(data_dir + "processed_images_224/" + item_name, image_array)
+        image_array = preprocessing_pipline(image_index, final_size=64, should_plot=False)
+        scipy.misc.imsave(data_dir + "processed_images_64/" + item_name, image_array)
         image_index = image_index + 1
         #if image_index > 5:
         #    return
