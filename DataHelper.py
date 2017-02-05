@@ -185,7 +185,7 @@ def get_speed_values(matrix):
     return np.array(data)
 
 
-# In[7]:
+# In[6]:
 
 def read_image(image_path):
     import cv2
@@ -196,6 +196,33 @@ def read_image(image_path):
     #plt.imshow(image, cmap='gray')
     #plt.show()
     return np.array(image)
+
+
+# In[7]:
+
+# for custom metrics
+import keras.backend as K
+
+def mean_pred(y_true, y_pred):
+    return K.mean(y_pred)
+
+def false_rates(y_true, y_pred):
+    false_neg = ...
+    false_pos = ...
+    return {
+        'false_neg': false_neg,
+        'false_pos': false_pos,
+    }
+
+
+# In[8]:
+
+def normalize_grayscale(image_data):
+    a = -0.5
+    b = 0.5
+    grayscale_min = 0
+    grayscale_max = 255
+    return a + ( ( (image_data - grayscale_min)*(b - a) )/( grayscale_max - grayscale_min ) )
 
 
 # In[ ]:

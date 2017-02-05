@@ -11751,7 +11751,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Training-UkiNet-model">Training UkiNet model<a class="anchor-link" href="#Training-UkiNet-model">&#182;</a></h1><p>Please refer to README file for project overview.</p>
+<h1 id="model">model<a class="anchor-link" href="#model">&#182;</a></h1><p>Please refer to README file for project overview.</p>
 
 </div>
 </div>
@@ -11806,6 +11806,13 @@ div#notebook {
 <div class="output_wrapper">
 <div class="output">
 
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Using TensorFlow backend.
+</pre>
+</div>
+</div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -12101,7 +12108,7 @@ validation (1204, 7)
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(5626,)
-IMG/center_2016_12_01_13_37_00_293.jpg
+IMG/center_2016_12_01_13_43_39_086.jpg
 </pre>
 </div>
 </div>
@@ -12140,7 +12147,7 @@ IMG/center_2016_12_01_13_37_00_293.jpg
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>../../../DATA/behavioral_cloning_data/processed_images_64/IMG/center_2016_12_01_13_37_00_293.jpg
+<pre>../../../DATA/behavioral_cloning_data/processed_images_64/IMG/center_2016_12_01_13_43_39_086.jpg
 </pre>
 </div>
 </div>
@@ -12182,81 +12189,79 @@ IMG/center_2016_12_01_13_37_00_293.jpg
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAABsCAYAAAB6kUkRAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-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
+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
+AElFTkSuQmCC
 "
 >
 </div>
@@ -12269,43 +12274,12 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">normalize_grayscale</span><span class="p">(</span><span class="n">image_data</span><span class="p">):</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="n">grayscale_min</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">grayscale_max</span> <span class="o">=</span> <span class="mi">255</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span> <span class="p">(</span> <span class="p">(</span><span class="n">image_data</span> <span class="o">-</span> <span class="n">grayscale_min</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="n">grayscale_max</span> <span class="o">-</span> <span class="n">grayscale_min</span> <span class="p">)</span> <span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">DataHelper</span> <span class="k">import</span> <span class="n">normalize_grayscale</span>
 
 <span class="n">training_features_normalized</span> <span class="o">=</span> <span class="n">normalize_grayscale</span><span class="p">(</span><span class="n">training_features</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>
@@ -12356,8 +12330,8 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(5626,)
-[ 0.          0.         -0.08824026  0.          0.        ]
-[&#39;0.0&#39; &#39;0.0&#39; &#39;-0.1&#39; ..., &#39;0.0&#39; &#39;-0.2&#39; &#39;0.0&#39;]
+[ 0.        -0.1452064 -0.0787459  0.         0.       ]
+[&#39;0.0&#39; &#39;-0.1&#39; &#39;-0.1&#39; ..., &#39;0.0&#39; &#39;0.0&#39; &#39;0.0&#39;]
 </pre>
 </div>
 </div>
@@ -12398,11 +12372,11 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[[0 0 0 ..., 0 0 0]
- [0 0 0 ..., 0 0 0]
+ [1 0 0 ..., 0 0 0]
  [1 0 0 ..., 0 0 0]
  ..., 
  [0 0 0 ..., 0 0 0]
- [0 1 0 ..., 0 0 0]
+ [0 0 0 ..., 0 0 0]
  [0 0 0 ..., 0 0 0]]
 </pre>
 </div>
@@ -12442,23 +12416,10 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 <span class="kn">from</span> <span class="nn">keras.activations</span> <span class="k">import</span> <span class="n">relu</span><span class="p">,</span> <span class="n">softmax</span>
 <span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="k">import</span> <span class="n">SGD</span>
 <span class="kn">import</span> <span class="nn">cv2</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">DataHelper</span> <span class="k">import</span> <span class="n">mean_pred</span><span class="p">,</span> <span class="n">false_rates</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>Using TensorFlow backend.
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -12468,103 +12429,9 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># for custom metrics</span>
-
-<span class="k">def</span> <span class="nf">mean_pred</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">K</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">false_rates</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
-    <span class="n">false_neg</span> <span class="o">=</span> <span class="o">...</span>
-    <span class="n">false_pos</span> <span class="o">=</span> <span class="o">...</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s1">&#39;false_neg&#39;</span><span class="p">:</span> <span class="n">false_neg</span><span class="p">,</span>
-        <span class="s1">&#39;false_pos&#39;</span><span class="p">:</span> <span class="n">false_pos</span><span class="p">,</span>
-    <span class="p">}</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[94]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-94-c06cf55c5692&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">5</span>
-<span class="ansi-red-fg">    test_labels = np.array([[0.0], [1.0])</span>
-                                        ^
-<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.layers.convolutional</span> <span class="k">import</span> <span class="n">Convolution2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">ZeroPadding2D</span><span class="p">,</span> <span class="n">Convolution1D</span>
     
-<span class="k">def</span> <span class="nf">UkiNet</span><span class="p">(</span><span class="n">weights_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">build_model</span><span class="p">(</span><span class="n">weights_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The cropped camera images are expected to be (3, 14, 64), not square</span>
 <span class="sd">    e.g.: </span>
@@ -12573,37 +12440,22 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 <span class="sd">    </span>
 <span class="sd">    https://keras.io/layers/convolutional/</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output_dim</span> <span class="o">=</span> <span class="mi">21</span> <span class="c1"># number of classes</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
-
+    
     <span class="c1"># IN: (samples, rows, cols, channels)&#39;tf&#39;</span>
-    <span class="c1"># model.add(Convolution2D(96, 14, 64, dim_ordering=&#39;tf&#39;, input_shape=(14, 64, 3), activation=&#39;relu&#39;, name=&quot;01_Conv2D&quot;))</span>
- 
+    <span class="c1"># expected 01_Conv2D to have 4 dimensions, but got array with shape (5626, 18)</span>
+    <span class="c1"># expected 01_Conv2D to have 4 dimensions, but got array with shape (5626, 1)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Convolution2D</span><span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">dim_ordering</span><span class="o">=</span><span class="s1">&#39;tf&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;01_Conv2D&quot;</span><span class="p">))</span>
+    <span class="c1"># Output shape of convolution is 4d</span>
+    
+    <span class="c1">#expected flatten_2 to have shape (None, 96) but got array with shape (5626, 18)</span>
+    <span class="c1">#model.add(Flatten()) </span>
+    <span class="c1"># Flatten input into 2d</span>
 
-    
-    
-    
-    <span class="c1">#model.add(ZeroPadding2D((1,1),input_shape=(1,64,64)))</span>
-    <span class="c1">#model.add(Convolution2D(64, 3, 3, activation=&#39;relu&#39;, input_shape=(3,14,64),name=&quot;02_Conv_ReLU_&quot;)) #</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;01_flatten_14x64x3&quot;</span><span class="p">))</span> 
-    
-    <span class="c1">#model.add(ZeroPadding2D((1,1)))</span>
-    <span class="c1">#model.add(Convolution2D(64, 3, 3, activation=&#39;relu&#39;))</span>
-    <span class="c1">#model.add(MaxPooling2D((2,2), strides=(2,2)))</span>
-    
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;02_Dense_128&quot;</span><span class="p">))</span> <span class="c1"># Fully connected </span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;03_ReLU&quot;</span><span class="p">))</span> <span class="c1"># ReLU activation</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">43</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;04_Dense_43&quot;</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;softmax&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;05_Activation_Softmax&quot;</span><span class="p">))</span>
-    
-    <span class="c1">#Input 0 is incompatible with layer flatten_7: expected ndim &gt;= 3, found ndim=2</span>
-    <span class="c1">#model.add(Flatten())</span>
-    <span class="c1">#model.add(Dense(4096, activation=&#39;relu&#39;))</span>
-    <span class="c1">#model.add(Dropout(0.5))</span>
-    <span class="c1">#model.add(Dense(4096, activation=&#39;relu&#39;))</span>
-    <span class="c1">#model.add(Dropout(0.5))</span>
-    
-    <span class="c1"># I want to end up with 21 classes</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;06_Dense_18&quot;</span><span class="p">))</span>
+    <span class="c1"># Dense layer require a 2d input</span>
+    <span class="c1"># have shape (None, 21) but got array with shape (5626, 1)</span>
+    <span class="c1">#model.add(Dense(18, activation=&#39;sigmoid&#39;, name=&quot;001_Dense&quot;))</span>
 
     <span class="k">if</span> <span class="n">weights_path</span><span class="p">:</span>
         <span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">weights_path</span><span class="p">)</span>
@@ -12612,7 +12464,7 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;training_features_normalized&quot;</span><span class="p">,</span> <span class="n">training_features_normalized</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y_one_hot&quot;</span><span class="p">,</span> <span class="n">y_one_hot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">UkiNet</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_model</span><span class="p">()</span>
 
 <span class="c1"># Before training a model, you need to configure the learning process, which is done via the compile method.</span>
 <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span> <span class="c1"># | &#39;rmsprop&#39;</span>
@@ -12620,7 +12472,8 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 <span class="n">metrics_array</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">mean_pred</span><span class="p">,</span> <span class="n">false_rates</span><span class="p">]</span>
 <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">metrics_array</span><span class="p">)</span>
 
-<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_features_normalized</span><span class="p">,</span> <span class="n">y_one_hot</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_features_normalized</span><span class="p">,</span> <span class="n">training_labels</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="c1">#history = model.fit(training_features_normalized, y_one_hot, nb_epoch=3, validation_split=0.2)</span>
 
 <span class="c1">#Epoch 20/20 loss: 0.0518 - acc: 0.60 - val_loss: 0.05 - val_acc: 0.59</span>
 </pre></div>
@@ -12636,7 +12489,7 @@ xhjTExzQjTGmJzigG2NMT3BAN8aYnvB/A59J7hFPUYMAAAAASUVORK5CYII=
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>training_features_normalized (5626, 14, 64, 3)
-y_one_hot (5626, 17)
+y_one_hot (5626, 18)
 </pre>
 </div>
 </div>
@@ -12646,12 +12499,12 @@ y_one_hot (5626, 17)
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">Exception</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-14-0b829d8bf6db&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">     57</span> model<span class="ansi-blue-fg">.</span>compile<span class="ansi-blue-fg">(</span>optimizer<span class="ansi-blue-fg">,</span> loss_function<span class="ansi-blue-fg">,</span> metrics_array<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     58</span> 
-<span class="ansi-green-fg">---&gt; 59</span><span class="ansi-red-fg"> </span>history <span class="ansi-blue-fg">=</span> model<span class="ansi-blue-fg">.</span>fit<span class="ansi-blue-fg">(</span>training_features_normalized<span class="ansi-blue-fg">,</span> y_one_hot<span class="ansi-blue-fg">,</span> nb_epoch<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span> validation_split<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.2</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     60</span> 
-<span class="ansi-green-intense-fg ansi-bold">     61</span> <span class="ansi-red-fg">#Epoch 20/20 loss: 0.0518 - acc: 0.60 - val_loss: 0.05 - val_acc: 0.59</span>
+<span class="ansi-green-fg">&lt;ipython-input-13-c051335317d5&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     42</span> model<span class="ansi-blue-fg">.</span>compile<span class="ansi-blue-fg">(</span>optimizer<span class="ansi-blue-fg">,</span> loss_function<span class="ansi-blue-fg">,</span> metrics_array<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     43</span> 
+<span class="ansi-green-fg">---&gt; 44</span><span class="ansi-red-fg"> </span>history <span class="ansi-blue-fg">=</span> model<span class="ansi-blue-fg">.</span>fit<span class="ansi-blue-fg">(</span>training_features_normalized<span class="ansi-blue-fg">,</span> training_labels<span class="ansi-blue-fg">,</span> nb_epoch<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span> verbose<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span>validation_split<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.2</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     45</span> <span class="ansi-red-fg">#history = model.fit(training_features_normalized, y_one_hot, nb_epoch=3, validation_split=0.2)</span>
+<span class="ansi-green-intense-fg ansi-bold">     46</span> 
 
 <span class="ansi-green-fg">/Users/ukilucas/anaconda3/envs/tensorflow_cpu/lib/python3.5/site-packages/keras/models.py</span> in <span class="ansi-cyan-fg">fit</span><span class="ansi-blue-fg">(self, x, y, batch_size, nb_epoch, verbose, callbacks, validation_split, validation_data, shuffle, class_weight, sample_weight, **kwargs)</span>
 <span class="ansi-green-intense-fg ansi-bold">    595</span>                               shuffle<span class="ansi-blue-fg">=</span>shuffle<span class="ansi-blue-fg">,</span>
@@ -12675,13 +12528,13 @@ y_one_hot (5626, 17)
 <span class="ansi-green-intense-fg ansi-bold">    968</span>                                                     self.output_names)
 
 <span class="ansi-green-fg">/Users/ukilucas/anaconda3/envs/tensorflow_cpu/lib/python3.5/site-packages/keras/engine/training.py</span> in <span class="ansi-cyan-fg">standardize_input_data</span><span class="ansi-blue-fg">(data, names, shapes, check_batch_dim, exception_prefix)</span>
-<span class="ansi-green-intense-fg ansi-bold">    106</span>                                         <span class="ansi-blue-fg">&#39; to have shape &#39;</span> <span class="ansi-blue-fg">+</span> str<span class="ansi-blue-fg">(</span>shapes<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span>
-<span class="ansi-green-intense-fg ansi-bold">    107</span>                                         <span class="ansi-blue-fg">&#39; but got array with shape &#39;</span> <span class="ansi-blue-fg">+</span>
-<span class="ansi-green-fg">--&gt; 108</span><span class="ansi-red-fg">                                         str(array.shape))
-</span><span class="ansi-green-intense-fg ansi-bold">    109</span>     <span class="ansi-green-fg">return</span> arrays
-<span class="ansi-green-intense-fg ansi-bold">    110</span> 
+<span class="ansi-green-intense-fg ansi-bold">     95</span>                                 <span class="ansi-blue-fg">&#39; to have &#39;</span> <span class="ansi-blue-fg">+</span> str<span class="ansi-blue-fg">(</span>len<span class="ansi-blue-fg">(</span>shapes<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span>
+<span class="ansi-green-intense-fg ansi-bold">     96</span>                                 <span class="ansi-blue-fg">&#39; dimensions, but got array with shape &#39;</span> <span class="ansi-blue-fg">+</span>
+<span class="ansi-green-fg">---&gt; 97</span><span class="ansi-red-fg">                                 str(array.shape))
+</span><span class="ansi-green-intense-fg ansi-bold">     98</span>             <span class="ansi-green-fg">for</span> j<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>dim<span class="ansi-blue-fg">,</span> ref_dim<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>zip<span class="ansi-blue-fg">(</span>array<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">,</span> shapes<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     99</span>                 <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> j <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> check_batch_dim<span class="ansi-blue-fg">:</span>
 
-<span class="ansi-red-fg">Exception</span>: Error when checking model target: expected 06_Dense_18 to have shape (None, 18) but got array with shape (5626, 17)</pre>
+<span class="ansi-red-fg">Exception</span>: Error when checking model target: expected 01_Conv2D to have 4 dimensions, but got array with shape (5626, 1)</pre>
 </div>
 </div>
 

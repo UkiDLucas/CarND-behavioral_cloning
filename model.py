@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# # Training UkiNet model
+# # model
 # 
 # Please refer to README file for project overview.
 
@@ -101,26 +101,11 @@ plt.imshow(training_features[2], cmap='gray')
 plt.show()
 
 
-# In[ ]:
-
-
-
-
 # In[9]:
 
-def normalize_grayscale(image_data):
-    a = -0.5
-    b = 0.5
-    grayscale_min = 0
-    grayscale_max = 255
-    return a + ( ( (image_data - grayscale_min)*(b - a) )/( grayscale_max - grayscale_min ) )
+from DataHelper import normalize_grayscale
 
 training_features_normalized = normalize_grayscale(training_features)
-
-
-# In[ ]:
-
-
 
 
 # # Extract training labels (steering value classes) 
@@ -169,49 +154,14 @@ from keras.layers.core import Flatten, Dense, Dropout, Activation
 from keras.activations import relu, softmax
 from keras.optimizers import SGD
 import cv2, numpy as np
+from DataHelper import mean_pred, false_rates
 
 
 # In[13]:
 
-# for custom metrics
-
-def mean_pred(y_true, y_pred):
-    return K.mean(y_pred)
-
-def false_rates(y_true, y_pred):
-    false_neg = ...
-    false_pos = ...
-    return {
-        'false_neg': false_neg,
-        'false_pos': false_pos,
-    }
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
-
-# In[94]:
-
-
-
-
-# In[14]:
-
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, Convolution1D
     
-def UkiNet(weights_path=None):
+def build_model(weights_path=None):
     """
     The cropped camera images are expected to be (3, 14, 64), not square
     e.g.: 
@@ -220,37 +170,22 @@ def UkiNet(weights_path=None):
     
     https://keras.io/layers/convolutional/
     """
+    output_dim = 21 # number of classes
     model = Sequential()
-
+    
     # IN: (samples, rows, cols, channels)'tf'
-    # model.add(Convolution2D(96, 14, 64, dim_ordering='tf', input_shape=(14, 64, 3), activation='relu', name="01_Conv2D"))
- 
+    # expected 01_Conv2D to have 4 dimensions, but got array with shape (5626, 18)
+    # expected 01_Conv2D to have 4 dimensions, but got array with shape (5626, 1)
+    model.add(Convolution2D(96, 14, 64, dim_ordering='tf', input_shape=(14, 64, 3), activation='relu', name="01_Conv2D"))
+    # Output shape of convolution is 4d
+    
+    #expected flatten_2 to have shape (None, 96) but got array with shape (5626, 18)
+    #model.add(Flatten()) 
+    # Flatten input into 2d
 
-    
-    
-    
-    #model.add(ZeroPadding2D((1,1),input_shape=(1,64,64)))
-    #model.add(Convolution2D(64, 3, 3, activation='relu', input_shape=(3,14,64),name="02_Conv_ReLU_")) #
-    model.add(Flatten(input_shape=(14, 64, 3), name="01_flatten_14x64x3")) 
-    
-    #model.add(ZeroPadding2D((1,1)))
-    #model.add(Convolution2D(64, 3, 3, activation='relu'))
-    #model.add(MaxPooling2D((2,2), strides=(2,2)))
-    
-    model.add(Dense(128, name="02_Dense_128")) # Fully connected 
-    model.add(Activation('relu', name="03_ReLU")) # ReLU activation
-    model.add(Dense(43, name="04_Dense_43"))
-    model.add(Activation('softmax', name="05_Activation_Softmax"))
-    
-    #Input 0 is incompatible with layer flatten_7: expected ndim >= 3, found ndim=2
-    #model.add(Flatten())
-    #model.add(Dense(4096, activation='relu'))
-    #model.add(Dropout(0.5))
-    #model.add(Dense(4096, activation='relu'))
-    #model.add(Dropout(0.5))
-    
-    # I want to end up with 21 classes
-    model.add(Dense(18, activation='softmax', name="06_Dense_18"))
+    # Dense layer require a 2d input
+    # have shape (None, 21) but got array with shape (5626, 1)
+    #model.add(Dense(18, activation='sigmoid', name="001_Dense"))
 
     if weights_path:
         model.load_weights(weights_path)
@@ -259,7 +194,7 @@ def UkiNet(weights_path=None):
 
 print("training_features_normalized", training_features_normalized.shape)
 print("y_one_hot", y_one_hot.shape)
-model = UkiNet()
+model = build_model()
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 optimizer='sgd' # | 'rmsprop'
@@ -267,7 +202,8 @@ loss_function='mean_squared_error' # | 'binary_crossentropy' | 'mse'
 metrics_array=['accuracy', mean_pred, false_rates]
 model.compile(optimizer, loss_function, metrics_array)
 
-history = model.fit(training_features_normalized, y_one_hot, nb_epoch=3, validation_split=0.2)
+history = model.fit(training_features_normalized, training_labels, nb_epoch=3, verbose=1,validation_split=0.2)
+#history = model.fit(training_features_normalized, y_one_hot, nb_epoch=3, validation_split=0.2)
 
 #Epoch 20/20 loss: 0.0518 - acc: 0.60 - val_loss: 0.05 - val_acc: 0.59
 
