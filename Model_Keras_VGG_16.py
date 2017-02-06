@@ -9,9 +9,9 @@ from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2
 from keras.optimizers import SGD
 import cv2, numpy as np
 
-print("build_model v5")
+print("build_model v7")
 
-def build_model(weights_path=None, image_width=224, image_height=224, color_channels=3):
+def build_model(weights_path=None, image_width=224, image_height=224, color_channels=3, number_of_classes=21):
 
     model = Sequential()
     # got array with shape (5626, 224, 224, 3)
@@ -64,7 +64,11 @@ def build_model(weights_path=None, image_width=224, image_height=224, color_chan
     model.add(Dropout(0.5))
     model.add(Dense(4096, activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(1000, activation='softmax'))
+    
+    # expected dense_3 to have shape (None, 1000) but got array with shape (402, 1)
+    # expected dense_3 to have shape (None, 21) but got array with shape (402, 1)
+    #model.add(Dense(number_of_classes, activation='softmax'))
+    model.add(Dense(1, activation='softmax'))
 
     if weights_path:
         model.load_weights(weights_path)

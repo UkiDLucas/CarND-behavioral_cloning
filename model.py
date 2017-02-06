@@ -47,7 +47,8 @@ number_of_classes = 21
 steering_classes = np.linspace(-1, 1, num=number_of_classes, endpoint=True) 
 steering_classes = np.sort(steering_classes)
 print("steering_classes", steering_classes)
-print("Number of classes",steering_classes.shape[0])
+number_of_classes = steering_classes.shape[0]
+print("Number of classes", number_of_classes)
 
 import matplotlib.pyplot as plt
 plt.plot(steering_classes, 'b.')
@@ -134,13 +135,85 @@ print(training_labels)
 
 # ## One hot
 
-# In[11]:
+# In[85]:
+
+def sort_unique_floats(array_x):
+    # assure that the array is numpy and numerical
+    #array_x = array_x.astype(np.float)
+    
+    # get unique values, a.k.a. set of values
+    labels_set = set(array_x)
+    #print("labels_set\n", labels_set)
+    
+    # set is not sorted, so convert it to a numpy array
+    unique_labels = np.array(list(labels_set))
+    #print("unique_labels\n", unique_labels.shape, unique_labels)
+    
+    sorted_unique_labels = np.sort(unique_labels)
+    #print("sorted_unique_labels\n", sorted_unique_labels.shape, sorted_unique_labels)
+    return sorted_unique_labels
+    
+# TEST   
+sorted_unique_labels = sort_unique_floats(training_labels)
+print("sorted_unique_labels X\n",  sorted_unique_labels)
+
+
+# In[99]:
+
+def encode_one_hot(all_possible_classes, training_labels):
+    """
+    Creates one hot encoded vector from a list {1D vector (None,)} containing training labels.
+    - find all unique labels
+    - count all unique labels
+    - create a zero filed array, size equal to count of all unique labels
+    - order the unique values (small to large)
+    - create empty output matrix
+    - for each sample's label create zero vector and set one in position of that label 
+    """
+    all_possible_classes = sort_unique_floats(all_possible_classes)
+    print("all_possible_classes", all_possible_classes)
+    
+    class_count = len(all_possible_classes)
+    print("class_count", class_count)
+    
+    smaple_count = len(training_labels)
+    print("smaple_count", smaple_count)
+    
+    blank_zero = np.zeros(shape=(smaple_count,smaple_count))
+    print("blank_zero", blank_zero.shape)
+    print("blank_zero", blank_zero[3].shape)
+    
+encode_one_hot(steering_classes, training_labels)
+
+
+# In[69]:
+
+from sklearn.preprocessing import OneHotEncoder
+enc = OneHotEncoder()
+y_one_hot = enc.fit_transform(training_labels,y=402).toarray()
+print("y_one_hot", y_one_hot.shape)
+print(enc.n_values_)
+
+
+# In[21]:
+
+from sklearn.feature_extraction.text import CountVectorizer
+count_vect = CountVectorizer()
+X_train_counts = count_vect.fit_transform(training_labels)
+X_train_counts.shape
+
+
+# In[13]:
 
 import sklearn
 from sklearn.preprocessing import LabelBinarizer
-label_binarizer = LabelBinarizer()
-y_one_hot = label_binarizer.fit_transform(training_labels)
-print(y_one_hot)
+from keras.preprocessing.text import one_hot
+
+#label_binarizer = LabelBinarizer()
+#y_one_hot = one_hot(training_labels, 21)
+#y_one_hot = one_hot_encoding(training_labels)
+#y_one_hot = label_binarizer.fit_transform(training_labels)
+#print("y_one_hot", y_one_hot.shape)
 
 
 # # Extract 
@@ -149,7 +222,7 @@ print(y_one_hot)
 # 
 # https://keras.io/layers/convolutional/
 
-# In[12]:
+# In[14]:
 
 import keras.backend as K
 from keras.models import Sequential
@@ -170,14 +243,69 @@ print("y_one_hot", y_one_hot.shape)
 # 
 # This file (in the same directory) contains MODEL definiteion for VGG.16.
 
-# In[13]:
+# In[15]:
 
-from Model_Keras_VGG_16 import build_model # model = build_model('vgg16_weights.h5')
+#from Model_Keras_VGG_16 import build_model # model = build_model('vgg16_weights.h5')
+from keras.applications import vgg16
+from keras.applications.vgg16 import VGG16
 
 
-# In[14]:
+# In[16]:
 
-model = build_model()
+def show_layers(model):
+    for i in range(len(model.layers)):
+        layer = model.layers[i]
+        print(i, ") ",layer.name, "\t\t is trainable: ", layer.trainable)
+        #layer.trainable = False
+
+
+# In[17]:
+
+#model = build_model()
+model_VGG16 = VGG16(weights=None, include_top=True)
+model_VGG16.summary()
+show_layers(model_VGG16)
+
+
+# In[18]:
+
+from keras.models import Model
+#x = Dense(8, activation='softmax', name='predictions2')(model)
+x = Dense(21, activation='softmax', name='predictions')(model_VGG16.layers[-2].output)
+#Then create the corresponding model 
+model = Model(input=model_VGG16.input, output=x)
+model.summary()
+
+#print(model.get_layer("predictions").name)
+
+#Create your own model 
+#my_model = Model(input=input, output=x)
+
+#model.summary()
+#show_layers(model)
+
+
+# In[19]:
+
+# Before training a model, you need to configure the learning process, which is done via the compile method.
+optimizer='sgd' # | 'rmsprop'
+loss_function='mean_squared_error' # | 'binary_crossentropy' | 'mse'
+metrics_array=['accuracy', mean_pred, false_rates]
+
+model.compile(optimizer, loss_function, metrics_array)
+
+print("features", training_features_normalized.shape)
+print("labels", training_labels.shape)
+print("y_one_hot", y_one_hot.shape)
+print("y_one_hot", y_one_hot)
+
+
+# In[20]:
+
+#history = model.fit(training_features_normalized, training_labels, nb_epoch=3, verbose=1, validation_split=0.2)
+history = model.fit(training_features_normalized, y_one_hot, nb_epoch=3, validation_split=0.2)
+
+#Epoch 20/20 loss: 0.0518 - acc: 0.60 - val_loss: 0.05 - val_acc: 0.59
 
 
 # In[ ]:
@@ -195,25 +323,4 @@ model = build_model()
 #    model.compile(optimizer=sgd, loss='categorical_crossentropy')
 #    out = model.predict(im)
 #    print np.argmax(out)
-
-# Before training a model, you need to configure the learning process, which is done via the compile method.
-optimizer='sgd' # | 'rmsprop'
-loss_function='mean_squared_error' # | 'binary_crossentropy' | 'mse'
-metrics_array=['accuracy', mean_pred, false_rates]
-model.compile(optimizer, loss_function, metrics_array)
-
-history = model.fit(training_features_normalized, training_labels, nb_epoch=3, verbose=1,validation_split=0.2)
-#history = model.fit(training_features_normalized, y_one_hot, nb_epoch=3, validation_split=0.2)
-
-#Epoch 20/20 loss: 0.0518 - acc: 0.60 - val_loss: 0.05 - val_acc: 0.59
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
 
