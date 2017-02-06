@@ -133,9 +133,9 @@ for raw_label in raw_labels: # raw_labels[:5]
 print(training_labels)
 
 
-# ## One hot
+# # Encoding Labels in one-hot notation
 
-# In[85]:
+# In[11]:
 
 def sort_unique_floats(array_x):
     # assure that the array is numpy and numerical
@@ -158,7 +158,7 @@ sorted_unique_labels = sort_unique_floats(training_labels)
 print("sorted_unique_labels X\n",  sorted_unique_labels)
 
 
-# In[99]:
+# In[22]:
 
 def encode_one_hot(all_possible_classes, training_labels):
     """
@@ -171,22 +171,38 @@ def encode_one_hot(all_possible_classes, training_labels):
     - for each sample's label create zero vector and set one in position of that label 
     """
     all_possible_classes = sort_unique_floats(all_possible_classes)
-    print("all_possible_classes", all_possible_classes)
+    
+    # possible float rounding errors
+    all_possible_classes = np.round_(all_possible_classes, decimals=1)
+    print("all_possible_classes\n", all_possible_classes)
     
     class_count = len(all_possible_classes)
-    print("class_count", class_count)
+    print("class_count:", class_count)
     
-    smaple_count = len(training_labels)
-    print("smaple_count", smaple_count)
+    sample_count = len(training_labels)
+    print("sample_count:", sample_count)
     
-    blank_zero = np.zeros(shape=(smaple_count,smaple_count))
-    print("blank_zero", blank_zero.shape)
-    print("blank_zero", blank_zero[3].shape)
-    
-encode_one_hot(steering_classes, training_labels)
+    one_hot = np.zeros(shape=(sample_count, class_count))
+    #print("one_hot shape", one_hot.shape)
+    #print("one_hot 3 shape", one_hot[3].shape)
+    #print("one_hot 3", one_hot[3])
+     
+    for i in range( sample_count ): 
+        actual_label = float(training_labels[i])
+        #print("looking for actual_label:", actual_label)
+        
+        # find first index of actual_label
+        item_index = np.where(all_possible_classes == actual_label)[0]
+        #print("found", item_index)
+        one_hot[i][item_index] = 1
+        #print("one_hot[i]", one_hot[i])
+    print("one_hot[0] \n", one_hot[0])
+    return one_hot
+        
+one_hot = encode_one_hot(steering_classes, training_labels)
 
 
-# In[69]:
+# In[13]:
 
 from sklearn.preprocessing import OneHotEncoder
 enc = OneHotEncoder()
@@ -195,7 +211,7 @@ print("y_one_hot", y_one_hot.shape)
 print(enc.n_values_)
 
 
-# In[21]:
+# In[14]:
 
 from sklearn.feature_extraction.text import CountVectorizer
 count_vect = CountVectorizer()
@@ -203,7 +219,7 @@ X_train_counts = count_vect.fit_transform(training_labels)
 X_train_counts.shape
 
 
-# In[13]:
+# In[ ]:
 
 import sklearn
 from sklearn.preprocessing import LabelBinarizer
@@ -222,7 +238,7 @@ from keras.preprocessing.text import one_hot
 # 
 # https://keras.io/layers/convolutional/
 
-# In[14]:
+# In[ ]:
 
 import keras.backend as K
 from keras.models import Sequential
@@ -243,14 +259,14 @@ print("y_one_hot", y_one_hot.shape)
 # 
 # This file (in the same directory) contains MODEL definiteion for VGG.16.
 
-# In[15]:
+# In[ ]:
 
 #from Model_Keras_VGG_16 import build_model # model = build_model('vgg16_weights.h5')
 from keras.applications import vgg16
 from keras.applications.vgg16 import VGG16
 
 
-# In[16]:
+# In[ ]:
 
 def show_layers(model):
     for i in range(len(model.layers)):
@@ -259,7 +275,7 @@ def show_layers(model):
         #layer.trainable = False
 
 
-# In[17]:
+# In[ ]:
 
 #model = build_model()
 model_VGG16 = VGG16(weights=None, include_top=True)
@@ -267,7 +283,7 @@ model_VGG16.summary()
 show_layers(model_VGG16)
 
 
-# In[18]:
+# In[ ]:
 
 from keras.models import Model
 #x = Dense(8, activation='softmax', name='predictions2')(model)
@@ -285,7 +301,7 @@ model.summary()
 #show_layers(model)
 
 
-# In[19]:
+# In[ ]:
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 optimizer='sgd' # | 'rmsprop'
@@ -300,7 +316,7 @@ print("y_one_hot", y_one_hot.shape)
 print("y_one_hot", y_one_hot)
 
 
-# In[20]:
+# In[ ]:
 
 #history = model.fit(training_features_normalized, training_labels, nb_epoch=3, verbose=1, validation_split=0.2)
 history = model.fit(training_features_normalized, y_one_hot, nb_epoch=3, validation_split=0.2)
