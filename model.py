@@ -65,7 +65,7 @@ plt.show()
 from DataHelper import split_random, get_image_center_values
 image_center_values = get_image_center_values(data)
 
-training, testing, validation = split_random(data, percent_train=70, percent_test=15) 
+training, testing, validation = split_random(data, percent_train=5, percent_test=15) 
 
 print("training",training.shape)
 print("testing",testing.shape)
@@ -173,7 +173,14 @@ print("y_one_hot", y_one_hot.shape)
 # In[13]:
 
 from Model_Keras_VGG_16 import build_model # model = build_model('vgg16_weights.h5')
+
+
+# In[14]:
+
 model = build_model()
+
+
+# In[ ]:
 
 #    im = cv2.resize(cv2.imread('cat.jpg'), (224, 224)).astype(np.float32)
 #    im[:,:,0] -= 103.939

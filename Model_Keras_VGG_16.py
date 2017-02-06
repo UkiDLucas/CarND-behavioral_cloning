@@ -9,19 +9,25 @@ from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2
 from keras.optimizers import SGD
 import cv2, numpy as np
 
-# Negative dimension size caused by subtracting 2 from 1 for 'MaxPool_1' 
-# (op: 'MaxPool') with input shapes: [?,112,1,128].
+print("build_model v5")
 
-def build_model(weights_path=None, image_width=224, image_height=224, color_channels=3, number_of_samples=5626):
+def build_model(weights_path=None, image_width=224, image_height=224, color_channels=3):
+
     model = Sequential()
     # got array with shape (5626, 224, 224, 3)
-    model.add(ZeroPadding2D((1,1),input_shape=(image_width, image_height, color_channels), dim_ordering="th"))
+    # got array with shape (402, 224, 224, 3)
+    model.add(ZeroPadding2D((1,1),input_shape=(image_width, image_height, color_channels), dim_ordering="tf"))
+    #model.add(ZeroPadding2D((1,1),input_shape=(color_channels, image_width, image_height), dim_ordering="tf"))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
     model.add(ZeroPadding2D((1,1)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
     
     # input shapes: [?,112,1,128]
-    model.add(MaxPooling2D((2,2), strides=(2,2), dim_ordering="th"))
+    # input shapes: [?,224,1,64].
+    # input shapes: [?,112,1,128].
+    # input shapes: [?,112,1,128].
+    # input shapes: [?,224,1,64].
+    model.add(MaxPooling2D((2,2), strides=(2,2), dim_ordering="tf"))
 
     model.add(ZeroPadding2D((1,1)))
     model.add(Convolution2D(128, 3, 3, activation='relu'))
