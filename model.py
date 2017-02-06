@@ -8,6 +8,7 @@
 # In[1]:
 
 data_dir = "../../../DATA/behavioral_cloning_data/"
+processed_images_dir = "processed_images_224x224/"
 
 
 # In[2]:
@@ -87,7 +88,7 @@ print(image_names[1])
 
 image_paths = []
 for image_name in image_names:
-    image_paths.extend([data_dir + "processed_images_64/" + image_name])
+    image_paths.extend([data_dir + processed_images_dir + image_name])
 print(image_paths[1]) 
 
 
@@ -99,6 +100,7 @@ training_features = np.array([ read_image(path) for path in image_paths] )
 print ("matrix shape", training_features.shape)
 plt.imshow(training_features[2], cmap='gray')
 plt.show()
+#print (training_features[2])
 
 
 # In[9]:
@@ -144,57 +146,48 @@ print(y_one_hot)
 # # Extract 
 
 # # Keras (with TensorFlow)
+# 
+# https://keras.io/layers/convolutional/
 
 # In[12]:
 
 import keras.backend as K
 from keras.models import Sequential
-from keras.layers.core import Flatten, Dense, Dropout, Activation
+from keras.layers import ELU
+from keras.layers.core import Flatten, Dense, Dropout, Activation, Lambda
 
 from keras.activations import relu, softmax
 from keras.optimizers import SGD
 import cv2, numpy as np
 from DataHelper import mean_pred, false_rates
 
+from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, Convolution1D
+print("training_features_normalized", training_features_normalized.shape)
+print("y_one_hot", y_one_hot.shape)
+
+
+# ### See Model_Keras_VGG_16.py
+# 
+# This file (in the same directory) contains MODEL definiteion for VGG.16.
 
 # In[13]:
 
-from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, Convolution1D
-    
-def build_model(weights_path=None):
-    """
-    The cropped camera images are expected to be (3, 14, 64), not square
-    e.g.: 
-    - training_features_normalized (5626, 14, 64, 3)
-    - y_one_hot (5626, 18)
-    
-    https://keras.io/layers/convolutional/
-    """
-    output_dim = 21 # number of classes
-    model = Sequential()
-    
-    # IN: (samples, rows, cols, channels)'tf'
-    # expected 01_Conv2D to have 4 dimensions, but got array with shape (5626, 18)
-    # expected 01_Conv2D to have 4 dimensions, but got array with shape (5626, 1)
-    model.add(Convolution2D(96, 14, 64, dim_ordering='tf', input_shape=(14, 64, 3), activation='relu', name="01_Conv2D"))
-    # Output shape of convolution is 4d
-    
-    #expected flatten_2 to have shape (None, 96) but got array with shape (5626, 18)
-    #model.add(Flatten()) 
-    # Flatten input into 2d
-
-    # Dense layer require a 2d input
-    # have shape (None, 21) but got array with shape (5626, 1)
-    #model.add(Dense(18, activation='sigmoid', name="001_Dense"))
-
-    if weights_path:
-        model.load_weights(weights_path)
-    return model
-
-
-print("training_features_normalized", training_features_normalized.shape)
-print("y_one_hot", y_one_hot.shape)
+from Model_Keras_VGG_16 import build_model # model = build_model('vgg16_weights.h5')
 model = build_model()
+
+#    im = cv2.resize(cv2.imread('cat.jpg'), (224, 224)).astype(np.float32)
+#    im[:,:,0] -= 103.939
+#    im[:,:,1] -= 116.779
+#    im[:,:,2] -= 123.68
+#    im = im.transpose((2,0,1))
+#    im = np.expand_dims(im, axis=0)
+#
+#    # Test pretrained model
+#    model = VGG_16('vgg16_weights.h5')
+#   sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+#    model.compile(optimizer=sgd, loss='categorical_crossentropy')
+#    out = model.predict(im)
+#    print np.argmax(out)
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 optimizer='sgd' # | 'rmsprop'

@@ -123,9 +123,7 @@ def split_random(matrix, percent_train=70, percent_test=15):
     validation = []
     
     if percent_validation < 0:
-        print("Make sure that the provided sum of " + \
-        "training and testing percentages is equal, " + \
-        "or less than 100%.")
+        print("Make sure that the provided sum of " +         "training and testing percentages is equal, " +         "or less than 100%.")
         
         testing = matrix[end_training:]
     else:

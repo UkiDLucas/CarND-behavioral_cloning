@@ -22,14 +22,14 @@
 
 # # Read CSV spreadsheet
 
-# In[28]:
+# In[1]:
 
 data_dir = "../../../DATA/behavioral_cloning_data/"
 import csv
 
-import CSV_helper
-print(CSV_helper.__doc__)
-from CSV_helper import test_read_csv, read_csv
+import DataHelper
+print(DataHelper.__doc__)
+from DataHelper import test_read_csv, read_csv
 print(read_csv.__doc__)
 #test_read_csv()
 # fetch actual log of driving data
@@ -43,8 +43,9 @@ print("3rd row of data \n",data[2:3])
 
 # # Test DATA helper methods
 
-# In[30]:
+# In[2]:
 
+from DataHelper import get_speed_values, get_steering_values
 #TEST:
 speed_values = get_speed_values(data)
 print("print ~53rd speed value", speed_values[51:53]) 
@@ -101,7 +102,7 @@ def plot_histogram(name, values, change_step):
 # 
 # I would **err on the prudent side** and avoid the values above |0.25|.
 
-# In[27]:
+# In[4]:
 
 change_step=0.1 # test data changes
 plot_histogram("steering values", steering_values, change_step)
@@ -123,6 +124,7 @@ plot_histogram("speed values", speed_values, change_step)
 
 # In[6]:
 
+from DataHelper import get_image_center_values
 image_center_values = get_image_center_values(data)
 
 
@@ -135,32 +137,26 @@ print(image_center_values[3])
 
 # In[8]:
 
-def crop_image(image_index):
-    #print("my pick #", image_index, speed_values[image_index])
+def load_image(image_index):
     image_name = image_center_values[image_index]
 
-    # Image read and display
-    import matplotlib.image as mpimg
     from PIL import Image
+    image = Image.open(data_dir + image_name)
+    return image
 
-    image_original = Image.open(data_dir + image_name)
-    #image_original = mpimg.imread(data_dir + image_name) 
 
-    #print(image_original.size)
+# In[9]:
 
+def crop_image(image):
     left = 0
     upper = 70
     right = 320
     lower = 140 # 160 original
-    image_crop = image_original.crop((left, upper, right, lower))
-
-    #plt.imshow(image_crop)
-    #print("cropped image #", image_index, image_name )
-    #plt.show()
-    return image_crop
+    image = image.crop((left, upper, right, lower))
+    return image
 
 
-# In[9]:
+# In[10]:
 
 import cv2
 def grayscale(image):
@@ -173,14 +169,14 @@ def grayscale(image):
     # return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 
-# In[10]:
+# In[11]:
 
 def gaussian_blur(image, kernel_size=5): # 5 
     """Applies a Gaussian Noise kernel"""
     return cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
 
 
-# In[11]:
+# In[12]:
 
 def canny(image, low_threshold=50, high_threshold=250): 
     # homework low_threshold=20, high_threshold=130
@@ -188,7 +184,7 @@ def canny(image, low_threshold=50, high_threshold=250):
     return cv2.Canny(image, low_threshold, high_threshold)
 
 
-# In[12]:
+# In[13]:
 
 def region_of_interest(img, vertices):
     """
@@ -215,7 +211,7 @@ def region_of_interest(img, vertices):
     return masked_image
 
 
-# In[13]:
+# In[14]:
 
 def mask_vertices(image):
     """
@@ -254,7 +250,7 @@ def mask_vertices(image):
     return vertices
 
 
-# In[24]:
+# In[15]:
 
 import PIL
 import numpy
@@ -290,7 +286,7 @@ def resize_image_to_square(numpy_array_image, new_size):
     return array(image)
 
 
-# In[33]:
+# In[16]:
 
 def preprocessing_pipline(image_index, final_size=224, should_plot=False):
     """
@@ -300,46 +296,52 @@ def preprocessing_pipline(image_index, final_size=224, should_plot=False):
     final_size=32  images are fuzzy, AlexNet (street signs CDNN)
     final_size=28  images are very fuzzy, LeNet
     """
-    image_crop = array(crop_image(image_index)) 
+    image = load_image(image_index)
+    if should_plot:
+        plt.imshow(image)
+        plt.show()
+        
+    image = array(crop_image(image)) 
     # convert output to numpy array
     if should_plot:
-        plt.imshow(image_crop)
+        plt.imshow(image)
         plt.show()
 
-    image_mask = region_of_interest(
-        image_crop, 
-        mask_vertices(image_crop))
+    image = region_of_interest(
+        image, 
+        mask_vertices(image))
     
     if should_plot:
-        plt.imshow(image_mask, cmap='gray')
+        plt.imshow(image, cmap='gray')
         plt.show()
     
-    image_gray = grayscale(image_mask)
+    image = grayscale(image)
     
     if should_plot:
-        plt.imshow(image_gray, cmap='gray')
+        plt.imshow(image, cmap='gray')
         plt.show()
 
-    image_gaussian = gaussian_blur(image_gray, kernel_size=5)
+    image = gaussian_blur(image, kernel_size=5)
     
     if should_plot:
-        plt.imshow(image_gaussian, cmap='gray')
+        plt.imshow(image, cmap='gray')
         plt.show()
     
-    image_canny = canny(image_gaussian, low_threshold=100, high_threshold=190)
+    image = canny(image, low_threshold=100, high_threshold=190)
     
     if should_plot:
-        print("image before resizing", image_canny.shape)
-        plt.imshow(image_canny, cmap='gray')
+        print("image before resizing", image.shape)
+        plt.imshow(image, cmap='gray')
         plt.show()
     
-    image_resized = resize_image_to_square(image_canny, new_size=final_size) # VGG-16 size
-    
+    #image = resize_image_to_square(image, new_size=final_size) # VGG-16 size
+    image = cv2.resize(image,(224,224))
+        
     if should_plot:
-        print("image after resizing, VGG-16 size", image_resized.shape)
-        plt.imshow(image_resized, cmap='gray')
+        print("image after resizing", image.shape)
+        plt.imshow(image, cmap='gray')
         plt.show()
-    return image_resized
+    return image
  
     
 from numpy import array
@@ -356,7 +358,7 @@ print(image.shape)
 
 # # Convert ALL of the images and save them
 
-# In[32]:
+# In[18]:
 
 image_center_values = get_image_center_values(data)
 #image_left_values = get_image_left_values(matrix) 
@@ -372,12 +374,22 @@ def process_all(image_list):
     for item_name in image_list:
         #print("#", image_index, " name: ", item_name)
         image_array = preprocessing_pipline(image_index, final_size=64, should_plot=False)
-        scipy.misc.imsave(data_dir + "processed_images_64/" + item_name, image_array)
+        scipy.misc.imsave(data_dir + "processed_images_224x224/" + item_name, image_array)
         image_index = image_index + 1
         #if image_index > 5:
         #    return
         
 process_all(image_center_values)
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
 
 
 # In[ ]:
