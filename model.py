@@ -7,8 +7,9 @@
 
 # In[1]:
 
-nb_epoch = 5
-
+nb_epoch = 20
+previous_trained_epochs = 30
+model_to_continue_training = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.335463257167.h5"
 
 data_dir = "../../../DATA/behavioral_cloning_data/"
 processed_images_dir = "processed_images_64/"
@@ -131,7 +132,7 @@ print("y_one_hot", y_one_hot.shape)
 
 # In[10]:
 
-for index in range(10):
+for index in range(5):
     print( index, ") \t", training_labels[index], "\t", y_one_hot[index],  
           "@", locate_one_hot_position(steering_classes, training_labels[index] ) )
 
@@ -159,30 +160,20 @@ print(image_paths[1])
 # In[13]:
 
 from DataHelper import read_image
-training_images = np.array([ read_image(path) for path in image_paths] )
+training_features = np.array([ read_image(path) for path in image_paths] )
 
-print ("training_images matrix shape", training_images.shape)
+print ("training_features matrix shape", training_features.shape)
 
-plt.imshow(training_images[2], cmap='gray')
+plt.imshow(training_features[2], cmap='gray')
 plt.show()
-
-
-# In[14]:
 
 from DataHelper import normalize_grayscale
-training_features = normalize_grayscale(training_images) # you end up with -0.48823529 instead of -0.5
-sample_image = training_features[2] #X_train[2]
-
-plt.imshow(sample_image, cmap='gray')
-plt.show()
 
 show_rows = 1 # of 64
 show_cols = 14
 show_channels = 1 # of 3
 
-print("sample_image \n", sample_image.shape,"\n", sample_image[:show_rows,:show_cols,:show_channels]) #  
-
-def extract_image_single_channel(image):
+print("sample_image \n", sample_image.shape,"\n", sample_image[:show_rows,:show_cols,:show_channels]) #  def extract_image_single_channel(image):
     show_rows = image.shape[0]
     show_cols = image.shape[1]
     show_channels = 1 # red
@@ -206,7 +197,7 @@ print("training_features", training_features.shape)
 # 
 # https://keras.io/layers/convolutional/
 
-# In[15]:
+# In[14]:
 
 import keras.backend as K
 from keras.models import Sequential
@@ -252,7 +243,7 @@ from DataHelper import show_layers
 show_layers(model)
 # # Build custom sized model
 
-# In[16]:
+# In[15]:
 
 from keras.layers import InputLayer, Input
 
@@ -283,7 +274,7 @@ model.summary()
 
 # # Compile model (configure learning process)
 
-# In[17]:
+# In[16]:
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 # 
@@ -301,25 +292,24 @@ model.compile(optimizer, loss_function, metrics_array)
 # - If you replace the model, the INPUT dimetions have to be the same as these trained
 # - Name your models well
 
-# In[18]:
+# In[17]:
 
 from keras.models import load_model
-model_path = model_dir + 'model_p3_keras_tf_mini_14x64x1a__epoch_35_val_loss_0.0200312916701.h5'
+model_path = model_dir + model_to_continue_training
 model = load_model(model_path) 
-last_model_epochs = 35
 model.summary()
 
 
 # # Train (fit) the model agaist given labels
 
-# In[19]:
+# In[18]:
 
 history = model.fit(training_features, y_one_hot, nb_epoch=nb_epoch, 
                     batch_size=batch_size, verbose=1, validation_split=0.2)
 
 Epoch 4/4
 5464/5464 [==============================] - 60s - loss: 0.0307 - acc: 0.6067 - val_loss: 0.0288 - val_acc: 0.6130
-# In[20]:
+# In[19]:
 
 # list all data in history
 print(history.history.keys())
@@ -339,16 +329,16 @@ print("validation_error", validation_error)
 
 # # Save the model
 
-# In[21]:
+# In[20]:
 
 # creates a HDF5 file '___.h5'
-model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + last_model_epochs) 
-           + "_val_loss_" + str(validation_error) + ".h5") 
+model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_epochs) 
+           + "_val_acc_" + str(validation_accuracy) + ".h5") 
 #del model  # deletes the existing model
 #model = load_model('my_model.h5')
 
 
-# In[22]:
+# In[21]:
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
@@ -371,15 +361,15 @@ plt.show()
 
 # # Prediction set
 
-# In[23]:
+# In[26]:
 
-image_name = "IMG/center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
-original_steering_angle = 0.05219137
+#image_name = "IMG/center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
+#original_steering_angle = 0.05219137
 
 #image_name = "IMG/center_2016_12_01_13_33_10_579.jpg" # 0.1287396
 
-#image_name = "IMG/center_2016_12_01_13_39_28_024.jpg" # -0.9426954
-#original_steering_angle = -0.9426954
+image_name = "IMG/center_2016_12_01_13_39_28_024.jpg" # -0.9426954
+original_steering_angle = -0.9426954
 
 image_path =  data_dir + processed_images_dir + image_name
 print(image_path)
@@ -389,7 +379,7 @@ plt.imshow(image, cmap='gray')
 plt.show()
 
 
-# In[24]:
+# In[27]:
 
 #expected convolution2d_input_1 to have 4 dimensions, but got array with shape (14, 64, 3)
 image = image[None, :, :]
@@ -406,7 +396,7 @@ most_likely = np.argmax(predictions)
 print("np.argmax(predictions) ", most_likely )
 
 
-# In[25]:
+# In[28]:
 
 # summarize history for loss
 plt.plot(predictions[0])
@@ -417,7 +407,7 @@ plt.legend(['predictions'], loc='upper right')
 plt.show()
 
 
-# In[26]:
+# In[29]:
 
 print("original steering angle", original_steering_angle)
 print("predicted steering angle", steering_classes[most_likely])

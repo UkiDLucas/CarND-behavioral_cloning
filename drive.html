@@ -11789,10 +11789,13 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../../../DATA/behavioral_cloning_data/&quot;</span>
+<span class="n">processed_images_dir</span> <span class="o">=</span> <span class="s2">&quot;processed_images_64/&quot;</span>
 <span class="n">model_dir</span> <span class="o">=</span> <span class="s2">&quot;../../../DATA/MODELS/&quot;</span>
-<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;model_p3_keras_tf_mini_14x64x3__epoch_40_val_loss_0.0198594339299.h5&quot;</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.335463257167.h5&quot;</span>
 <span class="n">image_final_width</span> <span class="o">=</span> <span class="mi">64</span>
 <span class="n">model_path</span> <span class="o">=</span> <span class="n">model_dir</span> <span class="o">+</span> <span class="n">model_name</span>
+<span class="n">autorun_dir</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="o">+</span> <span class="s2">&quot;autonomous_run/&quot;</span>
+<span class="n">sample_autorun_image</span> <span class="o">=</span> <span class="s2">&quot;image_10.302895069122314.jpg&quot;</span>
 </pre></div>
 
 </div>
@@ -11866,7 +11869,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">DataHelper</span> <span class="k">import</span> <span class="n">create_steering_classes</span>
@@ -11880,15 +11883,17 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_and_compile_model</span><span class="p">():</span>
     <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">load_model</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span> <span class="c1"># should start at 60% acc.</span>
+   
     <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span> <span class="c1"># | &#39;rmsprop&#39;</span>
-    <span class="n">loss_function</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span> <span class="c1"># | &#39;binary_crossentropy&#39; | &#39;mse&#39;</span>
+    <span class="n">loss_function</span><span class="o">=</span><span class="s2">&quot;mse&quot;</span> <span class="c1"># | &#39;binary_crossentropy&#39; | &#39;mse&#39; | mean_squared_error | sparse_categorical_crossentropy</span>
     <span class="n">metrics_array</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="c1"># , mean_pred, false_rates</span>
+
     <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">metrics_array</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span>
     
@@ -11910,7 +11915,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">load_and_compile_model</span><span class="p">()</span>
@@ -11932,7 +11937,7 @@ div#notebook {
 <pre>____________________________________________________________________________________________________
 Layer (type)                     Output Shape          Param #     Connected to                     
 ====================================================================================================
-convolution2d_1 (Convolution2D)  (None, 14, 64, 64)    1792        convolution2d_input_2[0][0]      
+convolution2d_1 (Convolution2D)  (None, 14, 64, 64)    1792        convolution2d_input_1[0][0]      
 ____________________________________________________________________________________________________
 convolution2d_2 (Convolution2D)  (None, 14, 64, 128)   73856       convolution2d_1[0][0]            
 ____________________________________________________________________________________________________
@@ -11971,19 +11976,20 @@ ________________________________________________________________________________
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_steering</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">old_steering</span><span class="p">):</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="c1"># string indices must be integers</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;predictions&quot;</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
-    <span class="c1">#prediction = float(predictions[0][0])</span>
-    <span class="c1">#most_likely = np.argmax(predictions)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;most_likely&quot;</span><span class="p">,</span> <span class="n">most_likely</span><span class="p">)</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="c1">#print(&quot;predictions&quot;, predictions)</span>
+    <span class="n">most_likely</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+    <span class="c1">#print(&quot;most_likely&quot;, most_likely)</span>
     <span class="n">new_steering_angle</span> <span class="o">=</span> <span class="n">steering_classes</span><span class="p">[</span><span class="n">most_likely</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;new_steering_angle&quot;</span><span class="p">,</span> <span class="n">new_steering_angle</span><span class="p">)</span>
+    <span class="c1">#print(&quot;new_steering_angle&quot;, new_steering_angle)</span>
     <span class="k">return</span> <span class="n">new_steering_angle</span> 
 </pre></div>
 
@@ -11994,147 +12000,17 @@ ________________________________________________________________________________
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">autonomous_run_image</span> <span class="o">=</span> <span class="s2">&quot;autonomous_run/image_14.31785798072815.jpg&quot;</span>
-<span class="kn">from</span> <span class="nn">DataHelper</span> <span class="k">import</span> <span class="n">load_image</span>
-<span class="n">image_path</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="o">+</span> <span class="n">autonomous_run_image</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">DataHelper</span> <span class="k">import</span> <span class="n">load_image</span>
+<span class="n">image_path</span> <span class="o">=</span> <span class="n">autorun_dir</span> <span class="o">+</span> <span class="n">sample_autorun_image</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">load_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;image shape&quot;</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
 
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>image shape (14, 64)
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-<div class="prompt"></div>
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_steering_angle</span> <span class="o">=</span> <span class="n">predict_steering</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">new_steering_angle</span> <span class="o">=</span> <span class="n">predict_steering</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;new_steering_angle&quot;</span><span class="p">,</span> <span class="n">new_steering_angle</span><span class="p">)</span>
 </pre></div>
 
@@ -12149,43 +12025,109 @@ hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
 <div class="output_area">
 <div class="prompt"></div>
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-32-bf6ebaf0d532&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>new_steering_angle <span class="ansi-blue-fg">=</span> predict_steering<span class="ansi-blue-fg">(</span>image<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;new_steering_angle&#34;</span><span class="ansi-blue-fg">,</span> new_steering_angle<span class="ansi-blue-fg">)</span>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>image shape (14, 64, 3)
+</pre>
+</div>
+</div>
 
-<span class="ansi-green-fg">&lt;ipython-input-30-1fb26b70ef4f&gt;</span> in <span class="ansi-cyan-fg">predict_steering</span><span class="ansi-blue-fg">(image, old_steering)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span>     image <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>image<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span>     image <span class="ansi-blue-fg">=</span> image<span class="ansi-blue-fg">[</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">]</span> <span class="ansi-red-fg"># string indices must be integers</span>
-<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg">     </span>predictions <span class="ansi-blue-fg">=</span> float<span class="ansi-blue-fg">(</span>model<span class="ansi-blue-fg">.</span>predict<span class="ansi-blue-fg">(</span>image<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;predictions&#34;</span><span class="ansi-blue-fg">,</span> predictions<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span>     <span class="ansi-red-fg">#prediction = float(predictions[0][0])</span>
+<div class="output_area">
+<div class="prompt"></div>
 
-<span class="ansi-green-fg">/Users/ukilucas/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/keras/models.py</span> in <span class="ansi-cyan-fg">predict</span><span class="ansi-blue-fg">(self, x, batch_size, verbose)</span>
-<span class="ansi-green-intense-fg ansi-bold">    722</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>model <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    723</span>             self<span class="ansi-blue-fg">.</span>build<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 724</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>model<span class="ansi-blue-fg">.</span>predict<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span> batch_size<span class="ansi-blue-fg">=</span>batch_size<span class="ansi-blue-fg">,</span> verbose<span class="ansi-blue-fg">=</span>verbose<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    725</span> 
-<span class="ansi-green-intense-fg ansi-bold">    726</span>     <span class="ansi-green-fg">def</span> predict_on_batch<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> x<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
 
-<span class="ansi-green-fg">/Users/ukilucas/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/keras/engine/training.py</span> in <span class="ansi-cyan-fg">predict</span><span class="ansi-blue-fg">(self, x, batch_size, verbose)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1253</span>         x = standardize_input_data(x, self.input_names,
-<span class="ansi-green-intense-fg ansi-bold">   1254</span>                                    self<span class="ansi-blue-fg">.</span>internal_input_shapes<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">                                    check_batch_axis=False)
-</span><span class="ansi-green-intense-fg ansi-bold">   1256</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>stateful<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   1257</span>             <span class="ansi-green-fg">if</span> x<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">&gt;</span> batch_size <span class="ansi-green-fg">and</span> x<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">%</span> batch_size <span class="ansi-blue-fg">!=</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span>
 
-<span class="ansi-green-fg">/Users/ukilucas/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/keras/engine/training.py</span> in <span class="ansi-cyan-fg">standardize_input_data</span><span class="ansi-blue-fg">(data, names, shapes, check_batch_axis, exception_prefix)</span>
-<span class="ansi-green-intense-fg ansi-bold">    110</span>                                  <span class="ansi-blue-fg">&#39; to have &#39;</span> <span class="ansi-blue-fg">+</span> str<span class="ansi-blue-fg">(</span>len<span class="ansi-blue-fg">(</span>shapes<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span>
-<span class="ansi-green-intense-fg ansi-bold">    111</span>                                  <span class="ansi-blue-fg">&#39; dimensions, but got array with shape &#39;</span> <span class="ansi-blue-fg">+</span>
-<span class="ansi-green-fg">--&gt; 112</span><span class="ansi-red-fg">                                  str(array.shape))
-</span><span class="ansi-green-intense-fg ansi-bold">    113</span>             <span class="ansi-green-fg">for</span> j<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>dim<span class="ansi-blue-fg">,</span> ref_dim<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>zip<span class="ansi-blue-fg">(</span>array<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">,</span> shapes<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    114</span>                 <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> j <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> check_batch_axis<span class="ansi-blue-fg">:</span>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+XwAAAABJRU5ErkJggg==
+"
+>
+</div>
 
-<span class="ansi-red-fg">ValueError</span>: Error when checking : expected convolution2d_input_2 to have 4 dimensions, but got array with shape (1, 14, 64)</pre>
+</div>
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>new_steering_angle -0.05
+</pre>
 </div>
 </div>
 
@@ -12196,6 +12138,19 @@ hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">preprocess_image</span><span class="p">(</span><span class="n">image_string</span><span class="p">,</span> <span class="n">elapsed_seconds</span><span class="p">):</span>   
@@ -12206,11 +12161,8 @@ hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
     <span class="n">image_jpg</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">image_string</span><span class="p">)))</span>
     <span class="n">image_array</span> <span class="o">=</span> <span class="n">preprocessing_pipline</span><span class="p">(</span><span class="n">image_jpg</span><span class="p">,</span> <span class="n">final_size</span><span class="o">=</span><span class="n">image_final_width</span><span class="p">,</span> <span class="n">should_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     
-    <span class="kn">from</span> <span class="nn">DataHelper</span> <span class="k">import</span> <span class="n">normalize_grayscale</span>
-    <span class="n">image_array</span> <span class="o">=</span> <span class="n">normalize_grayscale</span><span class="p">(</span><span class="n">image_array</span><span class="p">)</span>
-    
-    <span class="c1"># saving only to review that pre-processing worked</span>
-    <span class="n">imsave</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s2">&quot;autonomous_run/image_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">elapsed_seconds</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.jpg&quot;</span><span class="p">,</span> <span class="n">image_array</span><span class="p">)</span>
+    <span class="c1"># SAVE ONLY to review that pre-processing worked</span>
+    <span class="c1"># imsave(data_dir + &quot;autonomous_run/image_&quot; + str(elapsed_seconds) + &quot;.jpg&quot;, image_array)</span>
     <span class="k">return</span> <span class="n">image_array</span>
 </pre></div>
 
@@ -12221,24 +12173,7 @@ hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#    model = VGG_16(&#39;vgg16_weights.h5&#39;)</span>
-<span class="c1">#   sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)</span>
-<span class="c1">#    model.compile(optimizer=sgd, loss=&#39;categorical_crossentropy&#39;)</span>
-<span class="c1">#    out = model.predict(im)</span>
-<span class="c1">#    print np.argmax(out)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sio</span> <span class="o">=</span> <span class="n">socketio</span><span class="o">.</span><span class="n">Server</span><span class="p">()</span>
@@ -12254,7 +12189,7 @@ hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -12302,7 +12237,7 @@ hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@sio</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;connect&#39;</span><span class="p">)</span>
@@ -12345,6 +12280,7 @@ hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
     <span class="c1">#args = parser.parse_args()</span>
 
     <span class="c1">#model = load_model(args.model)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_and_compile_model</span><span class="p">()</span>
     
     
     <span class="c1"># wrap Flask application with engineio&#39;s middleware</span>
@@ -12355,6 +12291,42 @@ hMSE/wUgXcr+BOYdsAAAAABJRU5ErkJggg==
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>(93233) wsgi starting up on http://0.0.0.0:4567
+(93233) accepted (&#39;127.0.0.1&#39;, 54276)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>connect  1854c4cbc1b34696b2c82a14fa235e0f
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/ukilucas/dev/carnd/p3_behavioral_cloning/p3_UkiDLucas/ImageHelper.py:284: RuntimeWarning: divide by zero encountered in int_scalars
+  slope = rise/run
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 

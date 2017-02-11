@@ -7,10 +7,13 @@
 # In[1]:
 
 data_dir = "../../../DATA/behavioral_cloning_data/"
+processed_images_dir = "processed_images_64/"
 model_dir = "../../../DATA/MODELS/"
-model_name = "model_p3_keras_tf_mini_14x64x3__epoch_40_val_loss_0.0198594339299.h5"
+model_name = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.335463257167.h5"
 image_final_width = 64
 model_path = model_dir + model_name
+autorun_dir = data_dir + "autonomous_run/"
+sample_autorun_image = "image_10.302895069122314.jpg"
 
 
 # In[2]:
@@ -45,20 +48,22 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 tf.python.control_flow_ops = tf
 
 
-# In[8]:
+# In[4]:
 
 from DataHelper import create_steering_classes
 steering_classes = create_steering_classes(number_of_classes = 41)
 
 
-# In[9]:
+# In[5]:
 
 def load_and_compile_model():
     from keras.models import load_model
     model = load_model(model_path) # should start at 60% acc.
+   
     optimizer='sgd' # | 'rmsprop'
-    loss_function='mean_squared_error' # | 'binary_crossentropy' | 'mse'
+    loss_function="mse" # | 'binary_crossentropy' | 'mse' | mean_squared_error | sparse_categorical_crossentropy
     metrics_array=['accuracy'] # , mean_pred, false_rates
+
     model.compile(optimizer, loss_function, metrics_array)
     return model
     
@@ -66,7 +71,7 @@ def load_and_compile_model():
 
 # # Test model loading
 
-# In[12]:
+# In[6]:
 
 model = load_and_compile_model()
 model.summary()
@@ -74,39 +79,41 @@ model.summary()
 
 # # Test prediction
 
-# In[30]:
+# In[7]:
 
 def predict_steering(image, old_steering):
     image = np.array(image)
     image = image[None, :, :] # string indices must be integers
-    predictions = float(model.predict(image))
-    print("predictions", predictions)
-    #prediction = float(predictions[0][0])
-    #most_likely = np.argmax(predictions)
-    print("most_likely", most_likely)
+    predictions = model.predict(image)
+    prediction = float(predictions[0][0])
+    
+    #print("predictions", predictions)
+    most_likely = np.argmax(predictions)
+    #print("most_likely", most_likely)
     new_steering_angle = steering_classes[most_likely]
-    print("new_steering_angle", new_steering_angle)
+    #print("new_steering_angle", new_steering_angle)
     return new_steering_angle 
 
 
-# In[31]:
+# In[8]:
 
-autonomous_run_image = "autonomous_run/image_14.31785798072815.jpg"
 from DataHelper import load_image
-image_path = data_dir + autonomous_run_image
+image_path = autorun_dir + sample_autorun_image
 image = np.array(load_image(image_path))
 print("image shape", image.shape)
 plt.imshow(image)
 plt.show()
-
-
-# In[32]:
 
 new_steering_angle = predict_steering(image, 0.0)
 print("new_steering_angle", new_steering_angle)
 
 
 # In[ ]:
+
+
+
+
+# In[9]:
 
 def preprocess_image(image_string, elapsed_seconds):   
     
@@ -116,25 +123,12 @@ def preprocess_image(image_string, elapsed_seconds):
     image_jpg = Image.open(BytesIO(base64.b64decode(image_string)))
     image_array = preprocessing_pipline(image_jpg, final_size=image_final_width, should_plot=False)
     
-    from DataHelper import normalize_grayscale
-    image_array = normalize_grayscale(image_array)
-    
-    # saving only to review that pre-processing worked
-    imsave(data_dir + "autonomous_run/image_" + str(elapsed_seconds) + ".jpg", image_array)
+    # SAVE ONLY to review that pre-processing worked
+    # imsave(data_dir + "autonomous_run/image_" + str(elapsed_seconds) + ".jpg", image_array)
     return image_array
 
 
-# In[ ]:
-
-
-#    model = VGG_16('vgg16_weights.h5')
-#   sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
-#    model.compile(optimizer=sgd, loss='categorical_crossentropy')
-#    out = model.predict(im)
-#    print np.argmax(out)
-
-
-# In[ ]:
+# In[10]:
 
 sio = socketio.Server()
 app = Flask(__name__)
@@ -142,7 +136,7 @@ model = None
 prev_image_array = None
 
 
-# In[ ]:
+# In[11]:
 
 t0 = time.time()
 
@@ -182,7 +176,7 @@ def telemetry(sid, data):
 # $ tail -f ~/dev/carnd/p3_behavioral_cloning/behavioral_cloning_UkiDLucas/output.txt 
 
 
-# In[ ]:
+# In[12]:
 
 @sio.on('connect')
 def connect(sid, environ):
@@ -208,6 +202,7 @@ if __name__ == '__main__':
     #args = parser.parse_args()
 
     #model = load_model(args.model)
+    model = load_and_compile_model()
     
     
     # wrap Flask application with engineio's middleware
