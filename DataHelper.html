@@ -11813,6 +11813,22 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_steering_classes</span><span class="p">(</span><span class="n">number_of_classes</span> <span class="o">=</span> <span class="mi">41</span><span class="p">):</span>
+    <span class="n">steering_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">number_of_classes</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+    <span class="n">steering_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">steering_classes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">steering_classes</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># snapping actual values to given labels</span>
 
 <span class="k">def</span> <span class="nf">find_nearest</span><span class="p">(</span><span class="n">array</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
@@ -11830,7 +11846,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -11896,7 +11912,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -11977,7 +11993,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_image_center_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
@@ -11994,7 +12010,7 @@ div#notebook {
 
 <span class="k">def</span> <span class="nf">get_steering_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_throttle_values</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">]</span>
@@ -12016,7 +12032,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">read_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
@@ -12037,7 +12053,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># for custom metrics</span>
@@ -12078,7 +12094,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">normalize_grayscale</span><span class="p">(</span><span class="n">image_data</span><span class="p">):</span>
@@ -12087,6 +12103,176 @@ div#notebook {
     <span class="n">grayscale_min</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">grayscale_max</span> <span class="o">=</span> <span class="mi">255</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span> <span class="p">(</span> <span class="p">(</span><span class="n">image_data</span> <span class="o">-</span> <span class="n">grayscale_min</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="n">grayscale_max</span> <span class="o">-</span> <span class="n">grayscale_min</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sort_unique_floats</span><span class="p">(</span><span class="n">array_x</span><span class="p">):</span>
+    <span class="c1"># assure that the array is numpy and numerical</span>
+    <span class="c1">#array_x = array_x.astype(np.float)</span>
+    
+    <span class="c1"># get unique values, a.k.a. set of values</span>
+    <span class="n">labels_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">array_x</span><span class="p">)</span>
+    <span class="c1">#print(&quot;labels_set\n&quot;, labels_set)</span>
+    
+    <span class="c1"># set is not sorted, so convert it to a numpy array</span>
+    <span class="n">unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">labels_set</span><span class="p">))</span>
+    <span class="c1">#print(&quot;unique_labels\n&quot;, unique_labels.shape, unique_labels)</span>
+    
+    <span class="n">sorted_unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">unique_labels</span><span class="p">)</span>
+    <span class="c1">#print(&quot;sorted_unique_labels\n&quot;, sorted_unique_labels.shape, sorted_unique_labels)</span>
+    <span class="k">return</span> <span class="n">sorted_unique_labels</span>
+    
+<span class="c1"># TEST   </span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">locate_one_hot_position</span><span class="p">(</span><span class="n">defined_classes</span><span class="p">,</span> <span class="n">actual_label</span><span class="p">):</span>
+    
+    <span class="c1">#print(&quot;actual_label&quot;, actual_label, type(actual_label))</span>
+    <span class="n">matched_label</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">defined_classes</span><span class="p">,</span> <span class="n">actual_label</span><span class="p">))</span>
+    
+    <span class="c1">#print(&quot;matched_label&quot;, matched_label, type(matched_label))</span>
+    <span class="n">found_at</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">defined_classes</span> <span class="o">==</span> <span class="n">matched_label</span><span class="p">)</span>
+    
+    <span class="c1"># (array([10]),) &lt;class &#39;tuple&#39;&gt;</span>
+    <span class="n">found_at</span> <span class="o">=</span> <span class="n">found_at</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># first element of first vector</span>
+    <span class="c1">#print(&quot;found_at&quot;, found_at, type(found_at) )</span>
+    <span class="c1"># returns array of locations</span>
+    <span class="k">return</span> <span class="n">found_at</span>
+
+<span class="k">def</span> <span class="nf">encode_one_hot</span><span class="p">(</span><span class="n">defined_classes</span><span class="p">,</span> <span class="n">sample_labels</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates one hot encoded vector from a list {1D vector (None,)} containing training labels.</span>
+<span class="sd">    - find all unique labels</span>
+<span class="sd">    - count all unique labels</span>
+<span class="sd">    - create a zero filed array, size equal to count of all unique labels</span>
+<span class="sd">    - order the unique values (small to large)</span>
+<span class="sd">    - create empty output matrix</span>
+<span class="sd">    - for each sample&#39;s label create zero vector and set one in position of that label</span>
+<span class="sd">    Created by Uki D. Lucas</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">defined_classes</span> <span class="o">=</span> <span class="n">sort_unique_floats</span><span class="p">(</span><span class="n">defined_classes</span><span class="p">)</span>
+    
+    <span class="c1"># possible float rounding errors</span>
+    <span class="n">defined_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round_</span><span class="p">(</span><span class="n">defined_classes</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;defined_classes</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">defined_classes</span><span class="p">)</span>
+    
+    <span class="n">class_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">defined_classes</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;class_count:&quot;</span><span class="p">,</span> <span class="n">class_count</span><span class="p">)</span>
+    
+    <span class="n">sample_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_labels</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sample_count:&quot;</span><span class="p">,</span> <span class="n">sample_count</span><span class="p">)</span>
+    
+    <span class="n">one_hot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">sample_count</span><span class="p">,</span> <span class="n">class_count</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+     
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sample_count</span><span class="p">):</span> 
+        <span class="n">actual_label</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sample_labels</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        <span class="c1"># find first index of actual_label</span>
+        <span class="n">found_at</span> <span class="o">=</span> <span class="n">locate_one_hot_position</span><span class="p">(</span><span class="n">defined_classes</span><span class="p">,</span> <span class="n">actual_label</span><span class="p">)</span>
+        <span class="c1">#print(&quot;found&quot;, index, type(index) )</span>
+        <span class="n">one_hot</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">found_at</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1">#print(&quot;one_hot[index]&quot;, one_hot[index])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;one_hot examples </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;one_hot shape&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">one_hot</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">show_layers</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">)):</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;) &quot;</span><span class="p">,</span><span class="n">layer</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2"> is trainable: &quot;</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">trainable</span><span class="p">)</span>
+        <span class="c1">#layer.trainable = False</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="k">def</span> <span class="nf">margin</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">value</span><span class="o">*</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">plot_histogram</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">change_step</span><span class="p">):</span>
+    
+    <span class="n">min_value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;min_value&quot;</span><span class="p">,</span> <span class="n">min_value</span><span class="p">)</span>
+    <span class="n">max_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;max_value&quot;</span><span class="p">,</span> <span class="n">max_value</span><span class="p">)</span>
+    
+    <span class="n">spread</span> <span class="o">=</span> <span class="n">max_value</span><span class="o">-</span><span class="n">min_value</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;spread&quot;</span><span class="p">,</span> <span class="n">spread</span><span class="p">)</span>
+    <span class="n">recommended_bins</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">spread</span><span class="o">/</span><span class="n">change_step</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;recommended number of classes&quot;</span><span class="p">,</span> <span class="n">recommended_bins</span><span class="p">)</span>
+    
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">)),</span> 
+                       <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)),</span>
+                       <span class="n">recommended_bins</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span>
+        <span class="n">min_value</span> <span class="o">-</span> <span class="n">margin</span><span class="p">(</span><span class="n">min_value</span><span class="p">),</span> 
+        <span class="n">max_value</span> <span class="o">+</span> <span class="n">margin</span><span class="p">(</span><span class="n">max_value</span><span class="p">)])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of &#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;values&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;occurance&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">image</span>
 </pre></div>
 
 </div>

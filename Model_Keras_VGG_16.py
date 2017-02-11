@@ -21,18 +21,14 @@ def build_model(weights_path=None, image_width=224, image_height=224, color_chan
     model.add(Convolution2D(64, 3, 3, activation='relu'))
     model.add(ZeroPadding2D((1,1)))
     model.add(Convolution2D(64, 3, 3, activation='relu'))
-    
-    # input shapes: [?,112,1,128]
-    # input shapes: [?,224,1,64].
-    # input shapes: [?,112,1,128].
-    # input shapes: [?,112,1,128].
-    # input shapes: [?,224,1,64].
+  
     model.add(MaxPooling2D((2,2), strides=(2,2), dim_ordering="tf"))
 
     model.add(ZeroPadding2D((1,1)))
     model.add(Convolution2D(128, 3, 3, activation='relu'))
     model.add(ZeroPadding2D((1,1)))
     model.add(Convolution2D(128, 3, 3, activation='relu'))
+  
     model.add(MaxPooling2D((2,2), strides=(2,2)))
 
     model.add(ZeroPadding2D((1,1)))

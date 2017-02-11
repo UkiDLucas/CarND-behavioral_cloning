@@ -12,6 +12,14 @@ Created by Uki D. Lucas on Feb. 4, 2017
 
 # In[2]:
 
+def create_steering_classes(number_of_classes = 41):
+    steering_classes = np.linspace(-1, 1, num=number_of_classes, endpoint=True) 
+    steering_classes = np.sort(steering_classes)
+    return steering_classes
+
+
+# In[3]:
+
 # snapping actual values to given labels
 
 def find_nearest(array,value):
@@ -22,7 +30,7 @@ def find_nearest(array,value):
 #assert (find_nearest(steering_labels, -0.951) == -1.00),"method find_nearest() has problem"
 
 
-# In[3]:
+# In[4]:
 
 
 import numpy as np
@@ -81,7 +89,7 @@ def test_read_csv():
 # test_read_csv()
 
 
-# In[4]:
+# In[5]:
 
 import numpy as np
 import math
@@ -152,7 +160,7 @@ def test_split_random():
 # test_split_random()
 
 
-# In[5]:
+# In[6]:
 
 def get_image_center_values(matrix):
     data = [row[0] for row in matrix]
@@ -168,7 +176,7 @@ def get_image_right_values(matrix):
 
 def get_steering_values(matrix):
     data = [float(row[3]) for row in matrix]
-    return np.array(data)
+    return np.array(data).astype('float32')
 
 def get_throttle_values(matrix):
     data = [float(row[4]) for row in matrix]
@@ -183,7 +191,7 @@ def get_speed_values(matrix):
     return np.array(data)
 
 
-# In[6]:
+# In[7]:
 
 def read_image(image_path):
     import cv2
@@ -196,7 +204,7 @@ def read_image(image_path):
     return np.array(image)
 
 
-# In[7]:
+# In[8]:
 
 # for custom metrics
 import keras.backend as K
@@ -213,7 +221,7 @@ def false_rates(y_true, y_pred):
     }
 
 
-# In[8]:
+# In[9]:
 
 def normalize_grayscale(image_data):
     a = -0.5
@@ -221,6 +229,136 @@ def normalize_grayscale(image_data):
     grayscale_min = 0
     grayscale_max = 255
     return a + ( ( (image_data - grayscale_min)*(b - a) )/( grayscale_max - grayscale_min ) )
+
+
+# In[10]:
+
+def sort_unique_floats(array_x):
+    # assure that the array is numpy and numerical
+    #array_x = array_x.astype(np.float)
+    
+    # get unique values, a.k.a. set of values
+    labels_set = set(array_x)
+    #print("labels_set\n", labels_set)
+    
+    # set is not sorted, so convert it to a numpy array
+    unique_labels = np.array(list(labels_set))
+    #print("unique_labels\n", unique_labels.shape, unique_labels)
+    
+    sorted_unique_labels = np.sort(unique_labels)
+    #print("sorted_unique_labels\n", sorted_unique_labels.shape, sorted_unique_labels)
+    return sorted_unique_labels
+    
+# TEST   
+
+
+# In[11]:
+
+def locate_one_hot_position(defined_classes, actual_label):
+    
+    #print("actual_label", actual_label, type(actual_label))
+    matched_label = float( find_nearest(defined_classes, actual_label))
+    
+    #print("matched_label", matched_label, type(matched_label))
+    found_at = np.where(defined_classes == matched_label)
+    
+    # (array([10]),) <class 'tuple'>
+    found_at = found_at[0][0] # first element of first vector
+    #print("found_at", found_at, type(found_at) )
+    # returns array of locations
+    return found_at
+
+def encode_one_hot(defined_classes, sample_labels):
+    """
+    Creates one hot encoded vector from a list {1D vector (None,)} containing training labels.
+    - find all unique labels
+    - count all unique labels
+    - create a zero filed array, size equal to count of all unique labels
+    - order the unique values (small to large)
+    - create empty output matrix
+    - for each sample's label create zero vector and set one in position of that label
+    Created by Uki D. Lucas
+    """
+    defined_classes = sort_unique_floats(defined_classes)
+    
+    # possible float rounding errors
+    defined_classes = np.round_(defined_classes, decimals=1)
+    print("defined_classes\n", defined_classes)
+    
+    class_count = len(defined_classes)
+    print("class_count:", class_count)
+    
+    sample_count = len(sample_labels)
+    print("sample_count:", sample_count)
+    
+    one_hot = np.zeros(shape=(sample_count, class_count), dtype=np.int)
+     
+    for index in range(sample_count): 
+        actual_label = float(sample_labels[index])
+        # find first index of actual_label
+        found_at = locate_one_hot_position(defined_classes, actual_label)
+        #print("found", index, type(index) )
+        one_hot[index][found_at] = 1
+        #print("one_hot[index]", one_hot[index])
+    print("one_hot examples \n", one_hot[0:3])
+    print("one_hot shape", one_hot.shape) 
+    return one_hot
+
+
+# In[12]:
+
+def show_layers(model):
+    for i in range(len(model.layers)):
+        layer = model.layers[i]
+        print(i, ") ",layer.name, "\t\t is trainable: ", layer.trainable)
+        #layer.trainable = False
+    return len(model.layers)
+
+
+# In[13]:
+
+import numpy as np
+import random
+import math
+from matplotlib import pyplot as plt
+
+def margin(value):
+    return value*(5/100)
+
+def plot_histogram(name, values, change_step):
+    
+    min_value = min(values)
+    print("min_value", min_value)
+    max_value = max(values)
+    print("max_value", max_value)
+    
+    spread = max_value-min_value
+    print("spread", spread)
+    recommended_bins = math.ceil(spread/change_step)
+    print("recommended number of classes", recommended_bins)
+    
+    bins = np.linspace(math.floor(min(values)), 
+                       math.ceil(max(values)),
+                       recommended_bins)
+
+    plt.xlim([
+        min_value - margin(min_value), 
+        max_value + margin(max_value)])
+
+    plt.hist(values, bins=bins, alpha=0.5)
+    plt.title('Distribution of ' + name)
+    plt.xlabel('values')
+    plt.ylabel('occurance')
+
+    plt.show()
+
+
+# In[14]:
+
+def load_image(image_path):
+    from PIL import Image
+    image = Image.open(image_path)
+    return image
 
 
 # In[ ]:
