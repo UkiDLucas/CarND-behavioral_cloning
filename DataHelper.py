@@ -4,34 +4,44 @@
 # In[1]:
 
 """
-Wrapper methods around "import csv" that
-are very specific to p3.
+Helper methods are very specific to p3.
 Created by Uki D. Lucas on Feb. 4, 2017
 """
+
+should_run_tests = False
 
 
 # In[2]:
 
-def create_steering_classes(number_of_classes = 41):
-    steering_classes = np.linspace(-1, 1, num=number_of_classes, endpoint=True) 
-    steering_classes = np.sort(steering_classes)
-    return steering_classes
+def predict_class(predictions, classes):
+    percentages = predictions[0]
+
+    # reverse sort by value, return indexes
+    sorted_indexes = (-percentages).argsort()
+ 
+    for index in sorted_indexes[:3]:
+        print("predicted class:", classes[index], 
+              "\t",  np.round(percentages[index]*100,1), "%") 
+    
+    predicted_class = classes[sorted_indexes[0]]
+    return predicted_class
 
 
 # In[3]:
 
-# snapping actual values to given labels
-
-def find_nearest(array,value):
-    idx = (np.abs(array-value)).argmin()
-    return array[idx]
-
-# TEST
-#assert (find_nearest(steering_labels, -0.951) == -1.00),"method find_nearest() has problem"
+# http://localhost:8888/notebooks/ImageHelper.ipynb#Read-image-from-the-disk
+def read_image(image_path):
+    import cv2
+    # cv2.IMREAD_COLOR 
+    # cv2.COLOR_BGR2GRAY 
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    #print("image shape", image.shape)
+    #plt.imshow(image, cmap='gray')
+    #plt.show()
+    return np.array(image)
 
 
 # In[4]:
-
 
 import numpy as np
 
@@ -71,7 +81,7 @@ def read_csv(file_path):
                 data.append(row)
             else:
                 data.append(row)
-        print("imported rows", row_counter)
+        print("Number of imported CSV rows:", row_counter)
         # I am returning data as numpy array instead of list
         # because it is handier to use it.
         return headers, np.array(data)
@@ -86,10 +96,37 @@ def test_read_csv():
     headers, data = read_csv(file_path = data_dir + 'driving_log.csv')
     print("headers \n",headers)
     print("3rd row of data \n",data[2:3])
-# test_read_csv()
+
+if should_run_tests:    
+    test_read_csv()
 
 
 # In[5]:
+
+def create_steering_classes(number_of_classes = 41):
+    steering_classes = np.linspace(-1, 1, num=number_of_classes, endpoint=True, dtype=np.float32) 
+    steering_classes = np.sort(steering_classes)
+    return steering_classes
+
+
+# In[6]:
+
+# snapping actual values to given labels
+
+def find_nearest(array,value):
+    idx = (np.abs(array-value)).argmin()
+    return array[idx]
+
+if should_run_tests:  
+    assert (find_nearest(steering_labels, -0.951) == -1.00),"method find_nearest() has problem"
+
+
+# In[ ]:
+
+
+
+
+# In[7]:
 
 import numpy as np
 import math
@@ -157,10 +194,11 @@ def test_split_random():
     print("sum",training.shape[0] + testing.shape[0])
     
     #print(split_random.__doc__)
-# test_split_random()
+if should_run_tests:  
+    test_split_random()
 
 
-# In[6]:
+# In[8]:
 
 def get_image_center_values(matrix):
     data = [row[0] for row in matrix]
@@ -191,20 +229,12 @@ def get_speed_values(matrix):
     return np.array(data)
 
 
-# In[7]:
-
-def read_image(image_path):
-    import cv2
-    # cv2.IMREAD_COLOR 
-    # cv2.COLOR_BGR2GRAY 
-    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-    #print("image shape", image.shape)
-    #plt.imshow(image, cmap='gray')
-    #plt.show()
-    return np.array(image)
+# In[ ]:
 
 
-# In[8]:
+
+
+# In[9]:
 
 # for custom metrics
 import keras.backend as K
@@ -221,14 +251,9 @@ def false_rates(y_true, y_pred):
     }
 
 
-# In[9]:
+# In[ ]:
 
-def normalize_grayscale(image_data):
-    a = -0.5
-    b = 0.5
-    grayscale_min = 0
-    grayscale_max = 255
-    return a + ( ( (image_data - grayscale_min)*(b - a) )/( grayscale_max - grayscale_min ) )
+
 
 
 # In[10]:
@@ -318,8 +343,9 @@ def show_layers(model):
 # In[13]:
 
 import numpy as np
-import random
+#import random
 import math
+import matplotlib
 from matplotlib import pyplot as plt
 
 def margin(value):
@@ -349,16 +375,35 @@ def plot_histogram(name, values, change_step):
     plt.title('Distribution of ' + name)
     plt.xlabel('values')
     plt.ylabel('occurance')
-
+    
+    # RESIZE it nicely for Jupyter Notebook (width = 10)
+    fig = matplotlib.pyplot.gcf()
+    fig.set_size_inches(10, 3)
+    fig.savefig('test2png.png', dpi=72)
+    plt.margins(0.1)
+    
     plt.show()
 
 
 # In[14]:
 
-def load_image(image_path):
-    from PIL import Image
-    image = Image.open(image_path)
-    return image
+def plot_steering_values(values):
+    
+    import matplotlib.pyplot as plt
+    
+    plt.plot(values, 'b.')
+
+    plt.title("Distribution of steering value classes.")
+    plt.xlabel("class number")
+    plt.ylabel('steering value')
+    
+    # RESIZE it nicely for Jupyter Notebook (width = 10)
+    fig = matplotlib.pyplot.gcf()
+    fig.set_size_inches(10, 3)
+    fig.savefig('test2png.png', dpi=72)
+    plt.margins(0.1)
+    
+    plt.show()
 
 
 # In[ ]:

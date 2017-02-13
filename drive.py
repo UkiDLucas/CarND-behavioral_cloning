@@ -9,11 +9,11 @@
 data_dir = "../../../DATA/behavioral_cloning_data/"
 processed_images_dir = "processed_images_64/"
 model_dir = "../../../DATA/MODELS/"
-model_name = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.335463257167.h5"
+model_name = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5"
 image_final_width = 64
 model_path = model_dir + model_name
 autorun_dir = data_dir + "autonomous_run/"
-sample_autorun_image = "image_10.302895069122314.jpg"
+sample_autorun_image = "image_6.50871205329895.jpg"
 
 
 # In[2]:
@@ -83,23 +83,21 @@ model.summary()
 
 def predict_steering(image, old_steering):
     image = np.array(image)
-    image = image[None, :, :] # string indices must be integers
-    predictions = model.predict(image)
-    prediction = float(predictions[0][0])
+    predictions = model.predict( image[None, :, :], batch_size=1, verbose=1)
     
-    #print("predictions", predictions)
-    most_likely = np.argmax(predictions)
-    #print("most_likely", most_likely)
-    new_steering_angle = steering_classes[most_likely]
-    #print("new_steering_angle", new_steering_angle)
+    from DataHelper import predict_class
+    new_steering_angle = predict_class(predictions, steering_classes)
+     
+    # TODO compare to old_steering    
+    print("new_steering_angle", new_steering_angle)
     return new_steering_angle 
 
 
 # In[8]:
 
-from DataHelper import load_image
+from ImageHelper import read_image_array
 image_path = autorun_dir + sample_autorun_image
-image = np.array(load_image(image_path))
+image = read_image_array(image_path)
 print("image shape", image.shape)
 plt.imshow(image)
 plt.show()
@@ -121,10 +119,11 @@ def preprocess_image(image_string, elapsed_seconds):
     from ImageHelper import preprocessing_pipline
     
     image_jpg = Image.open(BytesIO(base64.b64decode(image_string)))
-    image_array = preprocessing_pipline(image_jpg, final_size=image_final_width, should_plot=False)
+    image_array = preprocessing_pipline(image_jpg, final_size=image_final_width, 
+                                        should_plot=False)
     
     # SAVE ONLY to review that pre-processing worked
-    # imsave(data_dir + "autonomous_run/image_" + str(elapsed_seconds) + ".jpg", image_array)
+    imsave(data_dir + "autonomous_run/image_" + str(elapsed_seconds) + ".jpg", image_array)
     return image_array
 
 
@@ -156,8 +155,8 @@ def telemetry(sid, data):
 
         # The current image from the center camera of the car
         image = preprocess_image(data["image"], elapsed_seconds)
-
         new_steering_angle = predict_steering(image, steering_angle)
+        
         new_throttle = 0.3
         
         output = []

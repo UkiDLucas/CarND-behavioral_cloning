@@ -44,10 +44,7 @@ VIOLET = color=[153, 51, 255]
 ORANGE = color=[255, 128, 0] 
 
 
-# In[ ]:
-
-
-
+# # Read image from the disk
 
 # In[3]:
 

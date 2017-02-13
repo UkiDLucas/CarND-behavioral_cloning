@@ -22,10 +22,10 @@
 
 # In[1]:
 
-data_dir = "../../../DATA/behavioral_cloning_data/"
+data_dir = "../_DATA/CarND_behavioral_cloning/r_001/"
 image_final_width = 64
-driving_data_csv = "driving_log_no_zeros.csv"
-processed_images_dir = "processed_images_64/"
+driving_data_csv = "driving_log_normalized.csv"
+processed_images_dir = "processed_images/"
 
 
 # # Read CSV spreadsheet
@@ -91,7 +91,7 @@ plot_histogram("speed values", speed_values, change_step)
 
 # # Preprocess a random sample image
 
-# In[10]:
+# In[6]:
 
 import random
 import matplotlib.pyplot as plt
@@ -100,7 +100,7 @@ from ImageHelper import preprocessing_pipline, print_image
 image_index = random.randrange(len(speed_values))
 print("sample speed value", speed_values[image_index])
 print(image_center_values[image_index])
-image_path = data_dir + image_center_values[image_index] # TODO rename to image_names_center_cam
+image_path = data_dir + "original/" + image_center_values[image_index] # TODO rename to image_names_center_cam
 print("sample image", image_index, image_path)
 
 from ImageHelper import read_image_binary
@@ -134,17 +134,17 @@ def process_all(image_list, processed_images_dir, image_final_width=64):
     
     for image_index in range( len(image_list) ): # only first 5 items image_list[5]
         image_name = image_center_values[image_index]
-        image_path = data_dir + image_name
+        image_path = data_dir + "original/" + image_name
         image = read_image_binary(image_path)
         image_array = preprocessing_pipline(image, final_size=image_final_width, should_plot=False)
         imsave( processed_images_dir + image_name, image_array)
     return
 
-processed_images_dir = data_dir + processed_images_dir + "/"
+processed_images_dir = data_dir + processed_images_dir
 print("make sure that this directory exists: ", processed_images_dir)
 
 
-# In[11]:
+# In[9]:
 
 process_all(image_center_values, processed_images_dir, image_final_width)
 

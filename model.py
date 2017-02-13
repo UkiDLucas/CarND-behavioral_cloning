@@ -5,61 +5,67 @@
 # 
 # Please refer to README file for project overview.
 
+# # Set execution parameters
+
 # In[1]:
 
-nb_epoch = 20
-previous_trained_epochs = 30
-model_to_continue_training = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.335463257167.h5"
-
-data_dir = "../../../DATA/behavioral_cloning_data/"
-processed_images_dir = "processed_images_64/"
+data_dir = "../_DATA/CarND_behavioral_cloning/r_001/"
 image_final_width = 64
-model_dir = "../../../DATA/MODELS/"
-model_name = "model_p3_keras_tf_mini_14x64x3_"
-batch_size = 256
-driving_data_csv = "driving_log_no_zeros.csv"
+driving_data_csv = "driving_log_normalized.csv"
+processed_images_dir = "processed_images/"
 
+model_dir = "../_DATA/MODELS/"
+model_name = "model_p3_14x64x3_"
+batch_size = 256
+nb_epoch = 10 
+# 30 epochs = 55 minutes on MacBook Pro
+
+# CONTINUE TRAINING ?
+should_retrain_existing_model = True
+model_to_continue_training = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5"
+previous_trained_epochs = 30
+
+
+# # Python Imports
 
 # In[2]:
 
-import matplotlib.image as mpimg
-from scipy import misc
 import matplotlib.pyplot as plt
-import cv2
 
-
-# In[3]:
+# import matplotlib.image as mpimg
+# from scipy import misc
+# import cv2
 
 import DataHelper
 #print(DataHelper.__doc__)
-from DataHelper import test_read_csv, read_csv
-#print(read_csv.__doc__)
-#test_read_csv()
-# fetch actual log of driving data
+
+
+# # Fetch CSV driving data
+
+# In[3]:
+
+from  DataHelper import read_csv
+
+print(data_dir + driving_data_csv)
 headers, data = read_csv(data_dir + driving_data_csv)
 
 
-# # Split data into training, testing and validation sets
+# # Split Training, Testing and Validation sets
+# 
+# Keras actually does it's own training/testing split, so here I just reserve small validation set.
 
 # In[4]:
 
 from DataHelper import split_random
 
-# keras actually does it's own split, so here I just reserve small validation set.
 training, testing, validation = split_random(data, percent_train=85, percent_test=15) 
 
-print("training",training.shape)
-print("testing",testing.shape)
-print("validation",validation.shape)
+print("training", training.shape)
+print("testing", testing.shape)
+print("validation", validation.shape)
 
 
-# # Create Labels: steering value classes
-# 
-# - Please review notebook "preprocessing", section: "Steering value distribution".
-# - Training labels have values ranging from -1 to +1.
-# - When you steer with **keyboard** the STEPS are rather corse, so I think I can get away with **discrete steering angles, i.e. classes**.
-# - I will start training with 21 equally spread classes, if needed I will increase to 41.
-# - I want to make sure that my classes include **0.0 (zero)** as it is most common value.
+# # Fetch steering angles
 
 # In[5]:
 
@@ -71,7 +77,7 @@ change_step=0.01 # test data changes
 plot_histogram("steering values", steering_angles, change_step)
 
 
-# # Round steering angles
+# # Create discrete 41 steering classes
 # 
 # - I might consider rounding the steering angles to lower amount of training
 # - I assume the classification labels to be float values
@@ -80,46 +86,57 @@ plot_histogram("steering values", steering_angles, change_step)
 
 import numpy as np
 from numpy import ndarray
+from DataHelper import create_steering_classes, plot_steering_values
 
-# desired number of classes, could be 21, too.
-from DataHelper import create_steering_classes
-steering_classes = create_steering_classes(number_of_classes = 41)
+steering_classes = create_steering_classes(number_of_classes = 41).astype(np.float32)
 
-print("steering_classes", steering_classes)
+# ROUNDING is a hopeless effort
+# steering_classes = np.round(steering_classes, 2)
+
+print("steering_classes", steering_classes, type(steering_classes[0]))
 number_of_classes = steering_classes.shape[0]
-print("Number of classes", number_of_classes)
+print("Number of created classes", number_of_classes)
 
-import matplotlib.pyplot as plt
-plt.plot(steering_classes, 'b.')
-plt.margins(0.1)
-plt.title("Distribution of steering value classes.")
-plt.xlabel("class number")
-plt.ylabel('steering value')
-plt.show()
+plot_steering_values(values = steering_classes)
 
+
+# ## Snap the ACTUAL steering angles to newly created classes
 
 # In[7]:
 
-
-
 training_labels = np.array([], dtype=np.float32)
 
-for raw_label in steering_angles:
-    rounded_value = float( find_nearest(steering_classes, raw_label) )
+for actual_steering_angle in steering_angles:
+    rounded_value = find_nearest(steering_classes, actual_steering_angle).astype(np.float32)
     training_labels = np.append(training_labels, [rounded_value])
         
-print(training_labels[0:50])
+print(training_labels[0:50], type(training_labels[0]))
 
 
 # In[8]:
 
-change_step=0.01 # test data changes
-plot_histogram("steering values", training_labels, change_step)
+plot_histogram("steering values", training_labels, change_step=0.01)
 
 
-# # Encoding Training Labels in one-hot notation
+# ## Test conversion form actual to class label
 
 # In[9]:
+
+from random import randrange
+
+sample_index = randrange(0,len(steering_angles))
+print("actual:", steering_angles[sample_index], "class:",training_labels[sample_index])
+
+sample_index = randrange(0,len(steering_angles))
+print("actual:", steering_angles[sample_index], "class:",training_labels[sample_index])
+
+sample_index = randrange(0,len(steering_angles))
+print("actual:", steering_angles[sample_index], "class:",training_labels[sample_index])
+
+
+# ## Encoding Training Labels in one-hot notation
+
+# In[10]:
 
 from DataHelper import encode_one_hot, locate_one_hot_position
 
@@ -128,20 +145,22 @@ y_one_hot =  encode_one_hot(defined_classes=steering_classes, sample_labels=trai
 print("y_one_hot", y_one_hot.shape)
 
 
-# ## One-hot print and verify
+# ### One-hot print and verify
 
-# In[10]:
+# In[11]:
 
 for index in range(5):
-    print( index, ") \t", training_labels[index], "\t", y_one_hot[index],  
-          "@", locate_one_hot_position(steering_classes, training_labels[index] ) )
+    print( "training label", training_labels[index], "is @", 
+          locate_one_hot_position(steering_classes, training_labels[index] ), 
+          "\n", y_one_hot[index] )
 
 
 # # Extract training features (images)
 
-# In[11]:
+# In[12]:
 
 from DataHelper import get_image_center_values 
+
 image_names = get_image_center_values(training)
 print(image_names.shape)
 print(image_names[1])
@@ -149,7 +168,7 @@ print(image_names[1])
 
 # ## Create a list of image paths pointing to 64px version
 
-# In[12]:
+# In[13]:
 
 image_paths = []
 for image_name in image_names:
@@ -157,16 +176,24 @@ for image_name in image_names:
 print(image_paths[1]) 
 
 
-# In[13]:
+# ## Read actual (preprocessed) images from the disk
+
+# In[14]:
 
 from DataHelper import read_image
+
 training_features = np.array([ read_image(path) for path in image_paths] )
 
 print ("training_features matrix shape", training_features.shape)
 
-plt.imshow(training_features[2], cmap='gray')
+sample_image = training_features[2]
+plt.imshow(sample_image) # cmap='gray' , cmap='rainbow'
 plt.show()
 
+print(sample_image[0][0:15])
+
+
+# ## X Extract single channel (red)
 from DataHelper import normalize_grayscale
 
 show_rows = 1 # of 64
@@ -197,7 +224,7 @@ print("training_features", training_features.shape)
 # 
 # https://keras.io/layers/convolutional/
 
-# In[14]:
+# In[15]:
 
 import keras.backend as K
 from keras.models import Sequential
@@ -212,19 +239,20 @@ from DataHelper import mean_pred, false_rates
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, Convolution1D
 
 
-# ### See Model_Keras_VGG_16.py
+# ### X Import Model_Keras_VGG_16.py
 # 
 # This file (in the same directory) contains MODEL definiteion for VGG.16.
 #from Model_Keras_VGG_16 import build_model # model = build_model('vgg16_weights.h5')
 from keras.applications import vgg16
-from keras.applications.vgg16 import VGG16from keras.models import Model
+from keras.applications.vgg16 import VGG16
+from keras.models import Model
 from DataHelper import show_layers
 
 model_VGG16 = VGG16(weights=None, include_top=True)
 
 model_VGG16.summary()
 number_of_layers = show_layers(model_VGG16)
-# # Adjust VGG.16 model architecture to match my needs
+# ### X Adjust VGG.16 model architecture to match my needs
 print("number_of_layers", number_of_layers)
 
 # create last layer with 21 classes
@@ -241,40 +269,41 @@ model = Model(input=model_VGG16.input, output=x22)
 model.summary()
 from DataHelper import show_layers
 show_layers(model)
-# # Build custom sized model
+# # Build my own custom model
 
-# In[15]:
+# In[16]:
 
 from keras.layers import InputLayer, Input
 
+# activation = "relu" | "elu"
+
 model = Sequential()
 
-model.add(Convolution2D(64, 3, 3, border_mode='same', activation='relu',
-                        input_shape=(14, 64 ,3), dim_ordering='tf'))
-model.add(Convolution2D(128, 3, 3, border_mode='same', activation='relu'))
-model.add(Convolution2D(256, 3, 3, border_mode='same', activation='relu'))
-
-#model.add(MaxPooling2D(pool_size=(2, 2)))
-#model.add(Dropout(0.25))
+model.add(Convolution2D(64, 3, 3, border_mode='same', activation="relu" ,
+                        input_shape=(14, 64 ,3), dim_ordering='tf', name="conv2d_1_64x3x3_relu"))
+model.add(Convolution2D(128, 3, 3, border_mode='same', activation="relu", name="conv2d_2_128x3x3_relu" ))
+model.add(Convolution2D(256, 5, 5, border_mode='same', activation="relu", name="conv2d_3_256x5x5_relu" ))
 
 model.add(Flatten())
 
-
 #model.add(MaxPooling2D(pool_size=(2, 2)))
-#model.add(Dropout(0.25))
 
-model.add(Dense(256, activation='relu'))
-model.add(Dropout(0.25))
-model.add(Dense(256, activation='relu'))
+model.add(Dense(256, activation="relu", name="dense_1_256_relu"))
+model.add(Dropout(0.25, name="dropout_1_0.25"))
+model.add(Dense(256, activation="relu", name="dense_2_256_relu" ))
 
+# CLASSIFICATION
+model.add(Dense(41, activation='linear' , name="dense_3_41_linear")) # default: linear | softmax | relu | sigmoid
 
-model.add(Dense(41, activation='linear')) # default: linear | softmax | relu | sigmoid
+# REGRESSION
+#model.add(Dense(1, activation='linear'))
+
 model.summary()
 
 
 # # Compile model (configure learning process)
 
-# In[16]:
+# In[ ]:
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 # 
@@ -291,25 +320,60 @@ model.compile(optimizer, loss_function, metrics_array)
 # 
 # - If you replace the model, the INPUT dimetions have to be the same as these trained
 # - Name your models well
-
-# In[17]:
-
 from keras.models import load_model
-model_path = model_dir + model_to_continue_training
-model = load_model(model_path) 
-model.summary()
 
-
+if should_retrain_existing_model:
+    model_path = model_dir + model_to_continue_training
+    model = load_model(model_path) 
+    model.summary()
 # # Train (fit) the model agaist given labels
 
-# In[18]:
+# In[ ]:
 
+# REGRESSION
+# history = model.fit(training_features, training_labels, nb_epoch=nb_epoch, 
+#                    batch_size=batch_size, verbose=1, validation_split=0.2)
+
+# CLASSIFICATION
 history = model.fit(training_features, y_one_hot, nb_epoch=nb_epoch, 
                     batch_size=batch_size, verbose=1, validation_split=0.2)
 
-Epoch 4/4
-5464/5464 [==============================] - 60s - loss: 0.0307 - acc: 0.6067 - val_loss: 0.0288 - val_acc: 0.6130
-# In[19]:
+Train on 2501 samples, validate on 626 samples
+Epoch 1/5
+2501/2501 [==============================] - 109s - loss: 0.0207 - acc: 0.3135 - val_loss: 0.0199 - val_acc: 0.3642
+Epoch 2/5
+2501/2501 [==============================] - 106s - loss: 0.0207 - acc: 0.3083 - val_loss: 0.0199 - val_acc: 0.3594
+Epoch 3/5
+2501/2501 [==============================] - 106s - loss: 0.0207 - acc: 0.3071 - val_loss: 0.0199 - val_acc: 0.3594
+Epoch 4/5
+2501/2501 [==============================] - 105s - loss: 0.0207 - acc: 0.3067 - val_loss: 0.0199 - val_acc: 0.3546
+Epoch 5/5
+2501/2501 [==============================] - 104s - loss: 0.0206 - acc: 0.3203 - val_loss: 0.0199 - val_acc: 0.3562
+
+__
+Layer (type)                     Output Shape          Param #     Connected to                     
+====================================================================================================
+convolution2d_1 (Convolution2D)  (None, 14, 64, 64)    1792        convolution2d_input_2[0][0]      
+____________________________________________________________________________________________________
+convolution2d_2 (Convolution2D)  (None, 14, 64, 128)   73856       convolution2d_1[0][0]            
+____________________________________________________________________________________________________
+convolution2d_3 (Convolution2D)  (None, 14, 64, 256)   295168      convolution2d_2[0][0]            
+____________________________________________________________________________________________________
+flatten_1 (Flatten)              (None, 229376)        0           convolution2d_3[0][0]            
+____________________________________________________________________________________________________
+dense_1 (Dense)                  (None, 256)           58720512    flatten_1[0][0]                  
+____________________________________________________________________________________________________
+dropout_1 (Dropout)              (None, 256)           0           dense_1[0][0]                    
+____________________________________________________________________________________________________
+dense_2 (Dense)                  (None, 256)           65792       dropout_1[0][0]                  
+____________________________________________________________________________________________________
+dense_3 (Dense)                  (None, 41)            10537       dense_2[0][0]                    
+====================================================================================================
+Total params: 59,167,657
+Trainable params: 59,167,657
+Non-trainable params: 0
+_________________________
+# In[ ]:
 
 # list all data in history
 print(history.history.keys())
@@ -329,7 +393,7 @@ print("validation_error", validation_error)
 
 # # Save the model
 
-# In[20]:
+# In[ ]:
 
 # creates a HDF5 file '___.h5'
 model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_epochs) 
@@ -338,7 +402,7 @@ model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_
 #model = load_model('my_model.h5')
 
 
-# In[21]:
+# In[ ]:
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
@@ -359,14 +423,21 @@ plt.legend(['training error(loss)', 'validation error (loss)'], loc='upper right
 plt.show()
 
 
-# # Prediction set
+# # Prediction
+from keras.models import load_model
 
-# In[26]:
+model_path = model_dir + model_to_continue_training
+print(model_path)
 
-#image_name = "IMG/center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
-#original_steering_angle = 0.05219137
+model = load_model(model_dir + model_to_continue_training) 
+model.summary()
+# In[ ]:
 
-#image_name = "IMG/center_2016_12_01_13_33_10_579.jpg" # 0.1287396
+image_name = "IMG/center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
+original_steering_angle = 0.05219137
+
+image_name = "IMG/center_2016_12_01_13_33_10_579.jpg" # 0.1287396
+original_steering_angle = 0.05219137
 
 image_name = "IMG/center_2016_12_01_13_39_28_024.jpg" # -0.9426954
 original_steering_angle = -0.9426954
@@ -379,24 +450,28 @@ plt.imshow(image, cmap='gray')
 plt.show()
 
 
-# In[27]:
+# ## Run model.predict(image)
 
-#expected convolution2d_input_1 to have 4 dimensions, but got array with shape (14, 64, 3)
-image = image[None, :, :]
+# In[ ]:
 
-import keras
-#from keras.np_utils import probas_to_classes
-
-predictions = model.predict( image, batch_size=1, verbose=1)
-print(type(predictions), predictions.shape, predictions)
-prediction = float(predictions[0][0])
-#print("prediction \n", prediction)
-#print("np.argmax(prediction) ",np.argmax(prediction))
-most_likely = np.argmax(predictions)
-print("np.argmax(predictions) ", most_likely )
+predictions = model.predict( image[None, :, :], batch_size=1, verbose=1)
 
 
-# In[28]:
+# ## Extract top prediction
+
+# In[ ]:
+
+from DataHelper import predict_class
+
+predicted_class = predict_class(predictions, steering_classes)
+
+print("original steering angle \n", original_steering_angle)
+print("top_prediction \n", predicted_class )
+
+
+# ## Plot predictions (peaks are top classes)
+
+# In[ ]:
 
 # summarize history for loss
 plt.plot(predictions[0])
@@ -405,17 +480,6 @@ plt.ylabel('y')
 plt.xlabel('x')
 plt.legend(['predictions'], loc='upper right')
 plt.show()
-
-
-# In[29]:
-
-print("original steering angle", original_steering_angle)
-print("predicted steering angle", steering_classes[most_likely])
-
-
-# In[ ]:
-
-
 
 
 # In[ ]:
