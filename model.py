@@ -303,7 +303,7 @@ model.summary()
 
 # # Compile model (configure learning process)
 
-# In[ ]:
+# In[17]:
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 # 
@@ -328,7 +328,7 @@ if should_retrain_existing_model:
     model.summary()
 # # Train (fit) the model agaist given labels
 
-# In[ ]:
+# In[18]:
 
 # REGRESSION
 # history = model.fit(training_features, training_labels, nb_epoch=nb_epoch, 
@@ -373,7 +373,7 @@ Total params: 59,167,657
 Trainable params: 59,167,657
 Non-trainable params: 0
 _________________________
-# In[ ]:
+# In[19]:
 
 # list all data in history
 print(history.history.keys())
@@ -393,7 +393,7 @@ print("validation_error", validation_error)
 
 # # Save the model
 
-# In[ ]:
+# In[20]:
 
 # creates a HDF5 file '___.h5'
 model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_epochs) 
@@ -402,7 +402,7 @@ model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_
 #model = load_model('my_model.h5')
 
 
-# In[ ]:
+# In[21]:
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
@@ -431,16 +431,16 @@ print(model_path)
 
 model = load_model(model_dir + model_to_continue_training) 
 model.summary()
-# In[ ]:
+# In[25]:
 
-image_name = "IMG/center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
+image_name = "center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
 original_steering_angle = 0.05219137
 
-image_name = "IMG/center_2016_12_01_13_33_10_579.jpg" # 0.1287396
+image_name = "center_2016_12_01_13_33_10_579.jpg" # 0.1287396
 original_steering_angle = 0.05219137
 
-image_name = "IMG/center_2016_12_01_13_39_28_024.jpg" # -0.9426954
-original_steering_angle = -0.9426954
+image_name = "center_2017_01_21_01_10_33_504.jpg" # -0.8188741
+original_steering_angle = -0.8188741
 
 image_path =  data_dir + processed_images_dir + image_name
 print(image_path)
@@ -452,14 +452,14 @@ plt.show()
 
 # ## Run model.predict(image)
 
-# In[ ]:
+# In[26]:
 
 predictions = model.predict( image[None, :, :], batch_size=1, verbose=1)
 
 
 # ## Extract top prediction
 
-# In[ ]:
+# In[27]:
 
 from DataHelper import predict_class
 
@@ -471,7 +471,7 @@ print("top_prediction \n", predicted_class )
 
 # ## Plot predictions (peaks are top classes)
 
-# In[ ]:
+# In[28]:
 
 # summarize history for loss
 plt.plot(predictions[0])

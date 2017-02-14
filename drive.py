@@ -6,14 +6,26 @@
 
 # In[1]:
 
-data_dir = "../../../DATA/behavioral_cloning_data/"
-processed_images_dir = "processed_images_64/"
-model_dir = "../../../DATA/MODELS/"
-model_name = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5"
+
+data_dir = "../_DATA/CarND_behavioral_cloning/r_001/"
 image_final_width = 64
+driving_data_csv = "driving_log_normalized.csv"
+processed_images_dir = "processed_images/"
+
+model_dir = "../_DATA/MODELS/"
+batch_size = 256
+nb_epoch = 10 
+# 30 epochs = 55 minutes on MacBook Pro
+
+# CONTINUE TRAINING ?
+should_retrain_existing_model = True
+model_to_continue_training = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5"
+previous_trained_epochs = 30
+
+model_name = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5"
 model_path = model_dir + model_name
 autorun_dir = data_dir + "autonomous_run/"
-sample_autorun_image = "image_6.50871205329895.jpg"
+sample_autorun_image = "image_11.986971139907837.jpg"
 
 
 # In[2]:
@@ -77,13 +89,10 @@ model = load_and_compile_model()
 model.summary()
 
 
-# # Test prediction
-
 # In[7]:
 
-def predict_steering(image, old_steering):
-    image = np.array(image)
-    predictions = model.predict( image[None, :, :], batch_size=1, verbose=1)
+def predict_steering(image_array, old_steering):
+    predictions = model.predict( image_array[None, :, :], batch_size=1, verbose=1)
     
     from DataHelper import predict_class
     new_steering_angle = predict_class(predictions, steering_classes)
@@ -92,6 +101,8 @@ def predict_steering(image, old_steering):
     print("new_steering_angle", new_steering_angle)
     return new_steering_angle 
 
+
+# # Test prediction
 
 # In[8]:
 
@@ -104,11 +115,6 @@ plt.show()
 
 new_steering_angle = predict_steering(image, 0.0)
 print("new_steering_angle", new_steering_angle)
-
-
-# In[ ]:
-
-
 
 
 # In[9]:
@@ -154,10 +160,10 @@ def telemetry(sid, data):
         speed = data["speed"]
 
         # The current image from the center camera of the car
-        image = preprocess_image(data["image"], elapsed_seconds)
-        new_steering_angle = predict_steering(image, steering_angle)
+        image_array = preprocess_image(data["image"], elapsed_seconds)
+        new_steering_angle = predict_steering(image_array, steering_angle)
         
-        new_throttle = 0.3
+        new_throttle = 0.1
         
         output = []
         output.append(str(round(float(elapsed_seconds),2)) + "\t")
@@ -170,7 +176,7 @@ def telemetry(sid, data):
         myfile.write(output_text)
         #print(output_text)
         
-        send_control(new_steering_angle, new_throttle)
+        send_control(-0.2, new_throttle)
 
 # $ tail -f ~/dev/carnd/p3_behavioral_cloning/behavioral_cloning_UkiDLucas/output.txt 
 

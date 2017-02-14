@@ -11788,14 +11788,25 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../../../DATA/behavioral_cloning_data/&quot;</span>
-<span class="n">processed_images_dir</span> <span class="o">=</span> <span class="s2">&quot;processed_images_64/&quot;</span>
-<span class="n">model_dir</span> <span class="o">=</span> <span class="s2">&quot;../../../DATA/MODELS/&quot;</span>
-<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../_DATA/CarND_behavioral_cloning/r_001/&quot;</span>
 <span class="n">image_final_width</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">driving_data_csv</span> <span class="o">=</span> <span class="s2">&quot;driving_log_normalized.csv&quot;</span>
+<span class="n">processed_images_dir</span> <span class="o">=</span> <span class="s2">&quot;processed_images/&quot;</span>
+
+<span class="n">model_dir</span> <span class="o">=</span> <span class="s2">&quot;../_DATA/MODELS/&quot;</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">nb_epoch</span> <span class="o">=</span> <span class="mi">10</span> 
+<span class="c1"># 30 epochs = 55 minutes on MacBook Pro</span>
+
+<span class="c1"># CONTINUE TRAINING ?</span>
+<span class="n">should_retrain_existing_model</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">model_to_continue_training</span> <span class="o">=</span> <span class="s2">&quot;model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5&quot;</span>
+<span class="n">previous_trained_epochs</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5&quot;</span>
 <span class="n">model_path</span> <span class="o">=</span> <span class="n">model_dir</span> <span class="o">+</span> <span class="n">model_name</span>
 <span class="n">autorun_dir</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="o">+</span> <span class="s2">&quot;autonomous_run/&quot;</span>
-<span class="n">sample_autorun_image</span> <span class="o">=</span> <span class="s2">&quot;image_6.50871205329895.jpg&quot;</span>
+<span class="n">sample_autorun_image</span> <span class="o">=</span> <span class="s2">&quot;image_11.986971139907837.jpg&quot;</span>
 </pre></div>
 
 </div>
@@ -11965,23 +11976,13 @@ ________________________________________________________________________________
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Test-prediction">Test prediction<a class="anchor-link" href="#Test-prediction">&#182;</a></h1>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_steering</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">old_steering</span><span class="p">):</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span> <span class="n">image</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_steering</span><span class="p">(</span><span class="n">image_array</span><span class="p">,</span> <span class="n">old_steering</span><span class="p">):</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span> <span class="n">image_array</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     
     <span class="kn">from</span> <span class="nn">DataHelper</span> <span class="k">import</span> <span class="n">predict_class</span>
     <span class="n">new_steering_angle</span> <span class="o">=</span> <span class="n">predict_class</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">steering_classes</span><span class="p">)</span>
@@ -11995,6 +11996,15 @@ ________________________________________________________________________________
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Test-prediction">Test prediction<a class="anchor-link" href="#Test-prediction">&#182;</a></h1>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -12036,95 +12046,90 @@ ________________________________________________________________________________
 
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,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
-AAALEgAACxIB0t1+/AAAE6hJREFUeJztnWuMXOdZx//Pmdmd3bUdr9d2bCe26yZNcyE0aRRyUapC
-m6SEcmk/VKihH/qhkr8UUSSkkggJiQ9IBSQoHxBSBIGCaIsILVRRRRqlQRUK5H5zEjt2HNvZ2PE6
-Tnzby+xcHj7MCaz3+b/xmZ31rOf4/5Os2Xn8zns773lmzvtcXnN3CCGEGHyyle6AEEKI5UEKXQgh
-SoIUuhBClAQpdCGEKAlS6EIIURKk0IUQoiRIoQshREmQQhdCiJLQk0I3s3vMbI+Z7TOz+5arU0II
-IbrHlhopamYVAK8DuBvAJICnAdzr7q8uX/eEEEIUpdrDZ28BsM/d9wOAmX0fwBcAJBW6mXm2+JmA
-fJ8kv2L6lqXASNPnofHYTHd40QpYudRnuynbC2w+maxd/POVKBoajku8Wo2y2dE53gxrvk5kswU/
-m4JNcYsUS10KZw/bbB0zEh01UrpYM0Cz+MN/RnplPd5v3ayk4vRyH/DxFJ3OFvCuu288Vyu9KPTL
-Aby14P0kgFs/7ANZBoyNnC1zMstNspA7hYmMlG13tRbiFBiZ0iaaBTsEtNlVKirrRs/ODRWslF3m
-4URDrCzRlFSWgs0Tm895IpvmVVZI2TVRdOn2dVG2aX2QvXTNbtqMEeXd3EsKvkJkTMkD/FpmZD7P
-xMU9bPyWzRq1IGuTa8xurXaio+0h8iU3SgqyZfju6iCq0taBESKvkm9NpvhTv2nY98k0WYZUyXti
-bRu7t0hZotSqzsc+RnowRMZ5HDjIO7WonSKFErCpDD0xs50Adnb+7qE1IYQQH0ovCn0SwLYF77cC
-OLy4kLs/AOABAKhU2DOcEEKI5aAXo2gVHaPonQDeRsco+lvuzh4+AQCZmQ8XeFLPEr/ki24Zt8jT
-fDf78kX32jzxyGFEzupk5bJgZEiXbbbjYzaaRXuf+i5nWzGsbHz2riS2YVYt3mcD0PL4SD3fPh1k
-jfn3aZ3IyHYAa34sikbItsFcagfqkrifsHbHhiD7yLa4tePzfLvo8P749Hz8ECk4Q2SJHSi6W8V2
-tRiJ7W6rxUnxRoO0HW+iS1qb42ep8QGokM5XSOczIvPE3VonN/Y0uV3bw0SYUhZFdWUXKpUt2Srp
-Ur2BZ9395nPVt+Rf6O7eNLPfBvBI3q8HP0yZCyGEOL/0suUCd/8xgB8vU1+EEEL0gCJFhRCiJEih
-CyFESZBCF0KIkrBkL5elkFnFR3C2x0OLWK7bIJZ0ANR8zCzX3QQ7kq80WpQEdHiLe3W0aQxBUe+R
-lBsQ61X0CqEDyqI3TG04Bn4AQG0ouoVUK/HzRtphnjgAMFeP7hrzreiuMd84Ez/cTgUWkTXCpq5o
-8Nbs1bwdHI+ize8F0eqro7fFxit4jaOrYkfnZ2KnZk5EWS2L3jQAkLXjWjp+7FiQndhH5i0VAMU8
-ZxrEbagRPYEyGhjEPVKGiLxGLlyVXLh2wpVnngQrzZK10Coa8AckXFISZWOHOERXZMzzrlXMy0W/
-0IUQoiRIoQshREmQQhdCiJIghS6EECWhp8Ci7jE0FxlFWehuM2lBYDH9zIBaMO0nuH2sXTixIksz
-B9B4c5AwfWooTRlF4wDG18V2KpX4+UpGLnMio1yzEa00c7OnoqweQ+/b3Vw3mnmPlUuldiWyogkg
-SZUs1BzgvcSxWMEZkongzFHe/PBWkl2QZIqk0fz1KVpndTiujy3Xbwmy6+7aFmTZPF/Hh159J8pe
-JjkKDkejd5vcAu3EpWySe4vaaZmwG/8Jsj6sGufNW4mOsrZYNgPilVFL6IrVJIXGCCn7Nt7lfVqE
-fqELIURJkEIXQoiSIIUuhBAlQQpdCCFKQl8jRc2qDqxdJC16tiRQYbnCyZkZrTYxJ3kqOXQ0YIyO
-xmi82VlmEUmFnzIDaLQSra5cGmTjl8Rc2wAwWouRnTPZc0FWr0crzcxMNFrNzLJk20DxbPCsXGot
-sbJMxg7RTJxHSI9xSzRfoNzmRNdnaGAlObZw1XiQzdcThix2jNv2KBr/xbgOT8wm8sOzaYoBrQCz
-qSaW8cjWxfcqcN2VHw+yLZs2BdmL9lqQTb78Bm/oGSJjU9fNLciWN0/HHkncAlUir5G1UCMXuIZ4
-JgAALI6cB4AKqXMf3lSkqBBCXExIoQshREmQQhdCiJLQU2CRmR1AJ+VfC0CzyB6PEEKI88NyRIp+
-xt2LhTHBkQ7tWgi3dLQK58VlqWGZoRIwEpU1O8ti9KKBaMMl0RgEAONrSYpTYtA9dTKmv518fz+t
-EyChiDhCZIWPuE7Ii32+kpGIVBJ1BwDz83E+adQeO1y76HCAnuy51cSdwOyXzMB9apqV3MorPUOs
-lR6v71wjWvHu+tIv0Cofe+LpWCWLrLyeyNo8inHutZNB9tzTsR26lK4hsstoM1hzd3QOGDsTQ2dn
-3oiplE8fiH0EADRpCGcUEXVEljaARCByIzpbNNuxbZZuukNceL1sm2jLRQghSkKvCt0B/MTMnjWz
-ncvRISGEEEuj1y2XO9z9sJldCuBRM9vt7j9bWCBX9LmyTzmNCiGE6JWefqG7++H8dQrADwHcQso8
-4O43dwymUuhCCHG+WLJCN7NVZrbmg78BfA7AruXqmBBCiO5Ycui/mV2Bzq9yoLN18113/+MP/UxW
-cdQWeQgwpxd6civA84cz74JLgmSIyDry+Pn1EzH8vtUiecLZocYATs/Eg4UbNA6buSGkUhQwomeE
-EZeDCvneZlkUAKBNUiQ0vaDHAEnD0A2JM6YpvWSsyLLY0GUtXqETL6gm8Xg6TuY4eSWHyNyNEUcx
-kiMdiYOnP/7liSCb2Bwr+J9HDsYPP8vrxPooysZjjvX2+2Sk0/GAanbeNgB+1jm5NSrrYnqFj235
-GK2yTVJ1HD0ac7mv2xjv/5k6T69wYjp2qsH6znRayrnPyI1YITrtzHSh0P8l76G7+34ANyz180II
-IZYXuS0KIURJkEIXQoiSIIUuhBAloc/50M3DV4jFkPyhUZ4TfGxoY5BVWtFA1Zwl4fwJo0SjYK7u
-UZK3eGwV/z5sZjEc+eTM27FgixiOjIX4AxiK1ymb54HppCEiS8XJs7IsTzkRJUKme1liKTspsWvS
-g69bqQN/FzGROMSXHVhO7fjEXj/XSvS+xdoi5qy1pFwrEeoe7YXAp6LotruuCrJ6iycKf/5xciD0
-blKQdPPKzbFDVWeHpwMnj8Q1/85u4kQwTRZYxvOMZzWSRqIZnRg2/lzUH8MTfMEOb4zXqD0adcD7
-JHXIqaPxoHUAwFtExnK5H4HyoQshxMWEFLoQQpQEKXQhhCgJUuhCCFES+moUrQ7XfM2ms5MiZyT6
-s1nn1rVTx0lEGk2YHQ0lI4lkzBOro6F17XjMp/7eyaNBNnX6AK3TEcvScLgs5ndOhnqRr95sjhuZ
-IgUNnSk5iwDt10+B3tK2I5HFOpClDqMm14OmDyfz0U5NMQsQRlyHLAd/Kq8/XV81YtQk0Z9XfiXm
-IweAW3/5uiA7dGxvkP3XE8Tg/4MoMnZMAYDLJmL7G9dsC7LZ03ExHNo/SeucPU5Ow2b3FpvOVbRK
-vubJfFrsOtxYlDswOh7H3iCR8s3vHpJRVAghLiak0IUQoiRIoQshREmQQhdCiJIghS6EECWhz6H/
-VY9JnpkXAg/nHarGcOJVo9EToELSCczXuctBvR5dDuZJnnGetJl4qQBgecqREVmNBJGnLgeJIs9m
-2TyxCpisGy8XUqxfPwVS3ix0nop2lISF1xLZy1mVBfO2VxNTXGEnzTtzt1gXJI1EXv8mdddg7jTE
-+2N7Iiz956PooySdwLW3RfeVqacuD7JnHtvD29lHZGw4xEtleDVPEzI+EvtUPx3HeXKSpBjgDilc
-BTDY+kglx2frmK35aYX+CyHERYUUuhBClAQpdCGEKAnnVOhm9qCZTZnZrgWyCTN71Mz25q9xs08I
-IURfOadR1Mw+DeAMgH9w9+tz2Z8CeM/dv2Vm9wFY5+6/f87GbMSB7WfJxkaj8WJkhIc3z9VjouAZ
-ciAzSA7rtBGQfaex/NAsC3bCYlchbdEIdFIuZQRkRtFG0SNhi1peEmWLGga7OOQ5afxdTOEQ/1QH
-ij2EtiuJhtrkwtG+x2s5lPFB1kiVw6SbRgxpnljG84iHRM+T1AHz9D4gB1QDwDqSmPsTUXT7F2P8
-+z6SLuLdKXZQOuDsFj5AZPuJLJUJgeQur8zGSd42RoyqJ3h++GP7Y0ebxFBKl5Lze3W4GvXfbDPq
-rzpmlsco6u4/A8KR9V8A8J387+8A+OK56hFCCHF+KfoTbzGb3P0IALj7ETPj2X0AmNlOADt7a04I
-IcS5OO9GUXd/wN1v7jwuFMt8J4QQonuWqtCPmtkWAMhfSbSCEEKIflIoUtTMdgB4eIFR9M8AHF9g
-FJ1w92+eq55qZbWvGbnxLNn0TLQqNHAiUQOL4GQGDGIUtcQp0czyxCLF6KHEvEpqyGORYjSoM3ks
-csGGGF1EA3dj2OwHXQUy99L5xRHMHwbrVFxzQ3RtAjUW8UhkFXYQd+KSsx6dIecKzFIrYmLeKiQS
-ulhAK3b8zo4g27CJ78y+8eabQTYzHe/1TRs2B9mhn8b87ACA14mM3ddELeyYiO105NuDLJuNc3fw
-9YNB9s4UORAe/A5uk+tRR3N5jKJm9j0A/w3gajObNLOvAfgWgLvNbC+Au/P3QgghVpBzWind/d7E
-f925zH0RQgjRA4oUFUKIkiCFLoQQJaHP6XNrDixOq8miOpkMoAbQLJoVqiQVarPFDKoJitrWUjZJ
-bumIeDRaVcFOIAaq5JDZOSTSnvZC4eVwoVlPUxQdUCJnakasZuzQbEI1sT6GiOG7Qq47/7XF740q
-yaQ8TyqYI11PZXaFswpGSUFiKd1IokK38Ga2XR8PcD/ROhlkp+eikfbmO26ida5fHaNXH3no0ViQ
-2VRj0x3IRI2Nx4m/fGsc6NhafvL0u6ejsfTtd8gh8weUPlcIIS4qpNCFEKIkSKELIURJkEIXQoiS
-IIUuhBAloc9eLhUHzs7/ayS2qTbC450arXjobatxJhZkeahTThkFnTVYlVni67BCynorerS0aZg/
-r9RIRxsVHloeGy8oS8pZUrXzcXI0dQVahrKLYF3nzkXF876z7iSyTWTO0gzEw58zOp/cW6sdMlwD
-GCG5z4k3TGodN9kZ6PXoDVRFzCk+RHKsZyPc7WeaeKXZ1lgu2xRlrSO0SmBjFP36b/5qkL30xCtB
-dvDJA7xOdkh04hoHuJMLcGUUbdk+HmRH/vGEvFyEEOJiQgpdCCFKghS6EEKUBCl0IYQoCX02itox
-AAcBbEDyZNqBpWxj0ngufMo2Jo0nzUfcnZh6z6avCv3/GjV7pojFdpAo25g0ngufso1J4+kdbbkI
-IURJkEIXQoiSsFIK/YEVavd8UrYxaTwXPmUbk8bTIyuyhy6EEGL50ZaLEEKUhL4rdDO7x8z2mNk+
-M7uv3+0vB2b2oJlNmdmuBbIJM3vUzPbmr+tWso/dYGbbzOxxM3vNzF4xs2/k8oEck5mNmNlTZvZi
-Pp4/yuUfNbMn8/H8sxk5BuoCxswqZva8mT2cvx/08Rwws5fN7AUzeyaXDeSaAwAzGzezh8xsd34v
-3d7v8fRVoZtZBcBfAfgVANcBuNfMrutnH5aJvwdwzyLZfQAec/erADyWvx8UmgB+z92vBXAbgK/n
-12VQx1QH8Fl3vwHAjQDuMbPbAPwJgL/Ix/M+gK+tYB+XwjcAvLbg/aCPBwA+4+43LnDvG9Q1BwB/
-CeA/3P0aADegc636Ox5379s/ALcDeGTB+/sB3N/PPizjWHYA2LXg/R4AW/K/twDYs9J97GFs/w7g
-7jKMCcAYgOcA3IpOkEc1l5+1Fi/0fwC25grhswAeRifn48COJ+/zAQAbFskGcs2hky7zTeR2yZUa
-T7+3XC4H8NaC95OIp0YPKpvc/QgA5K+XrnB/loSZ7QDwSQBPYoDHlG9PvABgCsCjAN4AcMLdP8jV
-Omhr79sAvon/T9S7HoM9HqCT7/gnZvasme3MZYO65q4AcAzA3+XbYn9jZqvQ5/H0W6GzTNJys7lA
-MLPVAP4VwO+6+6mV7k8vuHvL3W9E55ftLQCuZcX626ulYWa/BmDK3Z9dKCZFB2I8C7jD3W9CZwv2
-62b26ZXuUA9UAdwE4K/d/ZMAprEC20X9VuiTALYteL8VwOE+9+F8cdTMtgBA/jq1wv3pCjMbQkeZ
-/5O7/yAXD/SYAMDdTwD4T3RsA+Nm9sHpKYO09u4A8BtmdgDA99HZdvk2Bnc8AAB3P5y/TgH4ITpf
-vIO65iYBTLr7k/n7h9BR8H0dT78V+tMArsqt88MAvgzgR33uw/niRwC+mv/9VXT2oQcCMzMAfwvg
-NXf/8wX/NZBjMrONZjae/z0K4C50DFSPA/hSXmxgxuPu97v7Vnffgc4981N3/woGdDwAYGarzGzN
-B38D+ByAXRjQNefu7wB4y8yuzkV3AngV/R7PChgPPg/gdXT2NP9gpY0ZSxzD9wAcQecAqkl0vAvW
-o2O02pu/Tqx0P7sYz6fQeVx/CcAL+b/PD+qYAHwCwPP5eHYB+MNcfgWApwDsA/AvAGor3dcljO2X
-ADw86OPJ+/5i/u+VD3TBoK65vO83AngmX3f/BmBdv8ejSFEhhCgJihQVQoiSIIUuhBAlQQpdCCFK
-ghS6EEKUBCl0IYQoCVLoQghREqTQhRCiJEihCyFESfhf3XYmtmhB+FoAAAAASUVORK5CYII=
+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
 "
 >
 </div>
@@ -12136,28 +12141,15 @@ ghS6EEKUBCl0IYQoCVLoQghREqTQhRCiJEihCyFESfhf3XYmtmhB+FoAAAAASUVORK5CYII=
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>1/1 [==============================] - 0s
-predicted class: -0.1 	 15.4 %
-predicted class: 0.15 	 12.5 %
-predicted class: -1.0 	 10.5 %
-new_steering_angle -0.1
-new_steering_angle -0.1
+predicted class: -0.25 	 9.8 %
+predicted class: -0.1 	 6.9 %
+predicted class: 0.25 	 6.9 %
+new_steering_angle -0.25
+new_steering_angle -0.25
 </pre>
 </div>
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
 </div>
 </div>
 
@@ -12224,10 +12216,10 @@ new_steering_angle -0.1
         <span class="n">speed</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;speed&quot;</span><span class="p">]</span>
 
         <span class="c1"># The current image from the center camera of the car</span>
-        <span class="n">image</span> <span class="o">=</span> <span class="n">preprocess_image</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;image&quot;</span><span class="p">],</span> <span class="n">elapsed_seconds</span><span class="p">)</span>
-        <span class="n">new_steering_angle</span> <span class="o">=</span> <span class="n">predict_steering</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">steering_angle</span><span class="p">)</span>
+        <span class="n">image_array</span> <span class="o">=</span> <span class="n">preprocess_image</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;image&quot;</span><span class="p">],</span> <span class="n">elapsed_seconds</span><span class="p">)</span>
+        <span class="n">new_steering_angle</span> <span class="o">=</span> <span class="n">predict_steering</span><span class="p">(</span><span class="n">image_array</span><span class="p">,</span> <span class="n">steering_angle</span><span class="p">)</span>
         
-        <span class="n">new_throttle</span> <span class="o">=</span> <span class="mf">0.3</span>
+        <span class="n">new_throttle</span> <span class="o">=</span> <span class="mf">0.1</span>
         
         <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">elapsed_seconds</span><span class="p">),</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -12240,7 +12232,7 @@ new_steering_angle -0.1
         <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output_text</span><span class="p">)</span>
         <span class="c1">#print(output_text)</span>
         
-        <span class="n">send_control</span><span class="p">(</span><span class="n">new_steering_angle</span><span class="p">,</span> <span class="n">new_throttle</span><span class="p">)</span>
+        <span class="n">send_control</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">new_throttle</span><span class="p">)</span>
 
 <span class="c1"># $ tail -f ~/dev/carnd/p3_behavioral_cloning/behavioral_cloning_UkiDLucas/output.txt </span>
 </pre></div>
@@ -12317,8 +12309,8 @@ new_steering_angle -0.1
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>(95590) wsgi starting up on http://0.0.0.0:4567
-(95590) accepted (&#39;127.0.0.1&#39;, 58618)
+<pre>(5915) wsgi starting up on http://0.0.0.0:4567
+(5915) accepted (&#39;127.0.0.1&#39;, 60353)
 </pre>
 </div>
 </div>
@@ -12327,7 +12319,7 @@ new_steering_angle -0.1
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>connect  2c0b6ad9d5be468bafcefebb085454ec
+<pre>connect  bcf8fe70a83440aaaaef6b5cdea5019b
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
 predicted class: 0.45 	 2.5 %
@@ -12359,23 +12351,28 @@ predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 1.9 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 1.9 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
+predicted class: 0.15 	 3.9 %
 predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 1.9 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
 predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
@@ -12389,64 +12386,264 @@ predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
+predicted class: 0.15 	 3.9 %
 predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
 predicted class: -0.6 	 2.1 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.4 %
 predicted class: -0.6 	 2.1 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
+predicted class: 0.45 	 2.4 %
 predicted class: -0.6 	 2.1 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.1 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.1 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.1 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.9 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.4 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
@@ -12465,123 +12662,73 @@ predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
 predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
+predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
 predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
+predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
 predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.6 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.6 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.6 %
+predicted class: -0.6 	 1.9 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 1.8 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 1.8 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 1.8 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.0 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.7 %
 predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.7 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.7 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.7 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.7 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.7 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
 predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.7 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.7 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.7 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.7 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.7 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.7 %
-predicted class: -0.6 	 2.1 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.7 %
@@ -12592,6 +12739,31 @@ new_steering_angle 0.15
 predicted class: 0.15 	 3.7 %
 predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.0 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.1 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.1 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.1 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.1 %
+new_steering_angle 0.15
+1/1 [==============================] - 0s
+predicted class: 0.15 	 3.8 %
+predicted class: 0.45 	 2.5 %
+predicted class: -0.6 	 2.1 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s</pre>
 </div>
@@ -12601,7 +12773,7 @@ new_steering_angle 0.15
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>/Users/ukilucas/dev/carnd/p3_behavioral_cloning/p3_UkiDLucas/ImageHelper.py:281: RuntimeWarning: divide by zero encountered in int_scalars
+<pre>/Users/ukilucas/dev/CarND-p3_behavioral_cloning-UkiDLucas/ImageHelper.py:281: RuntimeWarning: divide by zero encountered in int_scalars
   slope = rise/run
 </pre>
 </div>
@@ -12612,41 +12784,6 @@ new_steering_angle 0.15
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-predicted class: 0.15 	 3.7 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
 predicted class: 0.45 	 2.5 %
 predicted class: -0.6 	 2.1 %
@@ -12668,194 +12805,28 @@ predicted class: -0.6 	 2.1 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
+predicted class: 0.45 	 2.6 %
+predicted class: -0.6 	 1.9 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
 predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
+predicted class: -0.6 	 1.9 %
 new_steering_angle 0.15
 1/1 [==============================] - 0s
 predicted class: 0.15 	 3.8 %
 predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
+predicted class: -0.6 	 1.9 %
 new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.5 %
-predicted class: -0.6 	 2.1 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.9 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
-1/1 [==============================] - 0s
-predicted class: 0.15 	 3.8 %
-predicted class: 0.45 	 2.6 %
-predicted class: -0.6 	 2.0 %
-new_steering_angle 0.15
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>127.0.0.1 - - [13/Feb/2017 13:47:43] &#34;GET /socket.io/?EIO=4&amp;transport=websocket HTTP/1.1&#34; 200 0 10.315822
 </pre>
 </div>
 </div>
