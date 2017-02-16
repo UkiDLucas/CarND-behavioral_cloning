@@ -16,8 +16,8 @@ processed_images_dir = "processed_images/"
 
 model_dir = "../_DATA/MODELS/"
 model_name = "model_p3_14x64x3_"
-batch_size = 256
-nb_epoch = 10 
+batch_size = 64
+nb_epoch = 3 
 # 30 epochs = 55 minutes on MacBook Pro
 
 # CONTINUE TRAINING ?
@@ -40,9 +40,28 @@ import DataHelper
 #print(DataHelper.__doc__)
 
 
+# In[3]:
+
+# https://github.com/aymericdamien/TensorFlow-Examples/issues/38#issuecomment-265599695
+import tensorflow as tf
+
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5) #0.333
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True, gpu_options=gpu_options))
+
+
+from tensorflow.python.client import device_lib
+
+def get_available_CPU_GPU():
+    devices = device_lib.list_local_devices()
+    #return [x.name for x in devices if x.device_type == 'CPU']
+    return [x.name for x in devices ]
+
+print(get_available_CPU_GPU())
+
+
 # # Fetch CSV driving data
 
-# In[3]:
+# In[4]:
 
 from  DataHelper import read_csv
 
@@ -54,7 +73,7 @@ headers, data = read_csv(data_dir + driving_data_csv)
 # 
 # Keras actually does it's own training/testing split, so here I just reserve small validation set.
 
-# In[4]:
+# In[5]:
 
 from DataHelper import split_random
 
@@ -67,7 +86,7 @@ print("validation", validation.shape)
 
 # # Fetch steering angles
 
-# In[5]:
+# In[6]:
 
 from DataHelper import plot_histogram, get_steering_values, find_nearest
 
@@ -82,7 +101,7 @@ plot_histogram("steering values", steering_angles, change_step)
 # - I might consider rounding the steering angles to lower amount of training
 # - I assume the classification labels to be float values
 
-# In[6]:
+# In[7]:
 
 import numpy as np
 from numpy import ndarray
@@ -102,7 +121,7 @@ plot_steering_values(values = steering_classes)
 
 # ## Snap the ACTUAL steering angles to newly created classes
 
-# In[7]:
+# In[8]:
 
 training_labels = np.array([], dtype=np.float32)
 
@@ -113,14 +132,14 @@ for actual_steering_angle in steering_angles:
 print(training_labels[0:50], type(training_labels[0]))
 
 
-# In[8]:
+# In[9]:
 
 plot_histogram("steering values", training_labels, change_step=0.01)
 
 
 # ## Test conversion form actual to class label
 
-# In[9]:
+# In[10]:
 
 from random import randrange
 
@@ -136,7 +155,7 @@ print("actual:", steering_angles[sample_index], "class:",training_labels[sample_
 
 # ## Encoding Training Labels in one-hot notation
 
-# In[10]:
+# In[11]:
 
 from DataHelper import encode_one_hot, locate_one_hot_position
 
@@ -147,7 +166,7 @@ print("y_one_hot", y_one_hot.shape)
 
 # ### One-hot print and verify
 
-# In[11]:
+# In[12]:
 
 for index in range(5):
     print( "training label", training_labels[index], "is @", 
@@ -157,7 +176,7 @@ for index in range(5):
 
 # # Extract training features (images)
 
-# In[12]:
+# In[13]:
 
 from DataHelper import get_image_center_values 
 
@@ -168,7 +187,7 @@ print(image_names[1])
 
 # ## Create a list of image paths pointing to 64px version
 
-# In[13]:
+# In[14]:
 
 image_paths = []
 for image_name in image_names:
@@ -178,7 +197,7 @@ print(image_paths[1])
 
 # ## Read actual (preprocessed) images from the disk
 
-# In[14]:
+# In[15]:
 
 from DataHelper import read_image
 
@@ -224,7 +243,7 @@ print("training_features", training_features.shape)
 # 
 # https://keras.io/layers/convolutional/
 
-# In[15]:
+# In[16]:
 
 import keras.backend as K
 from keras.models import Sequential
@@ -271,7 +290,7 @@ from DataHelper import show_layers
 show_layers(model)
 # # Build my own custom model
 
-# In[16]:
+# In[17]:
 
 from keras.layers import InputLayer, Input
 
@@ -279,18 +298,18 @@ from keras.layers import InputLayer, Input
 
 model = Sequential()
 
-model.add(Convolution2D(64, 3, 3, border_mode='same', activation="relu" ,
-                        input_shape=(14, 64 ,3), dim_ordering='tf', name="conv2d_1_64x3x3_relu"))
-model.add(Convolution2D(128, 3, 3, border_mode='same', activation="relu", name="conv2d_2_128x3x3_relu" ))
-model.add(Convolution2D(256, 5, 5, border_mode='same', activation="relu", name="conv2d_3_256x5x5_relu" ))
+model.add(Convolution2D(32, 3, 3, border_mode='same', activation="relu" ,
+                        input_shape=(14, 64 ,3), dim_ordering='tf', name="conv2d_1_relu"))
+model.add(Convolution2D(32, 3, 3, border_mode='same', activation="relu", name="conv2d_2_relu" ))
+model.add(Convolution2D(32, 5, 5, border_mode='same', activation="relu", name="conv2d_3_relu" ))
 
 model.add(Flatten())
 
 #model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Dense(256, activation="relu", name="dense_1_256_relu"))
+model.add(Dense(256, activation="relu", name="dense_1_relu")) #256
 model.add(Dropout(0.25, name="dropout_1_0.25"))
-model.add(Dense(256, activation="relu", name="dense_2_256_relu" ))
+model.add(Dense(256, activation="relu", name="dense_2_relu" )) #256
 
 # CLASSIFICATION
 model.add(Dense(41, activation='linear' , name="dense_3_41_linear")) # default: linear | softmax | relu | sigmoid
@@ -303,7 +322,7 @@ model.summary()
 
 # # Compile model (configure learning process)
 
-# In[17]:
+# In[ ]:
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 # 
@@ -328,7 +347,7 @@ if should_retrain_existing_model:
     model.summary()
 # # Train (fit) the model agaist given labels
 
-# In[18]:
+# In[ ]:
 
 # REGRESSION
 # history = model.fit(training_features, training_labels, nb_epoch=nb_epoch, 
@@ -373,7 +392,7 @@ Total params: 59,167,657
 Trainable params: 59,167,657
 Non-trainable params: 0
 _________________________
-# In[19]:
+# In[ ]:
 
 # list all data in history
 print(history.history.keys())
@@ -393,7 +412,7 @@ print("validation_error", validation_error)
 
 # # Save the model
 
-# In[20]:
+# In[ ]:
 
 # creates a HDF5 file '___.h5'
 model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_epochs) 
@@ -402,7 +421,7 @@ model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_
 #model = load_model('my_model.h5')
 
 
-# In[21]:
+# In[ ]:
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
@@ -431,7 +450,7 @@ print(model_path)
 
 model = load_model(model_dir + model_to_continue_training) 
 model.summary()
-# In[25]:
+# In[ ]:
 
 image_name = "center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
 original_steering_angle = 0.05219137
@@ -452,14 +471,14 @@ plt.show()
 
 # ## Run model.predict(image)
 
-# In[26]:
+# In[ ]:
 
 predictions = model.predict( image[None, :, :], batch_size=1, verbose=1)
 
 
 # ## Extract top prediction
 
-# In[27]:
+# In[ ]:
 
 from DataHelper import predict_class
 
@@ -471,7 +490,7 @@ print("top_prediction \n", predicted_class )
 
 # ## Plot predictions (peaks are top classes)
 
-# In[28]:
+# In[ ]:
 
 # summarize history for loss
 plt.plot(predictions[0])
