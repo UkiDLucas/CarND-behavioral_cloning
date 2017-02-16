@@ -16,9 +16,9 @@ processed_images_dir = "processed_images/"
 
 model_dir = "../_DATA/MODELS/"
 model_name = "model_p3_14x64x3_"
-batch_size = 256
-nb_epoch = 3 
-# 30 epochs = 55 minutes on MacBook Pro
+batch_size = 64
+nb_epoch = 40 
+# 30 epochs = 55 minutes on MacBook Pro CPU
 
 # CONTINUE TRAINING ?
 should_retrain_existing_model = True
@@ -45,7 +45,7 @@ import DataHelper
 # https://github.com/aymericdamien/TensorFlow-Examples/issues/38#issuecomment-265599695
 import tensorflow as tf
 
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8) #0.333
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7) #0.333
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True, gpu_options=gpu_options))
 
 
@@ -231,36 +231,6 @@ from DataHelper import mean_pred, false_rates
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D, Convolution1D
 
 
-# ### X Import Model_Keras_VGG_16.py
-# 
-# This file (in the same directory) contains MODEL definiteion for VGG.16.
-#from Model_Keras_VGG_16 import build_model # model = build_model('vgg16_weights.h5')
-from keras.applications import vgg16
-from keras.applications.vgg16 import VGG16
-from keras.models import Model
-from DataHelper import show_layers
-
-model_VGG16 = VGG16(weights=None, include_top=True)
-
-model_VGG16.summary()
-number_of_layers = show_layers(model_VGG16)
-# ### X Adjust VGG.16 model architecture to match my needs
-print("number_of_layers", number_of_layers)
-
-# create last layer with 21 classes
-#x = Dense(21, activation='softmax', name='predictions')(model_VGG16.layers[-2].output)
-
-# Convert to REGRESSION
-last_layer = model_VGG16.layers[number_of_layers-1]
-print("last_layer name",last_layer.name)
-
-# One (1) output class makes this a (linear) regression.
-x22 = Dense(1, activation='linear', name='regression')(last_layer.output)
-model = Model(input=model_VGG16.input, output=x22)
-
-model.summary()
-from DataHelper import show_layers
-show_layers(model)
 # # Build my own custom model
 
 # In[17]:
@@ -295,7 +265,7 @@ model.summary()
 
 # # Compile model (configure learning process)
 
-# In[18]:
+# In[ ]:
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 # 
@@ -320,7 +290,7 @@ if should_retrain_existing_model:
     model.summary()
 # # Train (fit) the model agaist given labels
 
-# In[19]:
+# In[ ]:
 
 # REGRESSION
 # history = model.fit(training_features, training_labels, nb_epoch=nb_epoch, 
@@ -367,7 +337,7 @@ Total params: 59,167,657
 Trainable params: 59,167,657
 Non-trainable params: 0
 _________________________
-# In[20]:
+# In[ ]:
 
 # list all data in history
 print(history.history.keys())
@@ -387,7 +357,7 @@ print("validation_error", validation_error)
 
 # # Save the model
 
-# In[21]:
+# In[ ]:
 
 # creates a HDF5 file '___.h5'
 model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_epochs) 
@@ -396,7 +366,7 @@ model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_
 #model = load_model('my_model.h5')
 
 
-# In[22]:
+# In[ ]:
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
@@ -425,7 +395,7 @@ print(model_path)
 
 model = load_model(model_dir + model_to_continue_training) 
 model.summary()
-# In[23]:
+# In[ ]:
 
 image_name = "center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
 original_steering_angle = 0.05219137
@@ -446,14 +416,14 @@ plt.show()
 
 # ## Run model.predict(image)
 
-# In[24]:
+# In[ ]:
 
 predictions = model.predict( image[None, :, :], batch_size=1, verbose=1)
 
 
 # ## Extract top prediction
 
-# In[25]:
+# In[ ]:
 
 from DataHelper import predict_class
 
@@ -465,7 +435,7 @@ print("top_prediction \n", predicted_class )
 
 # ## Plot predictions (peaks are top classes)
 
-# In[26]:
+# In[ ]:
 
 # summarize history for loss
 plt.plot(predictions[0])
