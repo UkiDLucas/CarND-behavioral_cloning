@@ -330,6 +330,28 @@ if should_retrain_existing_model:
 history = model.fit(training_features, y_one_hot, nb_epoch=nb_epoch, 
                     batch_size=batch_size, verbose=1, validation_split=0.2)
 
+
+# # Previous results
+CPU:
+Train on 7971 samples, validate on 1993 samples
+Epoch 1/3
+7971/7971 [==============================] - 60s - loss: 0.1146 - acc: 0.1283 - val_loss: 0.0235 - val_acc: 0.2820 
+Epoch 2/3
+7971/7971 [==============================] - 56s - loss: 0.0238 - acc: 0.2855 - val_loss: 0.0216 - val_acc: 0.3437 
+Epoch 3/3
+7971/7971 [==============================] - 55s - loss: 0.0221 - acc: 0.3419 - val_loss: 0.0207 - val_acc: 0.3532 
+
+GPU:
+Train on 7971 samples, validate on 1993 samples
+Epoch 1/3
+7971/7971 [==============================] - 24s - loss: 0.2050 - acc: 0.1242 - val_loss: 0.0230 - val_acc: 0.2614 
+Epoch 2/3
+7971/7971 [==============================] - 17s - loss: 0.0228 - acc: 0.3002 - val_loss: 0.0215 - val_acc: 0.3482 
+Epoch 3/3
+7971/7971 [==============================] - 17s - loss: 0.0215 - acc: 0.3611 - val_loss: 0.0206 - val_acc: 0.3643 
+
+
+CPU:
 Train on 2501 samples, validate on 626 samples
 Epoch 1/5
 2501/2501 [==============================] - 109s - loss: 0.0207 - acc: 0.3135 - val_loss: 0.0199 - val_acc: 0.3642
@@ -337,10 +359,6 @@ Epoch 2/5
 2501/2501 [==============================] - 106s - loss: 0.0207 - acc: 0.3083 - val_loss: 0.0199 - val_acc: 0.3594
 Epoch 3/5
 2501/2501 [==============================] - 106s - loss: 0.0207 - acc: 0.3071 - val_loss: 0.0199 - val_acc: 0.3594
-Epoch 4/5
-2501/2501 [==============================] - 105s - loss: 0.0207 - acc: 0.3067 - val_loss: 0.0199 - val_acc: 0.3546
-Epoch 5/5
-2501/2501 [==============================] - 104s - loss: 0.0206 - acc: 0.3203 - val_loss: 0.0199 - val_acc: 0.3562
 
 __
 Layer (type)                     Output Shape          Param #     Connected to                     
