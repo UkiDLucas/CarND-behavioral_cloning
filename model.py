@@ -212,33 +212,6 @@ plt.show()
 print(sample_image[0][0:15])
 
 
-# ## X Extract single channel (red)
-from DataHelper import normalize_grayscale
-
-show_rows = 1 # of 64
-show_cols = 14
-show_channels = 1 # of 3
-
-print("sample_image \n", sample_image.shape,"\n", sample_image[:show_rows,:show_cols,:show_channels]) #  def extract_image_single_channel(image):
-    show_rows = image.shape[0]
-    show_cols = image.shape[1]
-    show_channels = 1 # red
-    return np.array(  image[:show_rows, :show_cols, 0] )
-
-# TEST
-image_single_channel = extract_image_single_channel(sample_image)
-print("image_single_channel: \n", image_single_channel[0][:18])
-print("type and shape: \n", type(image_single_channel),image_single_channel.shape)print("training_images", training_images.shape)  
-
-training_features = extract_image_single_channel(training_images)
-
-print("single channel shape \n", training_features.shape)  
-print("single channel column \n", training_features[0:4][0]) 
-print("single channel pixel \n", training_features[0][0]) 
-print("single channel red value \n", training_features[0][0][0])  
-print("single channel red value \n", training_features[0][0][0])  
-
-print("training_features", training_features.shape) 
 # # Keras (with TensorFlow)
 # 
 # https://keras.io/layers/convolutional/
@@ -322,7 +295,7 @@ model.summary()
 
 # # Compile model (configure learning process)
 
-# In[ ]:
+# In[18]:
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 # 
@@ -347,7 +320,7 @@ if should_retrain_existing_model:
     model.summary()
 # # Train (fit) the model agaist given labels
 
-# In[ ]:
+# In[19]:
 
 # REGRESSION
 # history = model.fit(training_features, training_labels, nb_epoch=nb_epoch, 
@@ -392,7 +365,7 @@ Total params: 59,167,657
 Trainable params: 59,167,657
 Non-trainable params: 0
 _________________________
-# In[ ]:
+# In[20]:
 
 # list all data in history
 print(history.history.keys())
@@ -412,7 +385,7 @@ print("validation_error", validation_error)
 
 # # Save the model
 
-# In[ ]:
+# In[21]:
 
 # creates a HDF5 file '___.h5'
 model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_epochs) 
@@ -421,7 +394,7 @@ model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_
 #model = load_model('my_model.h5')
 
 
-# In[ ]:
+# In[22]:
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
@@ -450,7 +423,7 @@ print(model_path)
 
 model = load_model(model_dir + model_to_continue_training) 
 model.summary()
-# In[ ]:
+# In[23]:
 
 image_name = "center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
 original_steering_angle = 0.05219137
@@ -471,14 +444,14 @@ plt.show()
 
 # ## Run model.predict(image)
 
-# In[ ]:
+# In[24]:
 
 predictions = model.predict( image[None, :, :], batch_size=1, verbose=1)
 
 
 # ## Extract top prediction
 
-# In[ ]:
+# In[25]:
 
 from DataHelper import predict_class
 
@@ -490,7 +463,7 @@ print("top_prediction \n", predicted_class )
 
 # ## Plot predictions (peaks are top classes)
 
-# In[ ]:
+# In[26]:
 
 # summarize history for loss
 plt.plot(predictions[0])
