@@ -16,12 +16,12 @@ processed_images_dir = "processed_images/"
 
 model_dir = "../_DATA/MODELS/"
 model_name = "model_p3_14x64x3_"
-batch_size = 64
+batch_size = 24
 nb_epoch = 40 
 # 30 epochs = 55 minutes on MacBook Pro CPU
 
 # CONTINUE TRAINING ?
-should_retrain_existing_model = True
+should_retrain_existing_model = False
 model_to_continue_training = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5"
 previous_trained_epochs = 30
 
@@ -45,7 +45,7 @@ import DataHelper
 # https://github.com/aymericdamien/TensorFlow-Examples/issues/38#issuecomment-265599695
 import tensorflow as tf
 
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7) #0.333
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.6) #0.333
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True, gpu_options=gpu_options))
 
 
@@ -241,10 +241,10 @@ from keras.layers import InputLayer, Input
 
 model = Sequential()
 
-model.add(Convolution2D(32, 3, 3, border_mode='same', activation="relu" ,
+model.add(Convolution2D(24, 3, 3, border_mode='same', activation="relu" ,
                         input_shape=(14, 64 ,3), dim_ordering='tf', name="conv2d_1_relu"))
 model.add(Convolution2D(32, 3, 3, border_mode='same', activation="relu", name="conv2d_2_relu" ))
-model.add(Convolution2D(64, 5, 5, border_mode='same', activation="relu", name="conv2d_3_relu" ))
+model.add(Convolution2D(32, 5, 5, border_mode='same', activation="relu", name="conv2d_3_relu" ))
 
 model.add(Flatten())
 

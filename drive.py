@@ -54,19 +54,19 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 # change to: "backend": "tensorflow",
 
 
-# In[3]:
+# In[ ]:
 
 # https://github.com/fchollet/keras/issues/3857
 tf.python.control_flow_ops = tf
 
 
-# In[4]:
+# In[ ]:
 
 from DataHelper import create_steering_classes
 steering_classes = create_steering_classes(number_of_classes = 41)
 
 
-# In[5]:
+# In[ ]:
 
 def load_and_compile_model():
     from keras.models import load_model
@@ -83,13 +83,13 @@ def load_and_compile_model():
 
 # # Test model loading
 
-# In[6]:
+# In[ ]:
 
 model = load_and_compile_model()
 model.summary()
 
 
-# In[7]:
+# In[ ]:
 
 def predict_steering(image_array, old_steering):
     predictions = model.predict( image_array[None, :, :], batch_size=1, verbose=1)
@@ -104,7 +104,7 @@ def predict_steering(image_array, old_steering):
 
 # # Test prediction
 
-# In[8]:
+# In[ ]:
 
 from ImageHelper import read_image_array
 image_path = autorun_dir + sample_autorun_image
@@ -117,7 +117,7 @@ new_steering_angle = predict_steering(image, 0.0)
 print("new_steering_angle", new_steering_angle)
 
 
-# In[9]:
+# In[ ]:
 
 def preprocess_image(image_string, elapsed_seconds):   
     
@@ -133,7 +133,7 @@ def preprocess_image(image_string, elapsed_seconds):
     return image_array
 
 
-# In[10]:
+# In[ ]:
 
 sio = socketio.Server()
 app = Flask(__name__)
@@ -141,7 +141,7 @@ model = None
 prev_image_array = None
 
 
-# In[11]:
+# In[ ]:
 
 t0 = time.time()
 
@@ -181,7 +181,7 @@ def telemetry(sid, data):
 # $ tail -f ~/dev/carnd/p3_behavioral_cloning/behavioral_cloning_UkiDLucas/output.txt 
 
 
-# In[12]:
+# In[ ]:
 
 @sio.on('connect')
 def connect(sid, environ):
