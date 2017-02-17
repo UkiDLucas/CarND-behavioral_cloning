@@ -16,7 +16,7 @@ processed_images_dir = "processed_images/"
 
 model_dir = "../_DATA/MODELS/"
 model_name = "model_p3_14x64x3_"
-batch_size = 24
+batch_size = 256
 nb_epoch = 40 
 # 30 epochs = 55 minutes on MacBook Pro CPU
 
@@ -241,10 +241,10 @@ from keras.layers import InputLayer, Input
 
 model = Sequential()
 
-model.add(Convolution2D(24, 3, 3, border_mode='same', activation="relu" ,
+model.add(Convolution2D(64, 3, 3, border_mode='same', activation="relu" ,
                         input_shape=(14, 64 ,3), dim_ordering='tf', name="conv2d_1_relu"))
-model.add(Convolution2D(32, 3, 3, border_mode='same', activation="relu", name="conv2d_2_relu" ))
-model.add(Convolution2D(32, 5, 5, border_mode='same', activation="relu", name="conv2d_3_relu" ))
+model.add(Convolution2D(64, 3, 3, border_mode='same', activation="relu", name="conv2d_2_relu" ))
+model.add(Convolution2D(64, 5, 5, border_mode='same', activation="relu", name="conv2d_3_relu" ))
 
 model.add(Flatten())
 
@@ -265,7 +265,7 @@ model.summary()
 
 # # Compile model (configure learning process)
 
-# In[ ]:
+# In[18]:
 
 # Before training a model, you need to configure the learning process, which is done via the compile method.
 # 
@@ -290,7 +290,7 @@ if should_retrain_existing_model:
     model.summary()
 # # Train (fit) the model agaist given labels
 
-# In[ ]:
+# In[19]:
 
 # REGRESSION
 # history = model.fit(training_features, training_labels, nb_epoch=nb_epoch, 
@@ -337,7 +337,7 @@ Total params: 59,167,657
 Trainable params: 59,167,657
 Non-trainable params: 0
 _________________________
-# In[ ]:
+# In[20]:
 
 # list all data in history
 print(history.history.keys())
@@ -357,7 +357,7 @@ print("validation_error", validation_error)
 
 # # Save the model
 
-# In[ ]:
+# In[21]:
 
 # creates a HDF5 file '___.h5'
 model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_epochs) 
@@ -366,7 +366,7 @@ model.save(model_dir + model_name + "_epoch_" + str(nb_epoch + previous_trained_
 #model = load_model('my_model.h5')
 
 
-# In[ ]:
+# In[22]:
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
@@ -395,7 +395,7 @@ print(model_path)
 
 model = load_model(model_dir + model_to_continue_training) 
 model.summary()
-# In[ ]:
+# In[23]:
 
 image_name = "center_2016_12_01_13_32_43_659.jpg" # stering 0.05219137
 original_steering_angle = 0.05219137
@@ -416,14 +416,14 @@ plt.show()
 
 # ## Run model.predict(image)
 
-# In[ ]:
+# In[24]:
 
 predictions = model.predict( image[None, :, :], batch_size=1, verbose=1)
 
 
 # ## Extract top prediction
 
-# In[ ]:
+# In[25]:
 
 from DataHelper import predict_class
 
@@ -435,7 +435,7 @@ print("top_prediction \n", predicted_class )
 
 # ## Plot predictions (peaks are top classes)
 
-# In[ ]:
+# In[26]:
 
 # summarize history for loss
 plt.plot(predictions[0])
