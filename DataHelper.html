@@ -11802,10 +11802,11 @@ div#notebook {
     <span class="c1"># reverse sort by value, return indexes</span>
     <span class="n">sorted_indexes</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">percentages</span><span class="p">)</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
  
-    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">sorted_indexes</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">sorted_indexes</span><span class="p">[:</span><span class="mi">1</span><span class="p">]:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;predicted class:&quot;</span><span class="p">,</span> <span class="n">classes</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> 
               <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">percentages</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span> 
     
+    <span class="c1"># right now we will return top prediction</span>
     <span class="n">predicted_class</span> <span class="o">=</span> <span class="n">classes</span><span class="p">[</span><span class="n">sorted_indexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
     <span class="k">return</span> <span class="n">predicted_class</span>
 </pre></div>

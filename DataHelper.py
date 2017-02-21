@@ -19,10 +19,11 @@ def predict_class(predictions, classes):
     # reverse sort by value, return indexes
     sorted_indexes = (-percentages).argsort()
  
-    for index in sorted_indexes[:3]:
+    for index in sorted_indexes[:1]:
         print("predicted class:", classes[index], 
               "\t",  np.round(percentages[index]*100,1), "%") 
     
+    # right now we will return top prediction
     predicted_class = classes[sorted_indexes[0]]
     return predicted_class
 

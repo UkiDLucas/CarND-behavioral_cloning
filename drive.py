@@ -13,16 +13,7 @@ driving_data_csv = "driving_log_normalized.csv"
 processed_images_dir = "processed_images/"
 
 model_dir = "../_DATA/MODELS/"
-batch_size = 256
-nb_epoch = 10 
-# 30 epochs = 55 minutes on MacBook Pro
-
-# CONTINUE TRAINING ?
-should_retrain_existing_model = True
-model_to_continue_training = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5"
-previous_trained_epochs = 30
-
-model_name = "model_p3_keras_tf_mini_14x64x3__epoch_30_val_acc_0.402555912543.h5"
+model_name = "model_p3_14x64x3__epoch_70_val_acc_0.367285497303.h5"
 model_path = model_dir + model_name
 autorun_dir = data_dir + "autonomous_run/"
 sample_autorun_image = "image_11.986971139907837.jpg"
@@ -54,19 +45,19 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 # change to: "backend": "tensorflow",
 
 
-# In[ ]:
+# In[3]:
 
 # https://github.com/fchollet/keras/issues/3857
 tf.python.control_flow_ops = tf
 
 
-# In[ ]:
+# In[4]:
 
 from DataHelper import create_steering_classes
 steering_classes = create_steering_classes(number_of_classes = 41)
 
 
-# In[ ]:
+# In[5]:
 
 def load_and_compile_model():
     from keras.models import load_model
@@ -83,29 +74,27 @@ def load_and_compile_model():
 
 # # Test model loading
 
-# In[ ]:
+# In[6]:
 
 model = load_and_compile_model()
 model.summary()
 
 
-# In[ ]:
+# In[7]:
 
-def predict_steering(image_array, old_steering):
-    predictions = model.predict( image_array[None, :, :], batch_size=1, verbose=1)
+from DataHelper import predict_class
     
-    from DataHelper import predict_class
+def predict_steering(image_array, old_steering_angle):
+
+    predictions = model.predict( image_array[None, :, :], batch_size=1, verbose=1)
     new_steering_angle = predict_class(predictions, steering_classes)
      
     # TODO compare to old_steering    
-    print("new_steering_angle", new_steering_angle)
+    #print("new_steering_angle", new_steering_angle)
     return new_steering_angle 
 
 
 # # Test prediction
-
-# In[ ]:
-
 from ImageHelper import read_image_array
 image_path = autorun_dir + sample_autorun_image
 image = read_image_array(image_path)
@@ -115,9 +104,7 @@ plt.show()
 
 new_steering_angle = predict_steering(image, 0.0)
 print("new_steering_angle", new_steering_angle)
-
-
-# In[ ]:
+# In[8]:
 
 def preprocess_image(image_string, elapsed_seconds):   
     
@@ -133,52 +120,25 @@ def preprocess_image(image_string, elapsed_seconds):
     return image_array
 
 
-# In[ ]:
+# In[9]:
 
 sio = socketio.Server()
 app = Flask(__name__)
 model = None
 prev_image_array = None
 
+def send_control(steering_angle=0.0, throttle=0.2):
+    sio.emit("steer", data={
+    'steering_angle': steering_angle.__str__(),
+    'throttle': throttle.__str__()
+    }, skip_sid=True)
+# In[10]:
 
-# In[ ]:
-
-t0 = time.time()
-
-@sio.on('telemetry')
-def telemetry(sid, data):
-    with open("output.txt", "a") as myfile:
-        elapsed_seconds = time.time()-t0
-        
-        # The current steering angle of the car
-        steering_angle = data["steering_angle"]
-        
-        # The current throttle of the car
-        throttle = data["throttle"]
-        
-        # The current speed of the car
-        speed = data["speed"]
-
-        # The current image from the center camera of the car
-        image_array = preprocess_image(data["image"], elapsed_seconds)
-        new_steering_angle = predict_steering(image_array, steering_angle)
-        
-        new_throttle = 0.1
-        
-        output = []
-        output.append(str(round(float(elapsed_seconds),2)) + "\t")
-        output.append(str(round(float(speed),2)) + "\t")
-        output.append(str(round(float(steering_angle),2)) +"->")
-        output.append(str(round(float(new_steering_angle),2)) +"\t" )
-        output.append(str(round(float(throttle),2)) +"->" )
-        output.append(str(round(float(new_throttle),2)) + "\n" )
-        output_text = ''.join(output)
-        myfile.write(output_text)
-        #print(output_text)
-        
-        send_control(-0.2, new_throttle)
-
-# $ tail -f ~/dev/carnd/p3_behavioral_cloning/behavioral_cloning_UkiDLucas/output.txt 
+def send_control(steering_angle=0.0, throttle=0.2):
+    sio.emit("steer", data={
+    'steering_angle': str(steering_angle),
+    'throttle': throttle.__str__()
+    }, skip_sid=True)
 
 
 # In[ ]:
@@ -189,13 +149,40 @@ def connect(sid, environ):
     send_control(0, 0)
 
 
-# In[ ]:
+# In[11]:
 
-def send_control(steering_angle=0.0, throttle=0.2):
-    sio.emit("steer", data={
-    'steering_angle': steering_angle.__str__(),
-    'throttle': throttle.__str__()
-    }, skip_sid=True)
+t0 = time.time()
+
+@sio.on('telemetry')
+def telemetry(sid, data):
+    with open("output.txt", "a") as myfile:
+        elapsed_seconds = time.time()-t0
+        
+        # The current values
+        old_steering_angle = data["steering_angle"]
+        throttle = data["throttle"]
+        speed = data["speed"]
+
+        # The current image from the center camera of the car
+        image_array = preprocess_image(data["image"], elapsed_seconds)
+        steering_angle = predict_steering(image_array, old_steering_angle)
+        
+        new_throttle = 0.1
+        
+        output = []
+        output.append(str(round(float(elapsed_seconds),2)) + "\t")
+        output.append(str(round(float(speed),2)) + "\t")
+        output.append(str(round(float(old_steering_angle),2)) +"->")
+        output.append(str(round(float(steering_angle),2)) +"\t" )
+        output.append(str(round(float(throttle),2)) +"->" )
+        output.append(str(round(float(new_throttle),2)) + "\n" )
+        output_text = ''.join(output)
+        myfile.write(output_text)
+        #print(output_text)
+        
+        send_control(steering_angle, new_throttle)
+
+# $ tail -f ~/dev/carnd/p3_behavioral_cloning/behavioral_cloning_UkiDLucas/output.txt 
 
 
 # In[ ]:
